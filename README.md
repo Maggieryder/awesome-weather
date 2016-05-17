@@ -1,4 +1,4 @@
-## BOILERPLATE REACT-ES6-WEBPACK-WITH-LIVE-EDIT
+## AWESOME WEATHER
 
 ## Installation
 npm install
@@ -11,15 +11,17 @@ npm start
 
 **goto loacalhost:3000**
 
-## Features
-* React es2015 with react-router
-
-* Webpack tooling with live editing (hot-reload)
-
-* Very simple http-proxy set up for eventual use with API
+## API
+* WeatherUnderground
 
 
 ## Todo
+* Hourly and 3-day forecasts
+
 * More work on sass
 
 * Introduce Redux architecture?
+
+* Weather reporting?
+
+* Adding photos
