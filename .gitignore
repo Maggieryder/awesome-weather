@@ -1,0 +1,27 @@
+### OSX ###
+.DS_Store
+
+### Node ###
+# Logs
+logs
+*.log
+npm-debug.log*
+
+### Directories ###
+dist
+node_modules
+WEATHER-pix
+plain_weather
+.sass-cache
+uploads
+test/temp
+app/vendor
+.tmp
+test/scripts/
+
+### AWS stuff for publishing static files ###
+.aws-credentials.json
+.awspublish*
+
+### Thumbnails ###
+._*
