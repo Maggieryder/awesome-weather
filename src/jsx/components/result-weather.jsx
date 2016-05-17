@@ -13,6 +13,7 @@ export default ({location, now, unit}) => {
     lineHeight: '.8em'
   }
   return (
+
     <div>
       <div className="row">
         <div className="col-sm-6 col-xs-12">
@@ -21,7 +22,7 @@ export default ({location, now, unit}) => {
       </div>{/*end row*/}
       <div className="row">
         <div className="col-sm-6 col-xs-12" style={{textAlign:'center'}}>
-          <img src='../../images/icon-partly-cloudy-night.svg' alt={now.desc+' image'} style={imgStyle}/>
+          <img src='../../images/icon-partly-cloudy.svg' alt={now.desc+' image'} style={imgStyle}/>
         </div>
         <div className="col-sm-6 col-xs-12" style={{padding:'5px 10px'}}>
           <p style={pStyle}>{now.desc}</p>
