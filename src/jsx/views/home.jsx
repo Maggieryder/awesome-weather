@@ -51,14 +51,14 @@ class Home extends Component {
     let that = this
     function renderMessage(){
       if (isLoading){
-        return <h3 style={{marginLeft: '20px'}}>Fetching weather...</h3>
+        return <h2 style={{marginLeft: '20px'}}>Fetching weather...</h2>
       } else if (choices) {
         let chooseList = choices.map((n,id) => {
           return <li key={id} onClick={that.chooseClick.bind(that)} id={n.l}>{n.name}</li>
         })
         return <ul style={{marginLeft: '20px'}}>{chooseList}</ul>
       } else if (location && now){
-        return <WeatherResult location={location} now={now} unit={unit}/>
+        return <WeatherResult location={location} now={now} unit={unit} time={hourly[0].hr24}/>
       }
     }
 

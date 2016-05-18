@@ -56,6 +56,14 @@ h2 {
   margin-top:10px;
 }
 
+h3 {
+  font: 24px 'azo-sans-web';
+  line-height: 1.2em;
+  font-weight: 200;
+  color: $bg-lite-transparent;
+  margin-top:10px;
+}
+
 h4 {
   font-size: 14px;
   font-weight:normal;
@@ -152,12 +160,12 @@ a {
 }
 
 .degree-large {
-  font-size: 36px;
+  font-size: 54px;
   font-weight:200;
-  line-height: 1em;
+  line-height: 1.2em;
 }
 
-.partly-cloudy {
+.icon-cloudy {
   background: 'url(../images/icon-cloudy.svg)';
 }
 

@@ -66,7 +66,8 @@ const WeatherAPI = {
       gust: Math.round(currentConditions[spd]) + spdUnit,
       precip: currentConditions[pUnit]+pUnitSuffix,
       desc: currentConditions.weather,
-      icon: currentConditions.icon_url.replace('/k/', '/i/')
+      icon_url: currentConditions.icon_url.replace('/k/', '/i/'),
+      icon: currentConditions.icon
     }
   },
   getForecast(forecast){
@@ -78,6 +79,7 @@ const WeatherAPI = {
       return {
           day: hour.FCTTIME.weekday_name + ', ' + hour.FCTTIME.month_name + ' ' + hour.FCTTIME.mday +', '+ hour.FCTTIME.year,
           hr: hour.FCTTIME.civil,
+          hr24: hour.FCTTIME.hour,
           condition: hour.condition,
           icon_url: hour.icon_url.replace('/k/', '/i/'),
           temp: this.getUnits()==='metric' ? hour.temp.metric : hour.temp.english,

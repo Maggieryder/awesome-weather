@@ -1,35 +1,53 @@
 import React from 'react'
 
+import WeatherIcon from '../../icons/weather-icon.jsx'
 
-//const icon = '<svg id="cloudy" data-name="cloudy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150"><defs><style>.cls-1,.cls-2{fill:none;}.cls-2{stroke:#fff;stroke-miterlimit:10;stroke-width:4px;}</style></defs><title>icon-cloudy</title><rect class="cls-1" width="200" height="150"/><g id="Cloudy"><path class="cls-2" d="M140.52,63.16a24.07,24.07,0,0,0-4.63.45A39,39,0,0,0,59,67.74c-0.42,0-.84,0-1.27,0-12,0-21.69,11.07-21.69,23S45.71,114,57.69,114h82.83c13.23,0,24-12.19,24-25.42S153.75,63.16,140.52,63.16Z"/></g></svg>'
-export default ({location, now, unit}) => {
+
+export default ({location, now, unit,time}) => {
   let tUnit = (unit==='metric') ? 'C' : 'F'
   let imgStyle = {
     width: '300px',
-    height:'225px'
+    height:'200px'
   }
   let pStyle = {
     fontSize: '.9em',
     lineHeight: '.8em'
   }
+  let renderWindStr = (spd, gust) => {
+    let str
+    switch (spd){
+      case 'Calm':
+      case 'Variable':
+      str = spd.toLowerCase()
+      break
+      default:
+      str = gust > spd ? spd +' - '+gust : spd
+    }
+    return str
+  }
+
   return (
 
     <div>
       <div className="row">
-        <div className="col-sm-6 col-xs-12">
-          <h2>Current conditions:</h2>
-        </div>{/*end col*/}
-      </div>{/*end row*/}
+        <div className="col-sm-6 col-xs-12" style={{height:'100%',background:'rgba(0,0,0,.2)'}}>
+          <h3 style={{textAlign:'center', marginBottom:'15px'}}>Current conditions:</h3>
+        </div>
+      </div>
       <div className="row">
         <div className="col-sm-6 col-xs-12" style={{textAlign:'center'}}>
-          <img src='../../images/icon-partly-cloudy.svg' alt={now.desc+' image'} style={imgStyle}/>
+          <div style={{width:'200px', height:'130px', margin: '0 auto'}}>
+            <WeatherIcon stroke="2" desc={now.icon} />
+          </div>
         </div>
         <div className="col-sm-6 col-xs-12" style={{padding:'5px 10px'}}>
-          <p style={pStyle}>{now.desc}</p>
-          <p className='degree-large'>{now.temp}&deg;{tUnit}</p>
-          <p style={pStyle}>Wind: {now.windspd==='Calm' ? 'calm' : now.winddir+' at '+ now.windspd +' gusting to '+now.gust }</p>
-          <p style={pStyle}>Feels like {now.feel}&deg;{tUnit}</p>
-          <p style={pStyle}>Precipitation: {now.precip}</p>
+        <h3 style={{textAlign:'center', marginBottom:'20px'}}>{now.desc}</h3>
+          <div className="row" style={{height:'100%',background:'rgba(0,0,0,.2)'}}>
+            <div className="col-xs-4 col-sm-12" style={{borderRight:'1px solid #243C56'}}><h3 className='degree-large'>{now.temp}&deg;{tUnit}</h3></div>
+            <div className="col-xs-4 col-sm-12" style={{borderRight:'1px solid #243C56',textAlign:'center'}}><h3>{now.winddir} <br />{renderWindStr(now.windspd,  now.gust)}</h3></div>
+            <div className="col-xs-4 col-sm-12" style={{textAlign:'center'}}><h3>{now.precip}</h3></div>
+          </div>
+          {/*<p style={pStyle}>Feels like {now.feel}&deg;{tUnit}</p>*/}
         </div> {/*end col*/}
       </div>{/*end row*/}
     </div>
