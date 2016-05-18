@@ -20,6 +20,16 @@ $primary-bg: linear-gradient(to top, $bg-grad-lite 0%, $bg-grad-dark 100%);
   #{$property}: calc(#{$expression});
 }
 
+@mixin center-box {
+  width: 100%;
+  height: 100%;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-box-pack:center;
+  -webkit-box-align: center;
+}
+
+
 .test {
   @include calc(width, "33% - 1px");
 }
@@ -57,8 +67,8 @@ h2 {
 }
 
 h3 {
-  font: 24px 'azo-sans-web';
-  line-height: 1.2em;
+  font: 20px 'azo-sans-web';
+  line-height: 1.1em;
   font-weight: 200;
   color: $bg-lite-transparent;
   margin-top:10px;
@@ -69,6 +79,16 @@ h4 {
   font-weight:normal;
   font-style:oblique;
   color: $primary-color;
+}
+
+a, a:visited {
+  color:$bg-lite-transparent;
+  text-decoration: none;
+}
+
+a:hover {
+  color:$ko-color;
+  text-decoration: none;
 }
 
 #app {
@@ -155,12 +175,33 @@ a {
   text-decoration: none;
 }
 
-.container {
+ul.inline {
+  width: 100%;
+
+  li {
+    float: left;
+    display: block;
+    @include calc(width, "33.33% - 2px");
+    height: 100%;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight:200;
+    text-align: center;
+    background: rgba(0,0,0,.2);
+
+    a {
+      @include center-box();
+    }
+  }
+
+  li:not(:last-child){
+    margin-right: 2px;
+  }
 
 }
 
 .degree-large {
-  font-size: 54px;
+  font-size: 40px;
   font-weight:200;
   line-height: 1.2em;
 }

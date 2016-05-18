@@ -30,23 +30,26 @@ export default ({location, now, unit,time}) => {
 
     <div>
       <div className="row">
-        <div className="col-sm-6 col-xs-12" style={{height:'100%',background:'rgba(0,0,0,.2)'}}>
-          <h3 style={{textAlign:'center', marginBottom:'15px'}}>Current conditions:</h3>
+        <div className="col-sm-6 col-xs-12" >
+          <h3 style={{textAlign:'center', margin:'20px 0 0 0'}}>Current conditions:</h3>
         </div>
       </div>
       <div className="row">
-        <div className="col-sm-6 col-xs-12" style={{textAlign:'center'}}>
-          <div style={{width:'200px', height:'130px', margin: '0 auto'}}>
+        <div className="col-sm-6 col-xs-12">
+          <div style={{width:'200px', height:'150px', margin: '0 auto'}}>
             <WeatherIcon stroke="2" desc={now.icon} />
           </div>
+          <h3 style={{textAlign:'center', margin:'0 0 20px 0'}}>{now.desc}</h3>
         </div>
         <div className="col-sm-6 col-xs-12" style={{padding:'5px 10px'}}>
-        <h3 style={{textAlign:'center', marginBottom:'20px'}}>{now.desc}</h3>
-          <div className="row" style={{height:'100%',background:'rgba(0,0,0,.2)'}}>
-            <div className="col-xs-4 col-sm-12" style={{borderRight:'1px solid #243C56'}}><h3 className='degree-large'>{now.temp}&deg;{tUnit}</h3></div>
-            <div className="col-xs-4 col-sm-12" style={{borderRight:'1px solid #243C56',textAlign:'center'}}><h3>{now.winddir} <br />{renderWindStr(now.windspd,  now.gust)}</h3></div>
-            <div className="col-xs-4 col-sm-12" style={{textAlign:'center'}}><h3>{now.precip}</h3></div>
-          </div>
+
+
+          <ul className="inline" style={{height:'75px'}}>
+            <li><a href="#" ><span className='degree-large'>{now.temp}&deg;{tUnit}</span></a></li>
+            <li><a href="#" ><span>{now.winddir} <br />{renderWindStr(now.windspd,  now.gust)}</span></a></li>
+            <li><a href="#" ><span>{now.precip}</span></a></li>
+          </ul>
+
           {/*<p style={pStyle}>Feels like {now.feel}&deg;{tUnit}</p>*/}
         </div> {/*end col*/}
       </div>{/*end row*/}
