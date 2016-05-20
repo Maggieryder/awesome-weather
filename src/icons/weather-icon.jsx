@@ -55,7 +55,6 @@ let svgStyle = {
   strokeWidth: '2',
   strokeMitrelimit: 10,
   strokeLinecap:'round',
-  //strokeLinejoin:'round',
   opacity:.8
 }
 
@@ -63,17 +62,22 @@ export default class extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      afterdark: false,
       stroke: this.props.stroke,
+      isDark: this.props.isDark,
       icon: this.props.desc
-
     }
-    console.log(props.desc)
   }
 
+  componentWillReceiveProps (nextProps){
+    this.setState({
+      isDark:nextProps.isDark,
+      icon: nextProps.desc
+    })
+  }
+  å
   render() {
-    icons.clear = this.state.afterdark ? ClearNt : Clear
-    icons.partlycloudy = this.state.afterdark ? PCloudyNt : PCloudy
+    icons.clear = this.state.isDark ? ClearNt : Clear
+    icons.partlycloudy = this.state.isDark ? PCloudyNt : PCloudy
     Icon = icons[this.state.icon] || icons['unknown']
     svgStyle.strokeWidth = this.state.stroke
 

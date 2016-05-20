@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+//import Actions from '../../actions/actions'
+//import WeatherStore from '../../stores/weather-store'
 import WeatherForm from '../components/form-weather.jsx'
 import WeatherResult from '../components/result-weather.jsx'
 import WeatherAPI from '../../api/api-weather.jsx'
@@ -9,7 +11,7 @@ class Home extends Component {
     super(props);
     this.state = {
       isLoading:false,
-      unit: 'metric'
+      unit: 0
     }
   }
   handleSearch(location){
@@ -18,11 +20,12 @@ class Home extends Component {
     WeatherAPI.getWeather(location).then((weather) => {
       console.log('weather', weather);
       //this.setState({weather})
-      let {choices, location, now, hourly, unit} = weather
+      let {choices, location, now, hourly, sunphase, unit} = weather
       this.setState({
         isLoading:false,
         choices:choices,
         location:location,
+        sunphase:sunphase,
         now:now,
         hourly:hourly
       })
@@ -35,9 +38,9 @@ class Home extends Component {
   handleUnitChange(unit){
     WeatherAPI.setUnits(unit)
     this.setState({unit:unit})
-    if(this.state.location) {
+    /*if(this.state.location) {
       this.handleSearch(this.state.location.locationString, unit)
-    }
+    }*/
   }
 
   chooseClick(e){
@@ -47,8 +50,15 @@ class Home extends Component {
   }
 
   render(){
-    let {isLoading, choices, location, now/*, forecast,*/, hourly, unit} = this.state;
-    let that = this
+    let {isLoading, choices, location, now, forecast, hourly, sunphase, unit} = this.state;
+    let search = () => {
+      return (
+        <div className="col-sm-6 col-xs-12">
+          <WeatherForm onSearch={this.handleSearch.bind(this)} onUnitChange={this.handleUnitChange.bind(this)}/>
+        </div>
+      )
+    }
+
     function renderMessage(){
       if (isLoading){
         return <h2 style={{marginLeft: '20px'}}>Fetching weather...</h2>
@@ -58,7 +68,7 @@ class Home extends Component {
         })
         return <ul style={{marginLeft: '20px'}}>{chooseList}</ul>
       } else if (location && now){
-        return <WeatherResult location={location} now={now} unit={unit} time={hourly[0].hr24}/>
+        return <WeatherResult unit={unit} hourly={hourly} sun={sunphase}/>
       }
     }
 
@@ -68,9 +78,7 @@ class Home extends Component {
           <div className="col-sm-6 col-xs-12">
             <h2 style={{textAlign:'center'}}>{this.state.location ? this.state.location.locationString : 'Enter location'}</h2>
           </div>
-          <div className="col-sm-6 col-xs-12">
-            <WeatherForm onSearch={this.handleSearch.bind(this)} onUnitChange={this.handleUnitChange.bind(this)}/>
-          </div>
+          { !this.state.location ? search() : null}
         </div>
         {renderMessage()}
       </div>
@@ -78,4 +86,10 @@ class Home extends Component {
   }
 }
 
-module.exports = Home
+export default Home
+
+/*
+<div className="col-sm-6 col-xs-12">
+  <WeatherForm onSearch={this.handleSearch.bind(this)} onUnitChange={this.handleUnitChange.bind(this)}/>
+</div>
+*/

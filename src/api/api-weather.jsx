@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const API_KEY = '0397f1acfa8a3cd2'
 const API_URL = 'http://api.wunderground.com/api/'
-const API_PARAMS = '/conditions/hourly/forecast'
+const API_PARAMS = '/conditions/hourly/forecast/astronomy/'
 
 let unit
 
@@ -25,7 +25,8 @@ const WeatherAPI = {
           location: this.getLocationParams(res.data.current_observation.display_location),
           now: this.getCurrentConditions(res.data.current_observation),
           forecast: this.getForecast(res.data.forecast),
-          hourly: this.getHourly(res.data.hourly_forecast)
+          hourly: this.getHourly(res.data.hourly_forecast),
+          sunphase: res.data.sun_phase
         }
       }
     }, (res) => {
@@ -78,13 +79,16 @@ const WeatherAPI = {
     return hourly.map(hour => {
       return {
           day: hour.FCTTIME.weekday_name + ', ' + hour.FCTTIME.month_name + ' ' + hour.FCTTIME.mday +', '+ hour.FCTTIME.year,
-          hr: hour.FCTTIME.civil,
+          time: hour.FCTTIME.civil,
+          now: hour.FCTTIME.pretty,
           hr24: hour.FCTTIME.hour,
-          condition: hour.condition,
-          icon_url: hour.icon_url.replace('/k/', '/i/'),
-          temp: this.getUnits()==='metric' ? hour.temp.metric : hour.temp.english,
+          condition: hour.wx,
+          icon: hour.icon,
+          //icon_url: hour.icon_url.replace('/k/', '/i/'),
+          temp: [hour.temp.metric, hour.temp.english],
+          feel: [hour.feelslike.metric, hour.feelslike.english],
           wdir: hour.wdir.dir,
-          wspd: this.getUnits()==='metric' ? hour.wspd.metric : hour.wspd.english,
+          wspd: [hour.wspd.metric+' km/h', hour.wspd.english+' mph'],
           pop: hour.pop +'%',
           humidity: hour.humidity +'%'
         }

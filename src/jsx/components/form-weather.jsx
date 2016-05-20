@@ -24,15 +24,15 @@ class WeatherForm extends Component {
   render(){
     let u = this.state.unit==='metric' ? 'C' : 'F'
     return (
-      <form onSubmit={this.onFormSubmit.bind(this)} style={{marginTop:'10px'}}>
+      <form onSubmit={this.onFormSubmit.bind(this)} style={{margin:'10px 0'}}>
         <div className="input-group">
           <input type="text" className="form-control" ref="location" placeholder="City & State/Country OR Zip"></input>
           <div className="input-group-btn">
             <button className="btn btn-default">Get Weather</button>
             <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&deg;{u} <span className="caret"></span></button>
              <ul className="dropdown-menu dropdown-menu-right">
-               <li><a href="#" id="metric" onClick={this.onUnitChange.bind(this)}>&deg;Centigrade</a></li>
-               <li><a href="#" id="english" onClick={this.onUnitChange.bind(this)}>&deg;Farenheit</a></li>
+               <li><a href="#" id="0" onClick={this.onUnitChange.bind(this)}>&deg;Centigrade</a></li>
+               <li><a href="#" id="1" onClick={this.onUnitChange.bind(this)}>&deg;Farenheit</a></li>
              </ul>
           </div>
         </div>
