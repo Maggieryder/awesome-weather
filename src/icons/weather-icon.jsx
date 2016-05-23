@@ -30,7 +30,7 @@ let icons = {
   sunny: Clear,
   clear: Clear,
   rain: Rain,
-  chancerain: RainChnce,
+  chancerain: Showers,
   showers: Showers,
   chanceshowers: ShowersChnce,
   snow: Snow,

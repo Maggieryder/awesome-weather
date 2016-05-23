@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const API_KEY = '0397f1acfa8a3cd2'
 const API_URL = 'http://api.wunderground.com/api/'
-const API_PARAMS = '/conditions/hourly/forecast/astronomy/'
+const API_PARAMS = '/conditions/hourly10day/forecast/astronomy/'
 
 let unit
 
@@ -51,26 +51,26 @@ const WeatherAPI = {
   },
 
   getCurrentConditions(currentConditions){
-    let temp = this.getUnits()==='metric' ? 'temp_c' : 'temp_f'
-    let feel = this.getUnits()==='metric' ? 'feelslike_c' : 'feelslike_f'
-    //let tempUnit = this.getUnits()==='metric' ? ' &deg;C' : ' &deg;F'
-    let spd = this.getUnits()==='metric' ? 'wind_kph' : 'wind_mph'
-    let gust = this.getUnits()==='metric' ? 'wind_gust_kph' : 'wind_gust_mph'
-    let spdUnit = this.getUnits()==='metric' ? ' km/h' : ' mph'
-    let pUnit = this.getUnits()==='metric' ? 'precip_today_metric' : 'precip_today_in'
-    let pUnitSuffix = this.getUnits()==='metric' ? ' mm' : ' in'
+    let temp = ['temp_c','temp_f']
+    let feel = ['feelslike_c','feelslike_f']
+    let spd = ['wind_kph','wind_mph']
+    let gust = ['wind_gust_kph','wind_gust_mph']
+    let spdUnit = [' km/h',' mph']
+    let pUnit = ['precip_today_metric','precip_today_in']
+    let pUnitSuffix = [' mm',' in']
     return {
-      temp: Math.round(currentConditions[temp]),
-      feel: Math.round(currentConditions[feel]),
+      temp: Math.round(currentConditions[temp[getUnits()]]),
+      feel: Math.round(currentConditions[feel[getUnits()]]),
       winddir: currentConditions.wind_dir,
-      windspd: currentConditions.wind_mph===0 ? 'Calm' : Math.round(currentConditions[spd]) + spdUnit,
-      gust: Math.round(currentConditions[spd]) + spdUnit,
-      precip: currentConditions[pUnit]+pUnitSuffix,
+      windspd: currentConditions.wind_mph===0 ? 'Calm' : Math.round(currentConditions[spd[getUnits()]]) + spdUnit[getUnits()],
+      gust: Math.round(currentConditions[spd[getUnits()]]) + spdUnit[getUnits()],
+      precip: currentConditions[pUnit[getUnits()]]+pUnitSuffix[getUnits()],
       desc: currentConditions.weather,
       icon_url: currentConditions.icon_url.replace('/k/', '/i/'),
       icon: currentConditions.icon
     }
   },
+
   getForecast(forecast){
     return forecast.txt_forecast.forecastday
   },
@@ -78,11 +78,13 @@ const WeatherAPI = {
   getHourly(hourly){
     return hourly.map(hour => {
       return {
-          day: hour.FCTTIME.weekday_name + ', ' + hour.FCTTIME.month_name + ' ' + hour.FCTTIME.mday +', '+ hour.FCTTIME.year,
+          date: hour.FCTTIME.month_name + ' ' + hour.FCTTIME.mday +', '+ hour.FCTTIME.year,
+          day: hour.FCTTIME.weekday_name,
           time: hour.FCTTIME.civil,
           now: hour.FCTTIME.pretty,
           hr24: hour.FCTTIME.hour,
           condition: hour.wx,
+          sky: hour.sky,
           icon: hour.icon,
           //icon_url: hour.icon_url.replace('/k/', '/i/'),
           temp: [hour.temp.metric, hour.temp.english],
@@ -96,7 +98,7 @@ const WeatherAPI = {
   },
 
   getUnits(){
-    return unit || 'metric'
+    return parseInt(unit) || 0
   },
 
   setUnits(u){

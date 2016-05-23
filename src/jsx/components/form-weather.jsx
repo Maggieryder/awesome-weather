@@ -1,39 +1,40 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { getWeather } from '../../actions/index'
 
-class WeatherForm extends Component {
+class Searchbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      unit: 'metric'
+      term:''
     }
   }
-  onFormSubmit(e){
-    e.preventDefault()
 
-    let location = this.refs.location.value
+  onInputChange = (e) => {
+    this.setState({term: e.target.value})
+  }
+
+  onFormSubmit = (e) => {
+    e.preventDefault()
+    let location = this.state.term
     if (location.length > 0){
-      this.refs.location.value = ''
-      this.props.onSearch(location)
+      this.setState({term:''})
+      this.props.getWeather(location)
     }
   }
-  onUnitChange(e){
-    //let unit = this.refs.unit.value
-    this.setState({unit:e.target.id})
-    this.props.onUnitChange(e.target.id)
-  }
+
   render(){
-    let u = this.state.unit==='metric' ? 'C' : 'F'
     return (
-      <form onSubmit={this.onFormSubmit.bind(this)} style={{margin:'10px 0'}}>
+      <form onSubmit={this.onFormSubmit} style={{margin:'10px 0'}}>
         <div className="input-group">
-          <input type="text" className="form-control" ref="location" placeholder="City & State/Country OR Zip"></input>
+          <input  onChange={this.onInputChange}
+                  type="text"
+                  className="form-control"
+                  placeholder="City & State/Country OR Zip"
+                  value={this.state.term} />
           <div className="input-group-btn">
-            <button className="btn btn-default">Get Weather</button>
-            <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&deg;{u} <span className="caret"></span></button>
-             <ul className="dropdown-menu dropdown-menu-right">
-               <li><a href="#" id="0" onClick={this.onUnitChange.bind(this)}>&deg;Centigrade</a></li>
-               <li><a href="#" id="1" onClick={this.onUnitChange.bind(this)}>&deg;Farenheit</a></li>
-             </ul>
+            <button className="btn btn-default"><span className="glyphicon glyphicon-search" aria-hidden="true" ></span></button>
           </div>
         </div>
       </form>
@@ -41,4 +42,8 @@ class WeatherForm extends Component {
   }
 }
 
-export default WeatherForm
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ getWeather }, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(Searchbar)
