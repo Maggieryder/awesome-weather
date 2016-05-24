@@ -63,6 +63,7 @@ export default class extends Component {
     super(props);
     this.state = {
       stroke: this.props.stroke,
+      opacity: this.props.opacity,
       isDark: this.props.isDark,
       icon: this.props.desc
     }
@@ -70,6 +71,7 @@ export default class extends Component {
 
   componentWillReceiveProps (nextProps){
     this.setState({
+      opacity: nextProps.opacity,
       isDark:nextProps.isDark,
       icon: nextProps.desc
     })
@@ -80,6 +82,7 @@ export default class extends Component {
     icons.partlycloudy = this.state.isDark ? PCloudyNt : PCloudy
     Icon = icons[this.state.icon] || icons['unknown']
     svgStyle.strokeWidth = this.state.stroke
+    svgStyle.opacity = this.state.opacity
 
     return (
       <Icon style={svgStyle} />

@@ -12,7 +12,6 @@ class Home extends Component {
     super(props);
     let weather = this.props.weather
     console.log('>>> HOMEPROPS', this.props.weather)
-
     this.state = {
       isLoading:false,
       error: null,
@@ -84,7 +83,7 @@ class Home extends Component {
         console.log('renderPageOptions')
         if (response.error ) {
           console.log('ERROR', response)
-          return <div>{response.error.description}</div>
+          return <div style={{height:'100%',textAlign:'center', paddingTop:'200px'}}><h2>{response.error.description}</h2></div>
         } else if (response.results){
           console.log('CHOICES', response)
           return that.handleMultipleChoices(response.results)
@@ -119,7 +118,7 @@ class Home extends Component {
 }
 
 function mapStateToProps({weather}){
-  console.log('weather', weather)
+  //console.log('weather', weather)
   return {weather}
 }
 

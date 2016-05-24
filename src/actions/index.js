@@ -10,11 +10,22 @@ export function getWeather(location) {
   let encodedLocation = encodeURIComponent(location)
   const requestUrl = `${API_URL}${API_KEY}${API_PARAMS}/q/${encodedLocation}.json`
   const request = axios.get(requestUrl)
-  
+
   console.log('request', request)
 
   return {
     type: GET_WEATHER,
     payload: request
+  }
+}
+
+export const TOGGLE_UNIT = 'TOGGLE_UNIT'
+
+export function toggleUnit(val) {
+  console.log('toggle value', val)
+
+  return {
+    type: TOGGLE_UNIT,
+    payload: {unit: val}
   }
 }

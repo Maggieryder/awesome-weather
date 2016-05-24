@@ -89,13 +89,15 @@ h4 {
 
 a, a:visited {
   color:$bg-lite-transparent;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
-a:hover {
+a:hover, a:active {
   color:$ko-color;
-  text-decoration: none;
+  text-decoration: none !important;
 }
+
+
 
 #app {
   position: relative;
@@ -176,10 +178,7 @@ li {
   list-style: none;
 }
 
-a {
-  color: $default-color;
-  text-decoration: none;
-}
+
 
 ul.inline {
   width: 100%;
@@ -190,20 +189,53 @@ ul.inline {
     @include calc(width, "33.33% - 8px");
     margin: 4px;
     height: 100%;
-    //border-radius: 8px;
+    border-radius: 4px;
     font-size: 18px;
     font-weight:200;
     text-align: center;
-    /*background: $bg-dark-transparent;*/
-    border: 1px solid $bg-lite-transparent;
+    /*background: $bg-dark-transparent;
+    border: 1px solid $bg-lite-transparent;*/
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.3);
+
+    &.active {
+      color: $ko-color;
+      border:1px solid $bg-lite-transparent;
+    }
 
     a {
+      color: inherit;
       @include center-box();
     }
+
   }
 
   li:not(:last-child){
     /*margin-right: 5px;*/
+  }
+
+}
+
+.day {
+  padding:0 0 0 4px;
+
+  > div {
+
+    padding:4px 0;
+    @include calc(width, "100% - 4px");
+    font-size:14px;
+    font-weight:300;
+    line-height:14px;
+    color:$bg-lite-transparent;
+    cursor:pointer;
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.3);
+
+    &.active {
+      color: $ko-color;
+      border:1px solid $bg-lite-transparent;
+    }
+
   }
 
 }
@@ -228,7 +260,7 @@ ul.hours {
     font-size:10px;
     line-height:10px;
     border-left: 1px solid $bg-lite-transparent-weak;
-    border-bottom: 1px solid $bg-lite-transparent;
+    //border-bottom: 1px solid $bg-lite-transparent;
     cursor:pointer;
 
     div {
@@ -258,6 +290,11 @@ ul.hours {
     border-left: 1px solid $bg-lite-transparent;
   }
 
+}
+
+.toggle-btn {
+  //border:1px solid $bg-lite-transparent;
+  //@include center-box();
 }
 
 .degree-large {
