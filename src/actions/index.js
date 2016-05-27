@@ -29,3 +29,14 @@ export function toggleUnit(val) {
     payload: {unit: val}
   }
 }
+
+export const TOGGLE_FAVORITE = 'TOGGLE_FAVORITE'
+
+export function toggleFavorite(val) {
+  console.log('toggle value', val)
+
+  return {
+    type: TOGGLE_FAVORITE,
+    payload: {favorite: val}
+  }
+}

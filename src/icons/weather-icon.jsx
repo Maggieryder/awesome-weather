@@ -76,7 +76,7 @@ export default class extends Component {
       icon: nextProps.desc
     })
   }
-  å
+
   render() {
     icons.clear = this.state.isDark ? ClearNt : Clear
     icons.partlycloudy = this.state.isDark ? PCloudyNt : PCloudy

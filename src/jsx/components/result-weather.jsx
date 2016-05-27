@@ -1,34 +1,22 @@
 import React, {Component} from 'react'
-import Chart from './chart'
 import { connect } from 'react-redux'
-
+import ToggleUnit from './toggle-unit'
+import ToggleFavorite from './toggle-favorite'
+import DayForecast from './forecast-days'
+import Charts from './charts'
+import Statistic from './statistic'
 
 import WeatherIcon from '../../icons/weather-icon.jsx'
 
 class WeatherResult extends Component {
   constructor(props) {
     super(props);
-    console.log('PROPS >>', this.props.weather)
+    console.log('RESULT PROPS >>', this.props)
     this.state = {
       hrIndex: 0,
       dayIndex: 0,
       chart: 'temps'
     }
-  }
-
-  renderChart (data, unit) {
-    /*const temps = hourly.map(hour => hour.temp[unit])
-    const feellikes = hourly.map(hour => hour.feelslike[unit])
-    const winds = hourly.map(hour => hour.wspd[unit])
-    const winddegrees = hourly.map(hour => hour.wdir.degrees)
-    const pop = hourly.map(hour => hour.pop)
-    const sky = hourly.map(hour => hour.sky)
-    const humidity = hourly.map(hour => hour.humidity)
-    //console.log('pop, sky, humidity', pop, sky, humidity)*/
-
-    return (
-      <Chart data={data} color="rgba(255,255,255,.6)" height={100} width={300} />
-    )
   }
 
   renderWindStr (spd/*, gust*/) {
@@ -45,30 +33,9 @@ class WeatherResult extends Component {
     return str
   }
 
-  renderHour = (date, id) => {
-      if (id < 24){
-        return <li
-                  key={id}
-                  className={parseInt(date.hour)%6===0 ? "marker" : null}
-                  onMouseOver={() => {this.setState({hrIndex:id})}} >
-                    <div>{date.hour==='0' ? 'A' : date.hour==='12' ? 'P' : ''}</div>
-                </li>
-      }
-  }
-
-  renderDay = (day, id) => {
-      if (id < 5){
-        return <div className="day col-xs-3" key={id}>
-                    <div className={this.state.dayIndex===id ? "active" : null}
-                        onMouseOver={() => {this.setState({dayIndex:id})}} >
-                      <div>{day.date.weekday}</div>
-                      <div style={{width:'80px', height:'60px', margin: '0 auto'}}>
-                        <WeatherIcon stroke="5" opacity={this.state.dayIndex===id ? 1 : .8} desc={day.icon}/>
-                      </div>
-                      <div>{day.high.celsius}&deg; / {day.low.celsius}&deg; </div>
-                    </div>
-                </div>
-      }
+  handleChartHover = (id) => {
+    //console.log('handleChartHover', id)
+    this.setState({hrIndex:id})
   }
 
   afterdark(sp, now){
@@ -103,69 +70,62 @@ class WeatherResult extends Component {
     humidities = hourly.map(hour => hour.humidity),
 
     isDark = this.afterdark(sunphase, dates[hrIndex].hour)
+
+    const rowStyle = {margin:'8px 4px'}
     //console.log('isDark',isDark)
 
     return (
       <div style={{textAlign:'center'}}>
-        <div className="row">
-          <div className="col-sm-6 col-xs-12">
-            <h2>{location.city +', '+(location.state ? location.state : location.country)}</h2>
-          </div>{/*end col*/}
-        </div>{/*end row*/}
 
-        <div className="row">
-          <div className="col-sm-6 col-xs-12">
-            <h3 style={{margin:'20px 0 5px 0'}}>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h3>
+        <div className="row" style={{margin:'8px 4px 8px 0'}}>
+          <div className="col-xs-2 col-sm-1" style={{padding:'0 0 0 4px'}}>
+            <ToggleUnit/>
+          </div>{/*end col*/}
+          <div className="col-xs-8 col-sm-4" style={{padding:'0 0 0 4px'}}>
+            <div className="time"><h3>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h3></div>
+            {/*<p>{dates[hrIndex].month_name+' '+dates[hrIndex].mday+', '+dates[hrIndex].year}</p>*/}
+          </div>{/*end col*/}
+          <div className="col-xs-2 col-sm-1" style={{padding:'0 0 0 4px'}}>
+            <ToggleFavorite location={location}/>
+          </div>{/*end col*/}
+          <div className="col-xs-12 col-sm-6" style={{padding:'0 0 0 4px'}}>
             <p>{dates[hrIndex].month_name+' '+dates[hrIndex].mday+', '+dates[hrIndex].year}</p>
           </div>{/*end col*/}
         </div>{/*end row*/}
 
-        <div className="container">
-          <div className="row">
+        <div className="row" style={{margin:'-10px'}}>
+          <div className="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-1">
+            <div style={{width:'200px', height:'150px', margin: '-5px auto'}}>
+              <WeatherIcon stroke="2" opacity={.8} desc={icons[hrIndex]} isDark={isDark}/>
+            </div>
+            <h3 style={{margin:'0 0 15px'}}>{conditions[hrIndex]}</h3>
+          </div>{/*end col*/}
+        </div>
 
-            <div className="col-sm-6 col-xs-12">
-              <div style={{width:'200px', height:'150px', margin: '0 auto'}}>
-                <WeatherIcon stroke="2" opacity={.8} desc={icons[hrIndex]} isDark={isDark}/>
-              </div>
-              <h3 style={{margin:'0 0 20px 0'}}>{conditions[hrIndex]}</h3>
-            </div>{/*end col*/}
-
-            <div className="col-sm-6 col-xs-12" style={{padding:'5px 10px'}}>
-              <ul className="inline" style={{height:'75px'}}>
-                <li className={this.state.chart==='temps' ? 'active' : null}>
-                  <a href="#" onClick={() => {this.setState({chart:'temps'})}}>
-                    <span className='degree-large'>{temps[hrIndex]}&deg;</span>
-                  </a>
-                </li>
-                <li className={this.state.chart==='winds' ? 'active' : null}>
-                  <a href="#" onClick={() => {this.setState({chart:'winds'})}}>
-                    <span>{hourly[hrIndex].wdir.dir} <br />{this.renderWindStr(winds[hrIndex])}{this.spdUnitTxt(unit)}</span>
-                  </a>
-                </li>
-                <li className={this.state.chart==='precips' ? 'active' : null}>
-                  <a href="#" onClick={() => {this.setState({chart:'precips'})}}>
-                    {/*<span className="glyphicon glyphicon-tint" aria-hidden="true"></span>*/}
-                    <span className='degree-large'>{precips[hrIndex]}<sup>%</sup></span>
-                  </a>
-                </li>
-              </ul>
-              {/*<p>Feels like {now.feel}&deg;{unitTxt}</p>*/}
-            </div> {/*end col*/}
-
-          </div>{/*end row*/}
-        </div>{/*end container*/}
-
-        <div className="row" style={{position:'relative', margin:0, height:'100px'}}>
-            {this.state.chart === 'temps' ? this.renderChart(temps.slice(0,24), unit) : null}
-            {this.state.chart === 'winds' ? this.renderChart(winds.slice(0,24), unit) : null}
-            {this.state.chart === 'precips' ? this.renderChart(precips.slice(0,24), unit) : null}
-            <ul className="hours" >
-              {dates.map(this.renderHour)}
-            </ul>
-        </div>{/*end row*/}
-        <div className="row" style={{margin:'8px 4px'}}>
-          {forecast.map(this.renderDay)}
-        </div>{/*end row*/}
+        <div className="footer">
+          <div className="row" style={rowStyle}>
+            <div className="col-sm-2 col-xs-4"  style={{padding:'0 0 0 4px'}}>
+              <Statistic type="temps" data={temps[hrIndex]} onClick={() => {this.setState({chart:'temps'})}} active={this.state.chart==='temps' ? 'active' : null} />
+            </div>
+            <div className="col-sm-2 col-xs-4" style={{padding:'0 0 0 4px'}}>
+              <Statistic type="winds" unit={unit} data={winds[hrIndex]} onClick={() => {this.setState({chart:'winds'})}} active={this.state.chart==='winds' ? 'active' : null} />
+            </div>
+            <div className="col-sm-2 col-xs-4" style={{padding:'0 0 0 4px'}}>
+              <Statistic type="precips" data={precips[hrIndex]} onClick={() => {this.setState({chart:'precips'})}} active={this.state.chart==='precips' ? 'active' : null} />
+            </div>
+            <div className="col-sm-2 col-xs-4"  style={{padding:'0 0 0 4px'}}>
+              <Statistic type="feels" data={feellikes[hrIndex]} onClick={() => {this.setState({chart:'feels'})}} active={this.state.chart==='feels' ? 'active' : null} />
+            </div>
+            <div className="col-sm-2 col-xs-4" style={{padding:'0 0 0 4px'}}>
+              <Statistic type="skies" data={skies[hrIndex]} onClick={() => {this.setState({chart:'skies'})}} active={this.state.chart==='skies' ? 'active' : null} />
+            </div>
+            <div className="col-sm-2 col-xs-4" style={{padding:'0 0 0 4px'}}>
+              <Statistic type="humidities" data={humidities[hrIndex]} onClick={() => {this.setState({chart:'humidities'})}} active={this.state.chart==='humidities' ? 'active' : null} />
+            </div>
+          </div>
+          <Charts chart={this.state.chart} onMouseOver={this.handleChartHover}/>
+          <DayForecast numDays={5}/>
+        </div>
       </div>
     )
   }
@@ -177,3 +137,12 @@ function mapStateToProps({weather}){
 }
 
 export default connect(mapStateToProps)(WeatherResult)
+
+
+/*
+<div className="row">
+  <div className="col-sm-6 col-xs-12">
+    <h2>{location.city +', '+(location.state ? location.state : location.country)}</h2>
+  </div>{/*end col}
+</div>{/*end row}
+*/

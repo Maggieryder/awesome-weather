@@ -1,4 +1,4 @@
-import { GET_WEATHER, TOGGLE_UNIT } from '../actions/index'
+import { GET_WEATHER, TOGGLE_UNIT, TOGGLE_FAVORITE } from '../actions/index'
 
 const UNITS = ['metric','english']
 const INITIAL_STATE = {
@@ -7,8 +7,11 @@ const INITIAL_STATE = {
   hourly: [],
   location: {},
   sunphase: {},
-  unit: UNITS[0]
+  unit: UNITS[0],
+  favorites: []
 }
+
+let favoriteLocations = []
 
 export default function(state = INITIAL_STATE, action) {
   switch(action.type){
@@ -27,8 +30,11 @@ export default function(state = INITIAL_STATE, action) {
       sunphase: action.payload.data.sun_phase
     }
     case TOGGLE_UNIT:
-    //console.log('action recieved for UNIT change', action.payload.data.unit)
+    //console.log('action recieved for UNIT change', action.payload.unit)
     return {...state, unit: UNITS[action.payload.unit]}
+    case TOGGLE_FAVORITE:
+    console.log('action recieved for ADD FAVORITE', action.payload.favorite)
+    return {...state, favorites: [action.payload.favorite]}
     default:
       return state
   }

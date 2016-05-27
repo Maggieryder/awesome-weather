@@ -1,23 +1,23 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-//import Actions from '../../actions/actions'
-//import WeatherStore from '../../stores/weather-store'
+import { getWeather } from '../../actions/index'
+import {Link} from 'react-router'
 import WeatherForm from '../components/form-weather.jsx'
 import WeatherResult from '../components/result-weather.jsx'
-//import WeatherAPI from '../../api/api-weather.jsx'
-import {Link} from 'react-router'
 
 class Home extends Component {
   constructor(props) {
     super(props);
     let weather = this.props.weather
-    console.log('>>> HOMEPROPS', this.props.weather)
+    console.log('>>> HOMEPROPS', this.props)
     this.state = {
       isLoading:false,
       error: null,
-      multipleChoices: null,
-      unit: 'metric'
+      multipleChoices: null
     }
+  }
+  componentWillMount(){
+    this.props.getWeather('autoip')
   }
 
   handleSearch(location){
@@ -39,11 +39,6 @@ class Home extends Component {
       this.setState({isLoading:false})
       alert(error)
     })*/
-  }
-
-  handleUnitChange = (e) => {
-    //WeatherAPI.setUnits(e.target.getAttribute('data-unit'))
-    this.setState({unit:e.target.getAttribute('data-unit')})
   }
 
   handleChoicePick = (e) => {
@@ -90,46 +85,37 @@ class Home extends Component {
         } else if (location.city){
           return <WeatherResult />
         }
+      } else {
+        return <h2 style={{marginLeft: '20px'}}>Fetching weather...</h2>
       }
     }
 
     return (
       <div>
-        {/*<div className="row">
-          <div className="col-sm-6 col-xs-12">
-            <h2 style={{textAlign:'center'}}>{this.state.location ? this.state.location.locationString : 'Enter location'}</h2>
-          </div>
-        </div>*/}
         {renderPageOptions(this.props.weather)}
-
-        {/*<div className="row">
-          <div className="col-sm-6 col-xs-12" style={{paddingTop:'20px'}}>
-            <div className="btn-toolbar" role="toolbar" aria-label="...">
-              <div className="btn-group" role="group" aria-label="temperature units" onClick={this.handleUnitChange.bind(this)}>
-                <button type="button" className={this.state.unit==='english' ? "btn btn-default" : "btn btn-primary"} data-unit="metric" active>C</button>
-                <button type="button" className={this.state.unit==='metric' ? "btn btn-default" : "btn btn-primary"} data-unit="english" >F</button>
-              </div>
-            </div>
-          </div>
-        </div>*/}
       </div>
     )
   }
 }
 
 function mapStateToProps({weather}){
-  //console.log('weather', weather)
   return {weather}
 }
 
-export default connect(mapStateToProps)(Home)
+export default connect(mapStateToProps, {getWeather})(Home)
+
 
 /*
-<div className="btn-group" role="group" aria-label="speed units" onClick={this.handleUnitChange.bind(this)}>
-  <button type="button" className={this.state.unit==='english' ? "btn btn-default" : "btn btn-primary"} data-unit="metric" >km/h</button>
-  <button type="button" className={this.state.unit==='metric' ? "btn btn-default" : "btn btn-primary"} data-unit="english" >mph</button>
+<div className="row">
+  <div className="col-sm-6 col-xs-12" style={{paddingTop:'20px'}}>
+    <div className="btn-toolbar" role="toolbar" aria-label="...">
+      <div className="btn-group" role="group" aria-label="temperature units" onClick={this.handleUnitChange.bind(this)}>
+        <button type="button" className={this.state.unit==='english' ? "btn btn-default" : "btn btn-primary"} data-unit="metric" active>C</button>
+        <button type="button" className={this.state.unit==='metric' ? "btn btn-default" : "btn btn-primary"} data-unit="english" >F</button>
+      </div>
+    </div>
+  </div>
 </div>
-
 <div className="btn-group" data-toggle="buttons-radio">
   <label className="btn btn-default active">
     <input type="radio" className="options" id="option1" autocomplete="off" defaultChecked /> Centigrade
