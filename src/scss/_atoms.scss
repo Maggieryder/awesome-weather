@@ -211,18 +211,27 @@ li {
   list-style: none;
 }
 
+.choices {
+
+  li {
+    font-weight:300;
+    color:$bg-grad-dark;
+  }
+}
+
 .stat {
   position:relative;
   @include calc(width, "100% - 4px");
   height: 90px;//96px;
   margin-bottom:8px;
   border-radius: 4px;
-  font-size: 32px;
+  font-size: 30px;
   line-height:32px;
   font-weight:200;
   text-align: center;
   //background:$bg-lite-transparent-weakest;
   border:1px solid $bg-lite-transparent-weaker;
+  //cursor: pointer;
 
   &.active {
     //font-size: 40px;
@@ -246,7 +255,7 @@ li {
     width:100%;
     background:$bg-lite-transparent-weakest;
     padding:5px 0 5px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 200;
     color: $bg-lite-transparent-weak;
   }

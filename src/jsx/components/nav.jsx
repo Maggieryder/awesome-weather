@@ -1,22 +1,13 @@
 import React, {Component} from 'react'
 import {Link, IndexLink} from 'react-router'
 import WeatherForm from './form-weather.jsx'
-//import ToggleUnit from './toggle-unit'
-//import WeatherAPI from '../../api/api-weather.jsx'
 
 class Nav extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading:false,
-      unit: 'metric'
+      isLoading:false
     }
-  }
-
-  handleChoicePick(e){
-    console.log('QID', e.target.id)
-    e.preventDefault();
-    //this.handleSearch(e.target.id)
   }
 
   render(){
@@ -59,13 +50,3 @@ class Nav extends Component {
 }
 
 export default Nav
-
-
-/*
-<div className="btn-toolbar" role="toolbar" aria-label="...">
-  <div className="btn-group" role="group" aria-label="temperature units" onClick={this.handleUnitChange}>
-    <button type="button" className={this.state.unit==='english' ? "btn btn-default" : "btn btn-primary"} data-unit="metric" active>C</button>
-    <button type="button" className={this.state.unit==='metric' ? "btn btn-default" : "btn btn-primary"} data-unit="english" >F</button>
-  </div>
-</div>
-*/

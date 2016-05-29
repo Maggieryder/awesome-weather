@@ -55,6 +55,7 @@ class WeatherResult extends Component {
   }
 
   render() {
+
     let {hrIndex} = this.state
     let {forecast, hourly, location, sunphase, unit} = this.props.weather
 
@@ -62,7 +63,7 @@ class WeatherResult extends Component {
     temps = hourly.map(hour => hour.temp[unit]),
     feellikes = hourly.map(hour => hour.feelslike[unit]),
     winds = hourly.map(hour => hour.wspd[unit]),
-    winddegrees = hourly.map(hour => hour.wdir.degrees),
+    winddegrees = hourly.map(hour => hour.wdir.dir),
     conditions = hourly.map(hour => hour.wx),
     icons = hourly.map(hour => hour.icon),
     precips = hourly.map(hour => hour.pop),
@@ -105,16 +106,16 @@ class WeatherResult extends Component {
         <div className="footer">
           <div className="row" style={rowStyle}>
             <div className="col-sm-2 col-xs-4"  style={{padding:'0 0 0 4px'}}>
-              <Statistic type="temps" data={temps[hrIndex]} onClick={() => {this.setState({chart:'temps'})}} active={this.state.chart==='temps' ? 'active' : null} />
+              <Statistic type="temps" unit={unit} data={temps[hrIndex]} onClick={() => {this.setState({chart:'temps'})}} active={this.state.chart==='temps' ? 'active' : null} />
             </div>
             <div className="col-sm-2 col-xs-4" style={{padding:'0 0 0 4px'}}>
-              <Statistic type="winds" unit={unit} data={winds[hrIndex]} onClick={() => {this.setState({chart:'winds'})}} active={this.state.chart==='winds' ? 'active' : null} />
+              <Statistic type="winds" unit={unit} data={winddegrees[hrIndex]+' '+winds[hrIndex]} onClick={() => {this.setState({chart:'winds'})}} active={this.state.chart==='winds' ? 'active' : null} />
             </div>
             <div className="col-sm-2 col-xs-4" style={{padding:'0 0 0 4px'}}>
               <Statistic type="precips" data={precips[hrIndex]} onClick={() => {this.setState({chart:'precips'})}} active={this.state.chart==='precips' ? 'active' : null} />
             </div>
             <div className="col-sm-2 col-xs-4"  style={{padding:'0 0 0 4px'}}>
-              <Statistic type="feels" data={feellikes[hrIndex]} onClick={() => {this.setState({chart:'feels'})}} active={this.state.chart==='feels' ? 'active' : null} />
+              <Statistic type="feels" unit={unit} data={feellikes[hrIndex]} onClick={() => {this.setState({chart:'feels'})}} active={this.state.chart==='feels' ? 'active' : null} />
             </div>
             <div className="col-sm-2 col-xs-4" style={{padding:'0 0 0 4px'}}>
               <Statistic type="skies" data={skies[hrIndex]} onClick={() => {this.setState({chart:'skies'})}} active={this.state.chart==='skies' ? 'active' : null} />

@@ -39,7 +39,7 @@ class DayForecast extends Component {
     const rowStyle = {margin:'8px 4px'}
     return (
       <div className="row" style={rowStyle}>
-        {forecast.map(this.renderDay)}
+        {forecast.simpleforecast.forecastday.map(this.renderDay)}
       </div>
     )
   }

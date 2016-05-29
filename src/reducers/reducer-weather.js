@@ -24,7 +24,7 @@ export default function(state = INITIAL_STATE, action) {
     // return { ...state, all: action.payload.data}
     return { ...state,
       response: action.payload.data.response,
-      forecast: action.payload.data.forecast.simpleforecast.forecastday,
+      forecast: action.payload.data.forecast,
       hourly: action.payload.data.hourly_forecast,
       location: action.payload.data.location,
       sunphase: action.payload.data.sun_phase

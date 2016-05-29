@@ -40,3 +40,14 @@ export function toggleFavorite(val) {
     payload: {favorite: val}
   }
 }
+
+export const IS_LOADING = 'IS_LOADING'
+
+export function isLoading(val) {
+  console.log('is loading', val)
+
+  return {
+    type: IS_LOADING,
+    payload: {isLoading: val}
+  }
+}
