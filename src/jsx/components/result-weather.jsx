@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import ToggleUnit from './toggle-unit'
-import ToggleFavorite from './toggle-favorite'
+import { toggleUnit, toggleFavorite } from '../../actions/index'
+import ToggleBtn from './toggle-btn'
+
 import DayForecast from './forecast-days'
 import Charts from './charts'
 import Statistic from './statistic'
@@ -15,8 +16,30 @@ class WeatherResult extends Component {
     this.state = {
       hrIndex: 0,
       dayIndex: 0,
-      chart: 'temps'
+      chart: 'temps',
+      svgWidth:200,
+      svgHeight:150
     }
+  }
+
+  updateDimensions = () => {
+    this.setState({
+      svgWidth: $(window).width()>=768 ? 400 : $(window).width()>=414 ? 280 : $(window).width()>=375 ? 200 : 160,
+      svgHeight: $(window).width()>=768 ? 300 : $(window).width()>=414 ? 210 : $(window).width()>=375 ? 150 : 120
+    });
+  }
+  componentWillMount() {
+      this.updateDimensions();
+  }
+  componentDidMount() {
+    let that = this
+    //$( window ).resize(this.updateDimensions}
+    window.addEventListener("resize", that.updateDimensions);
+  }
+  componentWillUnmount() {
+    let that = this
+    //$( window ).off('resize', this.updateDimensions)
+    window.removeEventListener("resize", that.updateDimensions);
   }
 
   renderWindStr (spd/*, gust*/) {
@@ -54,9 +77,17 @@ class WeatherResult extends Component {
     return u==='metric' ? ' km/h' : ' mph'
   }
 
+  toggleFavorite(val){
+    this.props.toggleFavorite(this.props.weather.location, val)
+  }
+
+  toggleUnit(val){
+    this.props.toggleUnit(val)
+  }
+
   render() {
 
-    let {hrIndex} = this.state
+    let {hrIndex, svgWidth, svgHeight} = this.state
     let {forecast, hourly, location, sunphase, unit} = this.props.weather
 
     let dates = hourly.map(hour => hour.FCTTIME),
@@ -72,36 +103,48 @@ class WeatherResult extends Component {
 
     isDark = this.afterdark(sunphase, dates[hrIndex].hour)
 
-    const rowStyle = {margin:'8px 4px'}
+    const rowStyle = {margin:'8px 4px 0 4px'}
     //console.log('isDark',isDark)
+    const favoriteOptions = [
+      <span className="glyphicon glyphicon-heart-empty" aria-hidden="true" ></span>,
+      <span className="glyphicon glyphicon-heart" aria-hidden="true" ></span>
+    ]
+
+    const unitOptions = [
+      <span>&deg;C</span>,
+      <span>&deg;F</span>
+    ]
 
     return (
       <div style={{textAlign:'center'}}>
 
-        <div className="row" style={{margin:'8px 4px 8px 0'}}>
-          <div className="col-xs-2 col-sm-1" style={{padding:'0 0 0 4px'}}>
-            <ToggleUnit/>
-          </div>{/*end col*/}
-          <div className="col-xs-8 col-sm-4" style={{padding:'0 0 0 4px'}}>
-            <div className="time"><h3>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h3></div>
-            {/*<p>{dates[hrIndex].month_name+' '+dates[hrIndex].mday+', '+dates[hrIndex].year}</p>*/}
-          </div>{/*end col*/}
-          <div className="col-xs-2 col-sm-1" style={{padding:'0 0 0 4px'}}>
-            <ToggleFavorite location={location}/>
-          </div>{/*end col*/}
-          <div className="col-xs-12 col-sm-6" style={{padding:'0 0 0 4px'}}>
-            <p>{dates[hrIndex].month_name+' '+dates[hrIndex].mday+', '+dates[hrIndex].year}</p>
+        <div className="row" style={{margin:'0px'}}>
+          <div className="col-xs-12 col-sm-6" style={{padding:'0px'}}>
+            <div className="row" style={{margin:'6px 8px 0 4px'}}>
+              <div className="col-xs-2" style={{padding:'0 0 0 4px'}}>
+                <ToggleBtn toggleFunction={this.toggleUnit.bind(this)} options={unitOptions} styleClass="pull-left" />
+              </div>{/*end col*/}
+              <div className="col-xs-8" style={{padding:'0 0 0 4px'}}>
+                <div className="time"><h3>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h3></div>
+              </div>{/*end col*/}
+              <div className="col-xs-2" style={{padding:'0 0 0 4px'}}>
+                <ToggleBtn toggleFunction={this.toggleFavorite.bind(this)} options={favoriteOptions} styleClass="pull-right no-boundary"/>
+              </div>{/*end col*/}
+            </div>{/*end row*/}
+            <div className="row" style={{margin:'0px'}}>
+              <div className="col-xs-12" style={{padding:'0px'}}>
+                <p>{dates[hrIndex].month_name+' '+dates[hrIndex].mday+', '+dates[hrIndex].year}</p>
+              </div>{/*end col*/}
+              <div className="col-xs-12" style={{padding:'0px'}}>
+                <div style={{width:svgWidth+'px', height:svgHeight+'px', margin: '-5px auto'}}>
+                  <WeatherIcon stroke="2" opacity={.8} desc={icons[hrIndex]} isDark={isDark}/>
+                </div>
+                <h3>{conditions[hrIndex]}</h3>
+              </div>{/*end col*/}
+            </div>{/*end row*/}
           </div>{/*end col*/}
         </div>{/*end row*/}
 
-        <div className="row" style={{margin:'-10px'}}>
-          <div className="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-1">
-            <div style={{width:'200px', height:'150px', margin: '-5px auto'}}>
-              <WeatherIcon stroke="2" opacity={.8} desc={icons[hrIndex]} isDark={isDark}/>
-            </div>
-            <h3 style={{margin:'0 0 15px'}}>{conditions[hrIndex]}</h3>
-          </div>{/*end col*/}
-        </div>
 
         <div className="footer">
           <div className="row" style={rowStyle}>
@@ -137,7 +180,7 @@ function mapStateToProps({weather}){
   return { weather }
 }
 
-export default connect(mapStateToProps)(WeatherResult)
+export default connect(mapStateToProps, { toggleUnit, toggleFavorite })(WeatherResult)
 
 
 /*

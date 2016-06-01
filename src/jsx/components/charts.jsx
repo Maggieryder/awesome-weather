@@ -17,7 +17,7 @@ class Charts extends Component {
     )
   }
   updateDimensions = () => {
-      this.setState({svgWidth: $(window).width(), svgHeight: $(window).width()>500 ? 100 : $(window).width()>=375 ? 85 : 70});
+      this.setState({svgWidth: $(window).width(), svgHeight: $(window).width()>500 ? 100 : $(window).width()>=375 ? 85 : 50});
   }
   componentWillMount() {
       this.updateDimensions();

@@ -36,7 +36,7 @@ class DayForecast extends Component {
 
   render() {
     const {forecast, unit} = this.props.weather
-    const rowStyle = {margin:'8px 4px'}
+    const rowStyle = {margin:'6px 4px'}
     return (
       <div className="row" style={rowStyle}>
         {forecast.simpleforecast.forecastday.map(this.renderDay)}

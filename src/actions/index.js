@@ -32,12 +32,24 @@ export function toggleUnit(val) {
 
 export const TOGGLE_FAVORITE = 'TOGGLE_FAVORITE'
 
-export function toggleFavorite(val) {
+export function toggleFavorite(loc, val) {
+  console.log('toggle location', loc)
   console.log('toggle value', val)
 
   return {
     type: TOGGLE_FAVORITE,
     payload: {favorite: val}
+  }
+}
+
+export const TOGGLE_LOCATION_LIST = 'TOGGLE_LOCATION_LIST'
+
+export function toggleLocationList(val) {
+  console.log('isShowingList', val)
+
+  return {
+    type: TOGGLE_LOCATION_LIST,
+    payload: {isShowingList: val}
   }
 }
 
