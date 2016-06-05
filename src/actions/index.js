@@ -55,8 +55,8 @@ export function toggleLocationList(val) {
 
 export const IS_LOADING = 'IS_LOADING'
 
-export function isLoading(val) {
-  console.log('is loading', val)
+export function loading(val) {
+  console.log('loading', val)
 
   return {
     type: IS_LOADING,

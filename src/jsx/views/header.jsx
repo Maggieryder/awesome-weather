@@ -10,7 +10,7 @@ import WeatherForm from '../components/form-weather.jsx';
 class Header extends Component {
   constructor(props) {
     super(props);
-    console.log('>>> HEADER PROPS', this.props)
+    //console.log('>>> HEADER PROPS', this.props)
     this.state = {
       isSearching:false
     }
@@ -22,8 +22,8 @@ class Header extends Component {
     this.setState({isSearching:val})
   }
   render(){
-    let { location } = this.props.weather
-    let title = !location.city ? '' : location.city +', '+(location.state ? location.state : location.country)
+    let { location, isLoading } = this.props.weather
+    let title = !isLoading ? location.city +', '+(location.state ? location.state : location.country) : ''
     const colPadding = {padding:'0px'}
     const listOptions = [
       <span className="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>,
@@ -42,7 +42,7 @@ class Header extends Component {
                                       <h2 style={{textAlign:'center'}}>{title}</h2>
                                     </Col> : null }
 
-        <Col xs={!this.state.isSearching ? 2 : 10} style={colPadding}>
+        <Col xs={!this.state.isSearching ? 2 : 10} sm={!this.state.isSearching ? 2 : 6} smOffset={!this.state.isSearching ? 0 : 4} style={colPadding}>
           <WeatherForm onSearch={this.changeLayout.bind(this)}/>
         </Col>
 
@@ -52,19 +52,8 @@ class Header extends Component {
 }
 
 function mapStateToProps({weather}){
-  console.log('weather', weather)
+  //console.log('weather', weather)
   return { weather }
 }
 
 export default connect(mapStateToProps, { toggleLocationList })(Header)
-
-/*
-{location.city +', '+(location.state ? location.state : location.country)}
-<button type="button" className="navbar-toggle pull-left" >
-  <span className="sr-only">Settings</span>
-  <span className="glyphicon glyphicon-cog" aria-hidden="true" ></span>
-  {/*<span className="icon-bar"></span>
-  <span className="icon-bar"></span>
-  <span className="icon-bar"></span>}
-</button>
-*/

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { getWeather } from '../../actions/index';
+import { getWeather, loading } from '../../actions/index';
 import {Link} from 'react-router';
 import WeatherForm from '../components/form-weather.jsx';
 import WeatherResult from '../components/result-weather.jsx';
@@ -9,10 +9,7 @@ import MultipleChoices from '../components/multipleChoiceList';
 class Home extends Component {
   constructor(props) {
     super(props);
-    console.log('>>> HOMEPROPS', this.props)
-    this.state = {
-      isLoading:false
-    }
+    //console.log('>>> HOMEPROPS', this.props)
   }
 
   componentWillMount(){
@@ -25,13 +22,13 @@ class Home extends Component {
   }
 
   getLocation = (query) => {
-    this.setState({isLoading:true})
+    this.props.loading(true)
     this.props.getWeather(query)
-    .then(() => {this.setState({isLoading:false})})
+    //.then(() =>{this.props.isLoading(false)})
   }
 
   render(){
-    let {isLoading} = this.state;
+    let {isLoading} = this.props.weather;
     const that = this;
     let divInfoStyle = {
       height:'100%',
@@ -39,22 +36,22 @@ class Home extends Component {
       paddingTop:'200px'
     }
 
-    if (isLoading){
-      console.log('IS LOADING')
-      return <div style={divInfoStyle}>LOADING...</div>
-    }
+    //if (isLoading){
+      //console.log('IS LOADING')
+      //return <div style={divInfoStyle}>LOADING...</div>
+    //}
 
     function renderPageOptions(weather){
       if (weather){
-        console.log('RENDER PAGE')
-        let {response, location, unit} = weather
+        console.log('RENDER PAGE', weather)
+        let {response, location, unit, isLoading } = weather
         if (response.error ) {
           console.log('ERROR', response.error.description)
           return <div style={divInfoStyle}><h2>{response.error.description}</h2></div>
         } else if (response.results){
           console.log('CHOICES', response.results)
           return <MultipleChoices items={response.results} onSelect={that.handleChoiceSelect} />
-        } else if (location.city){
+        } else {
           return <WeatherResult />
         }
       }
@@ -72,4 +69,4 @@ function mapStateToProps({weather}){
   return {weather}
 }
 
-export default connect(mapStateToProps, { getWeather })(Home);
+export default connect(mapStateToProps, { getWeather, loading })(Home);

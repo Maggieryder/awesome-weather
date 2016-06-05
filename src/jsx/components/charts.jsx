@@ -8,8 +8,8 @@ class Charts extends Component {
     super(props);
     this.state = {svgWidth:0, svgHeight:0}
   }
-  handleChartHover(id) {
-    this.props.onMouseOver(id)
+  handleChartHover(id, day) {
+    this.props.onMouseOver(id, day)
   }
   renderChart (data, width, height) {
     return (
@@ -17,7 +17,7 @@ class Charts extends Component {
     )
   }
   updateDimensions = () => {
-      this.setState({svgWidth: $(window).width(), svgHeight: $(window).width()>500 ? 100 : $(window).width()>=375 ? 85 : 50});
+      this.setState({svgWidth: $(window).width()*4, svgHeight: $(window).width()>500 ? 100 : $(window).width()>=375 ? 85 : 50});
   }
   componentWillMount() {
       this.updateDimensions();
@@ -33,18 +33,18 @@ class Charts extends Component {
     window.removeEventListener("resize", that.updateDimensions);
   }
   renderHour = (hr, id) => {
-      if (id < 24){
+      if (id < this.props.numHrs){
         return <li
                   key={id}
                   className={parseInt(hr.hour)%6===0 ? "marker" : null}
-                  onMouseOver={this.handleChartHover.bind(this,id)} >
+                  onMouseOver={this.props.onMouseOver.bind(this,id)} >
                     <div>{hr.hour==='0' ? 'A' : hr.hour==='12' ? 'P' : ''}</div>
                 </li>
       }
   }
   render() {
     let {hourly} = this.props.weather
-    let chart = this.props.chart
+    let {chart, numHrs} = this.props
     console.log('RENDER CHART', chart)
     let hours = hourly.map(hour => hour.FCTTIME),
     temps = hourly.map(hour => hour.temp.english),
@@ -55,15 +55,15 @@ class Charts extends Component {
     humidities = hourly.map(hour => hour.humidity)
 
     return (
-      <div className="row" style={{margin:0}}>
+      <div className="row" style={{margin:0, width:'100%',overflow:'hidden'}}>
         <div className="chart" style={{height:this.state.svgHeight}}>
-          {chart === 'temps' ? this.renderChart(temps.slice(0,24)) : null}
-          {chart === 'feels' ? this.renderChart(feellikes.slice(0,24)) : null}
-          {chart === 'winds' ? this.renderChart(winds.slice(0,24)) : null}
-          {chart === 'precips' ? this.renderChart(precips.slice(0,24)) : null}
-          {chart === 'skies' ? this.renderChart(skies.slice(0,24)) : null}
-          {chart === 'humidities' ? this.renderChart(humidities.slice(0,24)) : null}
-          <ul className="hours" >
+          {chart === 'temps' ? this.renderChart(temps.slice(0,numHrs)) : null}
+          {chart === 'feels' ? this.renderChart(feellikes.slice(0,numHrs)) : null}
+          {chart === 'winds' ? this.renderChart(winds.slice(0,numHrs)) : null}
+          {chart === 'precips' ? this.renderChart(precips.slice(0,numHrs)) : null}
+          {chart === 'skies' ? this.renderChart(skies.slice(0,numHrs)) : null}
+          {chart === 'humidities' ? this.renderChart(humidities.slice(0,numHrs)) : null}
+          <ul className="hours">
             {hours.map(this.renderHour)}
           </ul>
         </div>

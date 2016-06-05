@@ -120,6 +120,11 @@ sup  {
 	top: -0.4em;
 }
 
+textarea:focus, input:focus{
+  outline: none !important;
+  outline-style: none !important;
+  box-shadow: none !important;
+}
 
 #app {
   position: relative;
@@ -249,7 +254,7 @@ li {
 
   &.active {
     //font-size: 40px;
-    color: $ko-color;
+    color: $ugly;
     border:1px solid $bg-lite-transparent;
   }
 
@@ -344,14 +349,14 @@ li {
 
   }
 
-
-
-
+  &.active .reading > a {
+    color: $ko-color;
+  }
 }
 
 .chart {
   position:relative;
-  width:100%;
+  width:400%;
   height:100px;
   border-bottom:1px solid $bg-lite-transparent-weak;
   overflow:hidden;
@@ -434,7 +439,7 @@ ul.hours {
   li {
     position:relative;
     float:left;
-    @include calc(width, "4.16%");
+    @include calc(width, ".96%");
     text-align: center;
     font-size:10px;
     line-height:10px;

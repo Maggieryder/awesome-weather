@@ -1,45 +1,38 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
+import Bootstrap, { Col } from 'react-bootstrap';
 
-import WeatherIcon from '../../icons/weather-icon.jsx'
+import ForecastDay from './forecast-day.jsx'
 
 class DayForecast extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {dayIndex:0};
-  }
-
-  handleDayClick(id){
-    this.setState({dayIndex:id})
-    //console.log('CLICKED DAY ID', id)
-  }
 
   renderDay = (day, id) => {
     let {date, icon, high, low} = day
-    let unit = this.props.weather.unit==='metric' ? 'celsius' : 'fahrenheit'
-    let iconStyleActive = {
-      opacity:1
-    }
+    let { unit, isLoading } = this.props.weather
+    let unitType = unit==='metric' ? 'celsius' : 'fahrenheit'
+
     if (id < this.props.numDays){
-      return  <div className="day col-xs-3" key={id}>
-                <div className={this.state.dayIndex===id ? "active" : null}
-                    onClick={this.handleDayClick.bind(this, id)} >
-                  <div>{date.weekday_short}</div>
-                  <div className="icon" style={this.state.dayIndex===id ? iconStyleActive : null}>
-                    <WeatherIcon stroke="7" opacity={1} desc={icon}/>
-                  </div>
-                  <div>{high[unit]}&deg; / {low[unit]}&deg; </div>
-                </div>
-              </div>
+      return !isLoading ? <ForecastDay key={id}
+                  id={id}
+                  dayIndex={this.props.dayIndex}
+                  day={date.weekday_short}
+                  temps={[high[unitType],low[unitType]]}
+                  icon={icon}
+                  onClick={this.props.onSelect.bind(this, id)}
+              /> :
+              <Col xs={3} key={id}>
+                <div style={{height:'74px', paddingTop:'25px'}}>...</div>
+              </Col>
     }
   }
 
   render() {
-    const {forecast, unit} = this.props.weather
+    let { forecast, isLoading } = this.props.weather
+    let days = isLoading ? [{},{},{},{}] : forecast.simpleforecast.forecastday
     const rowStyle = {margin:'6px 4px'}
     return (
       <div className="row" style={rowStyle}>
-        {forecast.simpleforecast.forecastday.map(this.renderDay)}
+        {days.map(this.renderDay)}
       </div>
     )
   }

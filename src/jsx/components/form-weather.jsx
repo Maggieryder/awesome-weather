@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { getWeather } from '../../actions/index'
+import { getWeather, loading } from '../../actions/index'
 import ToggleBtn from './toggle-btn'
 
 class Searchbar extends Component {
@@ -26,12 +27,20 @@ class Searchbar extends Component {
         searchmode:false,
       })
       this.props.onSearch(false)
+      this.props.loading(true)
       this.props.getWeather(location)
+      //.then(() =>{this.props.loading(false)})
     }
   }
   handleSearchMode(){
     this.setState({searchmode:true})
     this.props.onSearch(true)
+    setTimeout(this.handleFocus.bind(this), 100)
+  }
+  handleFocus(){
+    if (this.myTextInput !== null) {
+      this.myTextInput.focus();
+    }
   }
 
   render(){
@@ -55,7 +64,6 @@ class Searchbar extends Component {
     ]
     if (!this.state.searchmode){
       return <ToggleBtn toggleFunction={this.handleSearchMode.bind(this)} options={options} styleClass="pull-right"/>
-      //return <button onClick={this.handleSearchMode.bind(this)} className="btn btn-group pull-right"><span className="glyphicon glyphicon-search" aria-hidden="true" ></span></button>;
     }
     return (
 
@@ -66,7 +74,8 @@ class Searchbar extends Component {
                   className="form-control"
                   placeholder="City & State/Country OR Zip"
                   value={this.state.term}
-                  style={fieldStyle} />
+                  style={fieldStyle}
+                  ref={(ref) => this.myTextInput = ref} />
           <div className="input-group-btn" >
             <button className="btn btn-default" style={btnStyle}><span className="glyphicon glyphicon-search" aria-hidden="true" ></span></button>
           </div>
@@ -77,7 +86,7 @@ class Searchbar extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getWeather }, dispatch)
+  return bindActionCreators({ getWeather, loading }, dispatch)
 }
 
 export default connect(null, mapDispatchToProps)(Searchbar)
