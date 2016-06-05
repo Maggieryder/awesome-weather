@@ -1,0 +1,31 @@
+.day {
+  padding:0 0 0 4px;
+
+  > div {
+    padding:4px 0;
+    border-radius:4px;
+    @include calc(width, "100% - 4px");
+    font-size:14px;
+    font-weight:300;
+    line-height:14px;
+    color:$bg-lite-transparent;
+    cursor:pointer;
+    background:$bg-lite-transparent-weakest;
+    border:1px solid $bg-lite-transparent-weaker;
+
+    &.active {
+      background:none;
+      color: $ko-color;
+      border:1px solid $bg-lite-transparent;
+    }
+
+    .icon {
+      width:45px;
+      height:36px;
+      margin:0 auto;
+      opacity:.8
+    }
+
+  }
+
+}

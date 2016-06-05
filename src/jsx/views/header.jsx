@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { toggleLocationList } from '../../actions/index'
 import Bootstrap, { Row, Col, Modal, Nav, NavDropdown, MenuItem } from 'react-bootstrap';
-import ToggleBtn from '../components/toggle-btn'
 
-//import Nav from '../components/nav.jsx';
-import WeatherForm from '../components/form-weather.jsx';
+import ToggleBtn from '../components/toggle-btn'
+import WeatherForm from '../components/weather-form.jsx';
 
 class Header extends Component {
   constructor(props) {

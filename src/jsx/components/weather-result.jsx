@@ -6,7 +6,7 @@ import ToggleBtn from './toggle-btn'
 
 import DayForecast from './forecast-days'
 import Charts from './charts'
-import Statistics from './statistics'
+import Meters from './meters'
 
 import WeatherIcon from '../../icons/weather-icon.jsx'
 
@@ -88,6 +88,14 @@ class WeatherResult extends Component {
     return arr
   }
 
+  handleDayClick = (id) => {
+    console.log('handleDayClick', id)
+    this.setState({
+      //hrIndex:id,
+      dayIndex:id
+    })
+  }
+
   afterdark(sp, now){
     let hr = parseInt(now),
     sunrise = parseInt(sp.sunrise.minute)<30 ? parseInt(sp.sunrise.hour) : parseInt(sp.sunrise.hour)+1,
@@ -164,9 +172,9 @@ class WeatherResult extends Component {
 
 
         <div className="footer">
-          <Statistics hrIndex={hrIndex} onSelect={(type)=>{this.setState({chart:type})}}/>
+          <Meters hrIndex={hrIndex} onSelect={(type)=>{this.setState({chart:type})}}/>
           <Charts chart={this.state.chart} onMouseOver={this.handleChartHover} numHrs={96}/>
-          <DayForecast numDays={4} onSelect={(id)=>{this.setState({dayIndex:id})}} dayIndex={this.state.dayIndex}/>
+          <DayForecast numDays={4} onSelect={this.handleDayClick} dayIndex={this.state.dayIndex}/>
         </div>
       </div>
     )

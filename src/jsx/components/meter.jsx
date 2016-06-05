@@ -33,7 +33,7 @@ export default (props) => {
 
   return (
 
-    <li className={'stat'+active} >
+    <li className={'meter'+active} >
       <Nav>
         <NavDropdown className="label" title={label} id="nav-dropdown">
         <MenuItem eventKey="0" onSelect={handleSelect}>{unusedTypes[0]}</MenuItem>
@@ -69,11 +69,11 @@ let suffixes = (type, unit) => {
   }
 }
 
-let popover = <Popover id="popover" title="Choose Stat" >
+let popover = <Popover id="popover" title="Choose meter" >
                 <ul>
-                  <li>Other Stat</li>
-                  <li>Another Stat</li>
-                  <li>Last Stat</li>
+                  <li>Other meter</li>
+                  <li>Another meter</li>
+                  <li>Last meter</li>
                 </ul>
               </Popover>;
 */

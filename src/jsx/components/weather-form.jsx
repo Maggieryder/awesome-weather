@@ -45,18 +45,8 @@ class Searchbar extends Component {
 
   render(){
     const btnStyle = {
-      height:'40px',
-      background:'rgba(255,255,255,.05)',
-      borderColor:'rgba(255,255,255,.1)',
-      color:'rgba(255,255,255,1)',
       fontSize:'18px',
       padding:'3px 10px 0'
-    }
-    const fieldStyle = {
-      height:'40px',
-      background:'rgba(255,255,255,.05)',
-      borderColor:'rgba(255,255,255,.1)',
-      color:'rgba(255,255,255,.7)'
     }
     const options = [
       <span className="glyphicon glyphicon-search" aria-hidden="true" ></span>,
@@ -69,15 +59,14 @@ class Searchbar extends Component {
 
       <form onSubmit={this.onFormSubmit}>
         <div className="input-group" >
-          <input  onChange={this.onInputChange}
+          <input onChange={this.onInputChange}
                   type="text"
                   className="form-control"
                   placeholder="City & State/Country OR Zip"
                   value={this.state.term}
-                  style={fieldStyle}
                   ref={(ref) => this.myTextInput = ref} />
           <div className="input-group-btn" >
-            <button className="btn btn-default" style={btnStyle}><span className="glyphicon glyphicon-search" aria-hidden="true" ></span></button>
+            <button className="btn" style={btnStyle}><span className="glyphicon glyphicon-search" aria-hidden="true" ></span></button>
           </div>
         </div>
       </form>

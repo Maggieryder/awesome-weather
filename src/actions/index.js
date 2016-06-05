@@ -11,7 +11,7 @@ export function getWeather(location) {
   const requestUrl = `${API_URL}${API_KEY}${API_PARAMS}/q/${encodedLocation}.json`
   const request = axios.get(requestUrl)
 
-  console.log('request', request)
+  //console.log('request', request)
 
   return {
     type: GET_WEATHER,

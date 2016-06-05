@@ -1,0 +1,78 @@
+
+
+.input-group {
+
+  .form-control,
+  .input-group-btn .btn {
+    height:40px;
+    background:$bg-lite-transparent-weakest;
+    border-color:$bg-lite-transparent-weaker;
+    color:$ko-color;
+    outline-style: none !important;
+    box-shadow: none !important;
+  }
+
+}
+
+
+/* EVERYTHING BELOW HERE CURRENTLY NOT USED */
+
+.popover {
+  color:#333;
+  width:50%;
+
+  .popover-title {
+    padding:5px 14px;
+    color:#333;
+    font-weight: 400;
+  }
+
+  .popover-content {
+    padding:0;
+
+    ul {
+      margin-bottom:1px;
+
+      li {
+        padding:4px 8px;
+        text-align:center;
+        font-family: 'azo-sans-web';
+        font-size: 14px;
+        line-height: 1.4em;
+        font-weight: 300;
+
+      }
+
+      li:not(:last-child){
+        border-bottom:1px solid #ebebeb;
+      }
+    }
+  }
+}
+
+.container-fluid {
+  padding: 0 8px;
+}
+
+.btn-group {
+
+  .btn-default {
+    background: none;
+    color: $bg-lite-transparent;
+    border:1px solid $ko-color;
+  }
+
+  .btn-primary,
+  .btn-primary:active,
+  .btn-primary:hover {
+    background:$bg-lite-transparent-weak;
+    color:$bg-grad-dark;
+    border:1px solid $ko-color;
+  }
+
+}
+
+.navbar-toggle {
+  margin:6px 8px;
+  //border:1px solid $bg-lite-transparent-weak;
+}

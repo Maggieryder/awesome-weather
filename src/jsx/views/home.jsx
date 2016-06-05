@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { getWeather, loading } from '../../actions/index';
 import {Link} from 'react-router';
-import WeatherForm from '../components/form-weather.jsx';
-import WeatherResult from '../components/result-weather.jsx';
+
+import WeatherResult from '../components/weather-result.jsx';
 import MultipleChoices from '../components/multipleChoiceList';
 
 class Home extends Component {
@@ -24,7 +24,6 @@ class Home extends Component {
   getLocation = (query) => {
     this.props.loading(true)
     this.props.getWeather(query)
-    //.then(() =>{this.props.isLoading(false)})
   }
 
   render(){
@@ -35,11 +34,6 @@ class Home extends Component {
       textAlign:'center',
       paddingTop:'200px'
     }
-
-    //if (isLoading){
-      //console.log('IS LOADING')
-      //return <div style={divInfoStyle}>LOADING...</div>
-    //}
 
     function renderPageOptions(weather){
       if (weather){

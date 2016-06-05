@@ -1,0 +1,52 @@
+ul.hours {
+  position:absolute;
+  display:block;
+  bottom:0;
+  //border-left: 1px solid $bg-lite-transparent;
+  //-webkit-transform: 'translate3d(0, -100%, 0)';
+  z-index:5;
+  width: 100%;
+  height: auto;
+  margin:0;
+
+
+  li {
+    position:relative;
+    float:left;
+    @include calc(width, ".96%");
+    text-align: center;
+    font-size:10px;
+    line-height:10px;
+    //border-left: 1px solid $bg-lite-transparent-weak;
+    //border-bottom: 1px solid $bg-lite-transparent;
+    cursor:pointer;
+
+    div {
+    	position:  absolute;
+    	top: 0;
+    	left: 0;
+    	bottom: 0;
+    	right: 0;
+      @include center-box();
+      border-left: 1px solid $bg-lite-transparent-weak;
+    }
+  }
+
+  li:first-child {
+    border-left: 1px solid $transparent;
+  }
+
+  li:before {
+  	content: "";
+  	display: block;
+  	padding-top: 100%; 	/* initial ratio of 1:1*/
+  }
+
+  //li:last-child,
+  //li:nth-child(6n):not(:last-child) {
+  //li:nth-child(6n)
+  li.marker {
+    border-left: 1px solid $bg-lite-transparent;
+  }
+
+}

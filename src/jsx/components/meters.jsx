@@ -1,19 +1,19 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import Bootstrap, { Row, Col} from 'react-bootstrap';
-import Statistic from './statistic'
+import Meter from './meter'
 
-class Statistics extends Component {
+class Meters extends Component {
   constructor(props) {
     super(props);
-    console.log('Statistics PROPS >>', this.props)
+    console.log('Meters PROPS >>', this.props)
     this.state = {
       hrIndex: 0,
       chart: 'temps',
     }
   }
-  handleStatClick(type){
-    //console.log('stat CLICK', type)
+  handleMeterClick(type){
+    //console.log('Meter CLICK', type)
     this.setState({chart:type})
     this.props.onSelect(type)
   }
@@ -29,13 +29,13 @@ class Statistics extends Component {
     }
     if (id < 6){
       return  <Col key={id} sm={2} xs={4} style={colStyle}>
-                <Statistic type={stat.type}
+                <Meter type={stat.type}
                     unit={unit}
                     isLoading={isLoading}
                     data={(stat.data2 ? stat.data2[hrIndex]+' ' : '') + stat.data[hrIndex]}
                     label={stat.label}
                     suffix={stat.suffix}
-                    onClick={that.handleStatClick.bind(this)}
+                    onClick={that.handleMeterClick.bind(this)}
                     onLabelChange={that.handleLabelChange}
                     active={this.state.chart===stat.type ? ' active' : ''} />
       </Col>
@@ -70,7 +70,7 @@ function mapStateToProps({weather}){
   return { weather }
 }
 
-export default connect(mapStateToProps)(Statistics)
+export default connect(mapStateToProps)(Meters)
 
 
 /*

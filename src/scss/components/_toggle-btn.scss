@@ -1,0 +1,18 @@
+.toggle-btn {
+  //@include calc(width, "100% - 4px");
+  width:40px;
+  height:40px;
+  //padding:4px 5px 4px 0;
+  //padding-left: -10px;
+  //margin-right:4px;
+  font-size:18px;
+  color:$ko-color;
+  border-radius:4px;
+  background:$bg-lite-transparent-weakest;
+  border:1px solid $bg-lite-transparent-weaker;
+
+  &.no-boundary {
+    background:none;
+    border:none;
+  }
+}

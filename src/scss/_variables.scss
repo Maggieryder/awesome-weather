@@ -1,0 +1,18 @@
+// colors //
+//$default-color: #787878;
+//$primary-color: #337ab7;
+$default-color: rgba(255, 255, 255, .8);
+$primary-color: rgba(0, 0, 0, .2);
+$green: #080;
+$ugly: #fc0;
+$ko-color: #fff;
+$bg-grad-dark: #172432;
+$bg-grad-lite: #244966;//#24445d;//#214771;//#243C56;
+$bg-lite-transparent:rgba(255, 255, 255, .7);
+$bg-lite-transparent-weak:rgba(255, 255, 255, .3);
+$bg-lite-transparent-weakest:rgba(255, 255, 255, .05);
+$bg-lite-transparent-weaker:rgba(255, 255, 255, .1);
+$bg-dark-transparent:rgba(0, 0, 0, .2);
+$transparent:rgba(0, 0, 0, 0);
+
+$primary-bg: linear-gradient(to top, $bg-grad-lite 10%, $bg-grad-dark 100%);
