@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { getWeather, loading } from '../../actions/index';
+import { getWeather, loading, toggleModal } from '../../actions/index';
 import {Link} from 'react-router';
 
-import WeatherResult from '../components/weather-result.jsx';
+import ModalInstance from '../components/modal'
+import WeatherResult from '../components/weather-result';
 import MultipleChoices from '../components/multipleChoiceList';
 
 class Home extends Component {
@@ -26,6 +27,28 @@ class Home extends Component {
     this.props.getWeather(query)
   }
 
+  renderPageOptions(weather){
+    if (weather){
+      //console.log('RENDER PAGE', weather)
+      let {response, location, unit, isLoading } = weather
+      if (response.error ) {
+        console.log('ERROR', response.error.description)
+        let message = <h3>{response.error.description}</h3>
+        this.toggleModal({title:'YIKES!',body:response.error.description})
+        //return <WeatherResult errorMsge={response.error.description}/>
+      } else if (response.results){
+        console.log('CHOICES', response.results)
+        return <MultipleChoices items={response.results} onSelect={this.handleChoiceSelect} />
+      } else {
+        return <WeatherResult />
+      }
+    }
+  }
+
+  toggleModal = (content) => {
+    this.props.toggleModal(content);
+  }
+
   render(){
     let {isLoading} = this.props.weather;
     const that = this;
@@ -35,25 +58,12 @@ class Home extends Component {
       paddingTop:'200px'
     }
 
-    function renderPageOptions(weather){
-      if (weather){
-        console.log('RENDER PAGE', weather)
-        let {response, location, unit, isLoading } = weather
-        if (response.error ) {
-          console.log('ERROR', response.error.description)
-          return <div style={divInfoStyle}><h2>{response.error.description}</h2></div>
-        } else if (response.results){
-          console.log('CHOICES', response.results)
-          return <MultipleChoices items={response.results} onSelect={that.handleChoiceSelect} />
-        } else {
-          return <WeatherResult />
-        }
-      }
-    }
+
 
     return (
       <div>
-        {renderPageOptions(this.props.weather)}
+        {this.renderPageOptions(this.props.weather)}
+        <ModalInstance />
       </div>
     );
   }
@@ -63,4 +73,4 @@ function mapStateToProps({weather}){
   return {weather}
 }
 
-export default connect(mapStateToProps, { getWeather, loading })(Home);
+export default connect(mapStateToProps, { getWeather, loading, toggleModal })(Home);

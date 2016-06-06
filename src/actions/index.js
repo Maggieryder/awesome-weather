@@ -63,3 +63,14 @@ export function loading(val) {
     payload: {isLoading: val}
   }
 }
+
+export const TOGGLE_MODAL_OPEN = 'TOGGLE_MODAL_OPEN'
+
+export function toggleModal(content) {
+  //console.log('toggle content', content)
+
+  return {
+    type: TOGGLE_MODAL_OPEN,
+    payload: {content:content}
+  }
+}

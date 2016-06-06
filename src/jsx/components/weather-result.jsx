@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import _ from 'lodash'
-import { toggleUnit, toggleFavorite } from '../../actions/index'
+import Bootstrap, { Row, Col, Glyphicon } from 'react-bootstrap';
+import { toggleUnit, toggleFavorite, toggleModal } from '../../actions/index'
 import ToggleBtn from './toggle-btn'
+//import ModalInstance from './modal'
 
 import DayForecast from './forecast-days'
 import Charts from './charts'
@@ -58,7 +59,7 @@ class WeatherResult extends Component {
   }
 
   handleChartHover = (id) => {
-    console.log('handleChartHover', id)
+    //console.log('handleChartHover', id)
     let { hourly } = this.props.weather,
     hrs = hourly.map(hour => hour.FCTTIME),
     midnitehours = this.midniteHrs(hrs);
@@ -71,7 +72,7 @@ class WeatherResult extends Component {
         break;
       }
     }
-    console.log('dayIndex', dayIndex)
+    //console.log('dayIndex', dayIndex)
     this.setState({
       hrIndex:id,
       dayIndex:dayIndex
@@ -115,19 +116,31 @@ class WeatherResult extends Component {
   render() {
 
     let {hrIndex, svgWidth, svgHeight} = this.state
-    let {hourly, location, sunphase, unit, isLoading} = this.props.weather
+    let {response, hourly, location, sunphase, unit, isLoading } = this.props.weather
+    let dates, conditions, icons, isDark
+    if (!isLoading && !response.error) {
+      dates = hourly.map(hour => hour.FCTTIME),
+      conditions = hourly.map(hour => hour.wx),
+      icons = hourly.map(hour => hour.icon),
+      isDark = !isLoading ? this.afterdark(sunphase, dates[hrIndex].hour) : false
+    }
 
-    let dates = hourly.map(hour => hour.FCTTIME),
-    conditions = hourly.map(hour => hour.wx),
-    icons = hourly.map(hour => hour.icon),
-    isDark = !isLoading ? this.afterdark(sunphase, dates[hrIndex].hour) : false
+    if(response.error){
+        console.log('ERROR', response.error.description)
+        let message = <h3>{response.error.description}</h3>
+        this.props.toggleModal({title:'YIKES!',body:response.error.description})
+    }
+
     //console.log('isDark',isDark)
 
     const rowStyle = {margin:'8px 4px 0 4px'}
 
+    const noMargin = {margin:'0px'}
+    const noPadding = {padding:'0px'}
+
     const favoriteOptions = [
-      <span className="glyphicon glyphicon-heart-empty" aria-hidden="true" ></span>,
-      <span className="glyphicon glyphicon-heart" aria-hidden="true" ></span>
+      <Glyphicon glyph="heart-empty" />,
+      <Glyphicon glyph="heart" />
     ]
 
     const unitOptions = [
@@ -138,37 +151,39 @@ class WeatherResult extends Component {
     return (
       <div style={{textAlign:'center'}}>
 
-        <div className="row" style={{margin:'0px'}}>
-          <div className="col-xs-12 col-sm-6" style={{padding:'0px'}}>
-            <div className="row" style={{margin:'6px 8px 0 4px'}}>
-              <div className="col-xs-2" style={{padding:'0 0 0 4px'}}>
+        <Row style={noMargin}>
+          <Col xs={12} sm={6} style={noPadding}>
+            <Row style={{margin:'6px 8px 0 4px'}}>
+              <Col xs={2} style={{padding:'0 0 0 4px'}}>
                 <ToggleBtn toggleFunction={this.toggleUnit.bind(this)} options={unitOptions} styleClass="pull-left" />
-              </div>{/*end col*/}
-              <div className="col-xs-8" style={{padding:'0 0 0 4px'}}>
-                <div className="time">{!isLoading ? <h3>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h3> : null}</div>
-              </div>{/*end col*/}
-              <div className="col-xs-2" style={{padding:'0 0 0 4px'}}>
+              </Col>
+              <Col xs={8} style={{padding:'0 0 0 4px'}}>
+                <div className="time">{!isLoading && !response.error ? <h3>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h3> : null}</div>
+              </Col>
+              <Col xs={2} style={{padding:'0 0 0 4px'}}>
                 <ToggleBtn toggleFunction={this.toggleFavorite.bind(this)} options={favoriteOptions} styleClass="pull-right no-boundary"/>
-              </div>{/*end col*/}
-            </div>{/*end row*/}
+              </Col>
+            </Row>
 
             {!isLoading ?
-              <div className="row" style={{margin:'0px'}}>
-                <div className="col-xs-12" style={{padding:'0px'}}>
-                  <p>{dates[hrIndex].month_name+' '+dates[hrIndex].mday+', '+dates[hrIndex].year}</p>
-                </div>
-                <div className="col-xs-12" style={{padding:'0px'}}>
-                  <div style={{width:svgWidth+'px', height:svgHeight+'px', margin: '-5px auto'}}>
+              <Row style={noMargin}>
+                <Col xs={12} style={noPadding}>
+                  <p>{!response.error ? dates[hrIndex].month_name+' '+dates[hrIndex].mday+', '+dates[hrIndex].year : '' }</p>
+                </Col>
+                <Col xs={12} style={noPadding}>
+                  {!response.error ? <div style={{width:svgWidth+'px', height:svgHeight+'px', margin: '-5px auto'}}>
                     <WeatherIcon stroke="2" opacity={.8} desc={icons[hrIndex]} isDark={isDark}/>
-                  </div>
-                  <h3>{conditions[hrIndex]}</h3>
-                </div>
-              </div> :
-              <div className="row" style={{margin:'0px'}}>
-                <div className="col-xs-12" style={{height:'200px', paddingTop:'100px'}}>LOADING...</div>
-              </div>}{/*end row*/}
-          </div>{/*end col*/}
-        </div>{/*end row*/}
+                  </div> : null }
+                  <h3>{!response.error ? conditions[hrIndex] : null }</h3>
+                </Col>
+              </Row> :
+              <Row style={noMargin}>
+                <Col xs={12} style={{height:'200px', paddingTop:'100px'}}>LOADING...</Col>
+              </Row>}
+          </Col>
+        </Row>
+
+
 
 
         <div className="footer">
@@ -181,8 +196,8 @@ class WeatherResult extends Component {
   }
 }
 
-function mapStateToProps({weather}){
+function mapStateToProps({ weather }){
   return { weather }
 }
 
-export default connect(mapStateToProps, { toggleUnit, toggleFavorite })(WeatherResult)
+export default connect(mapStateToProps, { toggleUnit, toggleFavorite, toggleModal })(WeatherResult)

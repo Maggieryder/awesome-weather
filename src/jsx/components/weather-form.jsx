@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import Bootstrap, { Glyphicon } from 'react-bootstrap';
+
 import { getWeather, loading } from '../../actions/index'
 import ToggleBtn from './toggle-btn'
 
@@ -46,11 +48,13 @@ class Searchbar extends Component {
   render(){
     const btnStyle = {
       fontSize:'18px',
+      width:'40px',
+      borderLeft:'1px solid rgba(255,255,255,0)',
       padding:'3px 10px 0'
     }
     const options = [
-      <span className="glyphicon glyphicon-search" aria-hidden="true" ></span>,
-      <span className="glyphicon glyphicon-remove" aria-hidden="true" ></span>
+      <Glyphicon glyph="search" />,
+      <Glyphicon glyph="remove" />
     ]
     if (!this.state.searchmode){
       return <ToggleBtn toggleFunction={this.handleSearchMode.bind(this)} options={options} styleClass="pull-right"/>

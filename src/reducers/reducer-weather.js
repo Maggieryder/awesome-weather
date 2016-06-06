@@ -38,7 +38,7 @@ export default function(state = INITIAL_STATE, action) {
     console.log('action recieved for ADD FAVORITE', action.payload.favorite)
     return {...state, favorites: [action.payload.favorite]}
     case IS_LOADING:
-    console.log('action recieved for IS LOADING', action.payload.isLoading)
+    //console.log('action recieved for IS LOADING', action.payload.isLoading)
     return {...state, isLoading: [action.payload.isLoading]}
     default:
       return state

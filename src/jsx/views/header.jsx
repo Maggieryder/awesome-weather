@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { toggleLocationList } from '../../actions/index'
-import Bootstrap, { Row, Col, Modal, Nav, NavDropdown, MenuItem } from 'react-bootstrap';
+import Bootstrap, { Row, Col, Glyphicon } from 'react-bootstrap';
 
 import ToggleBtn from '../components/toggle-btn'
 import WeatherForm from '../components/weather-form.jsx';
@@ -22,26 +22,26 @@ class Header extends Component {
   }
   render(){
     let { location, isLoading } = this.props.weather
-    let title = !isLoading ? location.city +', '+(location.state ? location.state : location.country) : ''
-    const colPadding = {padding:'0px'}
+    let title = !isLoading && location ? location.city +', '+(location.state ? location.state : location.country) : ''
+    const noPadding = {padding:'0px'}
     const listOptions = [
-      <span className="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>,
-      <span className="glyphicon glyphicon-menu-right" aria-hidden="true" ></span>
+      <Glyphicon glyph="option-vertical" />,
+      <Glyphicon glyph="menu-right" />
     ]
     const toggleLocationList = this.toggleLocationList.bind(this)
 
     return (
       <header>
 
-        <Col xs={2} style={colPadding}>
+        <Col xs={2} style={noPadding}>
           <ToggleBtn toggleFunction={toggleLocationList} options={listOptions} styleClass="pull-left no-boundary" />
         </Col>
 
-        {!this.state.isSearching ?  <Col xs={8} style={colPadding}>
+        {!this.state.isSearching ?  <Col xs={8} style={noPadding}>
                                       <h2 style={{textAlign:'center'}}>{title}</h2>
                                     </Col> : null }
 
-        <Col xs={!this.state.isSearching ? 2 : 10} sm={!this.state.isSearching ? 2 : 6} smOffset={!this.state.isSearching ? 0 : 4} style={colPadding}>
+        <Col xs={!this.state.isSearching ? 2 : 10} sm={!this.state.isSearching ? 2 : 6} smOffset={!this.state.isSearching ? 0 : 4} style={noPadding}>
           <WeatherForm onSearch={this.changeLayout.bind(this)}/>
         </Col>
 
@@ -51,7 +51,6 @@ class Header extends Component {
 }
 
 function mapStateToProps({weather}){
-  //console.log('weather', weather)
   return { weather }
 }
 

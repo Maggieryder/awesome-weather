@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
+import Bootstrap, { Row } from 'react-bootstrap';
 
 import Chart from './chart'
 
@@ -32,42 +33,54 @@ class Charts extends Component {
     //$( window ).off('resize', this.updateDimensions)
     window.removeEventListener("resize", that.updateDimensions);
   }
+
   renderHour = (hr, id) => {
-      if (id < this.props.numHrs){
+    let { numHrs } = this.props
+    let { response, isLoading } = this.props.weather
+      if (id < numHrs){
         return <li
                   key={id}
-                  className={parseInt(hr.hour)%6===0 ? "marker" : null}
+                  className={ parseInt(hr.hour)%6===0 ? "marker" : null }
                   onMouseOver={this.props.onMouseOver.bind(this,id)} >
-                    <div>{hr.hour==='0' ? 'A' : hr.hour==='12' ? 'P' : ''}</div>
+                    <div>{!isLoading ? hr.hour==='0' ? 'A' : hr.hour==='12' ? 'P' : '' : '' }</div>
                 </li>
       }
   }
+  emptyHrs = (numHrs) => {
+    //let i = numHrs
+    for (let i = 0; i<24; i++){
+      return <li key="id">{i}</li>
+    }
+  }
   render() {
-    let {hourly} = this.props.weather
+    let {hourly, response, isLoading} = this.props.weather
     let {chart, numHrs} = this.props
-    console.log('RENDER CHART', chart)
-    let hours = hourly.map(hour => hour.FCTTIME),
-    temps = hourly.map(hour => hour.temp.english),
-    feellikes = hourly.map(hour => hour.feelslike.english),
-    winds = hourly.map(hour => hour.wspd.metric),
-    precips = hourly.map(hour => hour.pop),
-    skies = hourly.map(hour => hour.sky),
-    humidities = hourly.map(hour => hour.humidity)
+    //console.log('RENDER CHART', chart)
+    //console.log('CHART response',response)
+    let defaultHrs = ['','','','','','','','','','','','','','','','','','','','','','','','']
+    let rowStyle = {margin:0, overflow:'hidden'}
+    let hours, data
+    if(!response.error){
+      hours = hourly.map(hour => hour.FCTTIME)
+      data = {
+        temps: hourly.map(hour => hour.temp.english),
+        feels: hourly.map(hour => hour.feelslike.english),
+        winds: hourly.map(hour => hour.wspd.metric),
+        precips: hourly.map(hour => hour.pop),
+        skies: hourly.map(hour => hour.sky),
+        humidities: hourly.map(hour => hour.humidity)
+      }
+    }
 
     return (
-      <div className="row" style={{margin:0, width:'100%',overflow:'hidden'}}>
+      <Row style={rowStyle}>
         <div className="chart" style={{height:this.state.svgHeight}}>
-          {chart === 'temps' ? this.renderChart(temps.slice(0,numHrs)) : null}
-          {chart === 'feels' ? this.renderChart(feellikes.slice(0,numHrs)) : null}
-          {chart === 'winds' ? this.renderChart(winds.slice(0,numHrs)) : null}
-          {chart === 'precips' ? this.renderChart(precips.slice(0,numHrs)) : null}
-          {chart === 'skies' ? this.renderChart(skies.slice(0,numHrs)) : null}
-          {chart === 'humidities' ? this.renderChart(humidities.slice(0,numHrs)) : null}
+          {!response.error && !isLoading ? this.renderChart(data[chart].slice(0,numHrs)) : null }
           <ul className="hours">
-            {hours.map(this.renderHour)}
+            {!response.error && !isLoading ? hours.map(this.renderHour) : defaultHrs.map(this.renderHour)}
           </ul>
         </div>
-      </div>
+      </Row>
     )
   }
 }
