@@ -31,7 +31,6 @@ class Searchbar extends Component {
       this.props.onSearch(false)
       this.props.loading(true)
       this.props.getWeather(location)
-      //.then(() =>{this.props.loading(false)})
     }
   }
   handleSearchMode(){

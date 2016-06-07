@@ -6,10 +6,10 @@
   //padding-left: -10px;
   //margin-right:4px;
   font-size:18px;
-  color:$ko-color;
+  color:$hilite-color;
   border-radius:4px;
-  background:$bg-lite-transparent-weakest;
-  border:1px solid $bg-lite-transparent-weaker;
+  background:$bg-color;
+  border:1px solid $border-color;
 
   &.no-boundary {
     background:none;

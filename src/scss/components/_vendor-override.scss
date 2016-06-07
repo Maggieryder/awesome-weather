@@ -5,9 +5,9 @@
   .form-control,
   .input-group-btn .btn {
     height:40px;
-    background:$bg-lite-transparent-weakest;
-    border-color:$bg-lite-transparent-weaker;
-    color:$ko-color;
+    background:$bg-color;
+    border-color:$border-color;
+    color:$hilite-color;
     outline-style: none !important;
     box-shadow: none !important;
   }
@@ -58,16 +58,16 @@
 
   .btn-default {
     background: none;
-    color: $bg-lite-transparent;
-    border:1px solid $ko-color;
+    color: $primary-color;
+    border:1px solid $white;
   }
 
   .btn-primary,
   .btn-primary:active,
   .btn-primary:hover {
-    background:$bg-lite-transparent-weak;
-    color:$bg-grad-dark;
-    border:1px solid $ko-color;
+    background:$white-transparent-3;
+    color:$white;
+    border:1px solid $white;
   }
 
 }

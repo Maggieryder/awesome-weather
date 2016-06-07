@@ -38,9 +38,9 @@ class Header extends Component {
         </Col>
 
         {!this.state.isSearching ?  <Col xs={8} style={noPadding}>
-                                      <h2 style={{textAlign:'center'}}>{title}</h2>
+                                      <h1>{title}</h1>
                                     </Col> : null }
-
+                                    
         <Col xs={!this.state.isSearching ? 2 : 10} sm={!this.state.isSearching ? 2 : 6} smOffset={!this.state.isSearching ? 0 : 4} style={noPadding}>
           <WeatherForm onSearch={this.changeLayout.bind(this)}/>
         </Col>

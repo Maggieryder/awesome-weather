@@ -24,7 +24,3 @@ class ToggleBtn extends Component {
 }
 
 export default ToggleBtn;
-
-/*
-<span className={this.state.toggle===0 ? "glyphicon glyphicon-search" : "glyphicon glyphicon-remove"} aria-hidden="true" ></span>
-*/

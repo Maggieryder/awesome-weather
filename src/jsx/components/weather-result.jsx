@@ -149,7 +149,7 @@ class WeatherResult extends Component {
     ]
 
     return (
-      <div style={{textAlign:'center'}}>
+      <div>
 
         <Row style={noMargin}>
           <Col xs={12} sm={6} style={noPadding}>
@@ -158,7 +158,7 @@ class WeatherResult extends Component {
                 <ToggleBtn toggleFunction={this.toggleUnit.bind(this)} options={unitOptions} styleClass="pull-left" />
               </Col>
               <Col xs={8} style={{padding:'0 0 0 4px'}}>
-                <div className="time">{!isLoading && !response.error ? <h3>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h3> : null}</div>
+                <div className="time">{!isLoading && !response.error ? <h2>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h2> : null}</div>
               </Col>
               <Col xs={2} style={{padding:'0 0 0 4px'}}>
                 <ToggleBtn toggleFunction={this.toggleFavorite.bind(this)} options={favoriteOptions} styleClass="pull-right no-boundary"/>
@@ -172,9 +172,9 @@ class WeatherResult extends Component {
                 </Col>
                 <Col xs={12} style={noPadding}>
                   {!response.error ? <div style={{width:svgWidth+'px', height:svgHeight+'px', margin: '-5px auto'}}>
-                    <WeatherIcon stroke="2" opacity={.8} desc={icons[hrIndex]} isDark={isDark}/>
+                    <WeatherIcon stroke="2" opacity={1} desc={icons[hrIndex]} isDark={isDark}/>
                   </div> : null }
-                  <h3>{!response.error ? conditions[hrIndex] : null }</h3>
+                  <h2>{!response.error ? conditions[hrIndex] : null }</h2>
                 </Col>
               </Row> :
               <Row style={noMargin}>
@@ -182,9 +182,6 @@ class WeatherResult extends Component {
               </Row>}
           </Col>
         </Row>
-
-
-
 
         <div className="footer">
           <Meters hrIndex={hrIndex} onSelect={(type)=>{this.setState({chart:type})}}/>

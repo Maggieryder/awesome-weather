@@ -11,7 +11,7 @@ html, body {
 }
 
 body {
-  -webkit-text-size-adjust:none;
+  -webkit-text-size-adjust: none;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
   -webkit-transform: translate3d(0,0,0);
@@ -21,23 +21,31 @@ body {
   line-height: 1.2em;
   font-weight: 200;
 	font-style: normal;
-  color: $bg-lite-transparent;
+  color: $primary-color;
+  text-align: center;
 }
 
-h2 {
+h1 {
   font: 27px 'azo-sans-web';
   line-height:29px;
   font-weight: 200;
-  color: $bg-lite-transparent;
+  color: $primary-color;
   margin:5px 0px;
-  //margin-bottom:6px;
+}
+
+h2 {
+  font: 18px 'azo-sans-web';
+  line-height: 1.1em;
+  font-weight: 300;
+  color: $hilite-color;
+  margin: 0px;
 }
 
 h3 {
   font: 18px 'azo-sans-web';
   line-height: 1.1em;
   font-weight: 300;
-  color: $bg-lite-transparent;
+  color: $primary-color;
   margin:0px;
 }
 
@@ -58,8 +66,8 @@ header {
   width: 100%;
   height: 52px;
   padding:6px 8px;
-  border-bottom:1px solid $bg-lite-transparent-weaker;
-  background: $bg-lite-transparent-weakest;
+  border-bottom:1px solid $border-color;
+  background: $bg-color;
 }
 
 footer {
@@ -67,28 +75,25 @@ footer {
   bottom: 0;
   width: 100%;
   height: 50px;
-  background: $bg-dark-transparent;
+  background: $black-transparent-2;
   line-height:30px;
 
   h4 {
-    color: $bg-lite-transparent;
     margin: 17px 20px;
   }
 }
-
-
 
 li {
   list-style: none;
 }
 
 a, a:visited {
-  color:$bg-lite-transparent;
+  color:$primary-color;
   text-decoration: none !important;
 }
 
 a:hover, a:active {
-  color:$ko-color;
+  color:$hilite-color;
   text-decoration: none !important;
 }
 
@@ -109,7 +114,7 @@ textarea:focus, input:focus{
 }
 
 @media screen and (max-width: 320px) {
-  h2 {
+  h3 {
     font-size:23px;
     line-height:25px;
     margin-top:7px;

@@ -28,7 +28,7 @@ ul.hours {
     	bottom: 0;
     	right: 0;
       @include center-box();
-      border-left: 1px solid $bg-lite-transparent-weak;
+      border-left: 1px solid $white-transparent-3;
     }
   }
 
@@ -46,7 +46,7 @@ ul.hours {
   //li:nth-child(6n):not(:last-child) {
   //li:nth-child(6n)
   li.marker {
-    border-left: 1px solid $bg-lite-transparent;
+    border-left: 1px solid $primary-color;
   }
 
 }

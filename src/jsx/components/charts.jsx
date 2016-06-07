@@ -57,7 +57,7 @@ class Charts extends Component {
     let {chart, numHrs} = this.props
     //console.log('RENDER CHART', chart)
     //console.log('CHART response',response)
-    let defaultHrs = ['','','','','','','','','','','','','','','','','','','','','','','','']
+    let defaultHrs = ['','','','','','','','','','','','','','','','','','','','','','','',''] // hack attack!!
     let rowStyle = {margin:0, overflow:'hidden'}
     let hours, data
     if(!response.error){
