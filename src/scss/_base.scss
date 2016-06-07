@@ -50,10 +50,9 @@ h3 {
 }
 
 h4 {
-  font-size: 13px;
-  font-weight:300;
-  font-style:oblique;
-  color: $primary-color;
+  font-size: 15px;
+  font-weight:500;
+  color: $default-color;
 }
 
 p {
@@ -114,7 +113,7 @@ textarea:focus, input:focus{
 }
 
 @media screen and (max-width: 320px) {
-  h3 {
+  h1 {
     font-size:23px;
     line-height:25px;
     margin-top:7px;

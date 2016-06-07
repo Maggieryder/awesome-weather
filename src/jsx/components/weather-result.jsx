@@ -44,6 +44,15 @@ class WeatherResult extends Component {
     window.removeEventListener("resize", that.updateDimensions);
   }
 
+  componentWillReceiveProps(props){
+    let { response, isLoading } = props.weather
+    //console.log('componentWillReceiveProps', response)
+    if(!isLoading && response.error){
+        console.log('ERROR', response)
+        this.props.toggleModal({title:'YIKES!',body:response.error.description})
+    }
+  }
+
   renderWindStr (spd/*, gust*/) {
     let str
     switch (spd){
@@ -125,11 +134,7 @@ class WeatherResult extends Component {
       isDark = !isLoading ? this.afterdark(sunphase, dates[hrIndex].hour) : false
     }
 
-    if(response.error){
-        console.log('ERROR', response.error.description)
-        let message = <h3>{response.error.description}</h3>
-        this.props.toggleModal({title:'YIKES!',body:response.error.description})
-    }
+
 
     //console.log('isDark',isDark)
 

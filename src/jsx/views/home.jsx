@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { getWeather, loading, toggleModal } from '../../actions/index';
+import { getWeather, loading, modal, toggleModal } from '../../actions/index';
 import {Link} from 'react-router';
 
 import ModalInstance from '../components/modal'
@@ -27,7 +27,17 @@ class Home extends Component {
     this.props.getWeather(query)
   }
 
+
+/*
+componentWillReceiveProps(props){
+  let { modal } = props
+  console.log('componentWillReceiveProps', modal)
+  if( modal && !modal.modalOpen ){
+      //this.getLocation('autoip');
+  }
+}
   renderPageOptions(weather){
+  let {isLoading} = weather;
     if (weather){
       //console.log('RENDER PAGE', weather)
       let {response, location, unit, isLoading } = weather
@@ -47,23 +57,13 @@ class Home extends Component {
 
   toggleModal = (content) => {
     this.props.toggleModal(content);
-  }
+  }*/
 
   render(){
-    let {isLoading} = this.props.weather;
-    const that = this;
-    let divInfoStyle = {
-      height:'100%',
-      textAlign:'center',
-      paddingTop:'200px'
-    }
-
-
-
     return (
       <div>
-        {this.renderPageOptions(this.props.weather)}
-        <ModalInstance />
+        <WeatherResult />
+        <ModalInstance onClose={this.getLocation}/>
       </div>
     );
   }
@@ -74,3 +74,5 @@ function mapStateToProps({weather}){
 }
 
 export default connect(mapStateToProps, { getWeather, loading, toggleModal })(Home);
+
+/*{this.renderPageOptions(this.props.weather)}*/

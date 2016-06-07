@@ -69,7 +69,7 @@ class Searchbar extends Component {
                   value={this.state.term}
                   ref={(ref) => this.myTextInput = ref} />
           <div className="input-group-btn" >
-            <button className="btn" style={btnStyle}><span className="glyphicon glyphicon-search" aria-hidden="true" ></span></button>
+            <button className="btn" style={btnStyle}><Glyphicon glyph="search" /></button>
           </div>
         </div>
       </form>

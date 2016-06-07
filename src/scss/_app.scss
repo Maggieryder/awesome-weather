@@ -47,6 +47,10 @@
   }
 }
 
+.center-box {
+  @include center-box();
+}
+
 .time {
   //@include calc(width, "100% - 4px");
   width: 100%;

@@ -9,9 +9,9 @@ export default function(state = INITIAL_STATE, action) {
   switch(action.type){
     case TOGGLE_MODAL_OPEN:
     console.log('action recieved for TOGGLE MODAL', action.payload.content)
-    console.log('state.modalOpen', !state.modalOpen)
+    console.log('state.modalOpen', action.payload.content ? true : false)
     return {
-      modalOpen: !state.modalOpen,
+      modalOpen: action.payload.content ? true : false,
       modalContent: action.payload.content
     }
     default:
