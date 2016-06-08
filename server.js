@@ -11,7 +11,25 @@ var isProduction = process.env.NODE_ENV === 'production',
     port = isProduction ? process.env.PORT : 3000,
     publicPath = path.resolve(__dirname, 'dist');
 
+/*
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});*/
+
+
+app.use(function(req, res, next){
+  if (req.headers['x-forwarded-proto']==='https'){
+    res.redirect('http://'+ req.hostname + req.url);
+  } else {
+    next();
+  }
+});
+
+
 app.use(express.static(publicPath));
+
 
 // If you only want this for development, you would of course
 // put it in the "if" block below
@@ -32,6 +50,10 @@ if (!isProduction) {
     });
   });
 }
+
+proxy.on('proxyReq', function(proxyReq, req, res, options){
+  //proxyReq.setHeader('Access-Control-Allow-Origin', '*');
+})
 
 proxy.on('error', function(e) {
   console.log('Could not connect to proxy, please try again...');

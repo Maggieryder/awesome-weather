@@ -3,18 +3,30 @@ import axios from 'axios'
 const API_KEY = '0397f1acfa8a3cd2'
 const API_URL = 'http://api.wunderground.com/api/'
 const API_PARAMS = '/geolookup/hourly10day/forecast/astronomy/'
+const AUTO_COMPLETE_URL = 'http://autocomplete.wunderground.com/'//http://autocomplete.wunderground.com/aq?query=san%20f
 
 export const GET_WEATHER = 'GET_WEATHER'
 
 export function getWeather(location) {
   let encodedLocation = encodeURIComponent(location)
-  const requestUrl = `${API_URL}${API_KEY}${API_PARAMS}/q/${encodedLocation}.json`
-  const request = axios.get(requestUrl)
+  const requestURL = `${API_URL}${API_KEY}${API_PARAMS}/q/${encodedLocation}.json`
+  const request = axios.get(requestURL)
 
   //console.log('request', request)
 
   return {
     type: GET_WEATHER,
+    payload: request
+  }
+}
+
+export const AUTO_COMPLETE = 'AUTO_COMPLETE'
+
+export function autoComplete(query){
+  const requestURL = `${AUTO_COMPLETE_URL}aq?query=${encodeURIComponent(query)}`
+  const request = axios.get(requestURL)
+  return {
+    type: AUTO_COMPLETE,
     payload: request
   }
 }

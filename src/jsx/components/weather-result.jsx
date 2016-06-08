@@ -132,11 +132,8 @@ class WeatherResult extends Component {
       conditions = hourly.map(hour => hour.wx),
       icons = hourly.map(hour => hour.icon),
       isDark = !isLoading ? this.afterdark(sunphase, dates[hrIndex].hour) : false
+      //console.log('isDark',isDark)
     }
-
-
-
-    //console.log('isDark',isDark)
 
     const rowStyle = {margin:'8px 4px 0 4px'}
 

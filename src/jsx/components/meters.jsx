@@ -80,8 +80,3 @@ function mapStateToProps({weather}){
 }
 
 export default connect(mapStateToProps)(Meters)
-
-
-/*
-
-*/

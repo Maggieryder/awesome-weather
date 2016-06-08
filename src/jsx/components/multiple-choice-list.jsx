@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 import Bootstrap, { Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 export default (props) => {
-  let { items, onSelect } = props;
+  let { show, items, onSelect } = props;
+  
   return (
+    show ?
     <Col sm={6} smOffset={3}>
       <ListGroup className="choices">
       {items.map((item, id) => {
@@ -13,5 +15,6 @@ export default (props) => {
       })}
       </ListGroup>
     </Col>
+    : null
   );
 }
