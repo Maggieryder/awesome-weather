@@ -9,9 +9,8 @@ npm-debug.log*
 
 ### Directories ###
 dist
+unused
 node_modules
-WEATHER-pix
-plain_weather
 .sass-cache
 uploads
 test/temp

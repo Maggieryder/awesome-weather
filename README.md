@@ -14,14 +14,28 @@ npm start
 ## API
 * WeatherUnderground
 
+## Online Demo
+* 
+
+## Features
+* React Redux Bootstrap architecture
+
+* Webpack LiveEditing
+
 
 ## Todo
-* Hourly and 3-day forecasts
+* AutoComplete on search bar
+
+* More on timeline functionality
+
+* More on UI meter switching
+
+* Radar mapStateToProps
+
+* More on full browser layout
 
 * More work on sass
 
-* Introduce Redux architecture?
-
-* Weather reporting?
-
 * Adding photos
+
+* Migrate to React Native for mobile

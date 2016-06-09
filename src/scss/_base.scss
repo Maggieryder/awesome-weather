@@ -15,43 +15,47 @@ body {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
   -webkit-transform: translate3d(0,0,0);
+  -webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
   outline: none;
-  font-family: 'azo-sans-web';
+  font-family: 'AzoSans-Light';
   font-size: 15px;
   line-height: 1.2em;
-  font-weight: 200;
+  font-weight: normal;
 	font-style: normal;
   color: $primary-color;
   text-align: center;
+  background: $app-bg;
 }
 
 h1 {
-  font: 27px 'azo-sans-web';
+  font: 27px 'AzoSans-Light';
   line-height:29px;
-  font-weight: 200;
-  color: $primary-color;
+  //font-weight: normal;
+  color: $hilite-color;
   margin:5px 0px;
 }
 
 h2 {
-  font: 18px 'azo-sans-web';
+  font: 18px 'AzoSans-Regular';
   line-height: 1.1em;
-  font-weight: 300;
+  //font-weight: normal;
   color: $hilite-color;
   margin: 0px;
 }
 
 h3 {
-  font: 18px 'azo-sans-web';
+  font: 18px 'AzoSans-Regular';
   line-height: 1.1em;
-  font-weight: 300;
+  //font-weight: normal;
   color: $primary-color;
   margin:0px;
 }
 
 h4 {
+  font: 18px 'AzoSans-Regular';
   font-size: 15px;
-  font-weight:500;
+  //font-weight:normal;
   color: $default-color;
 }
 

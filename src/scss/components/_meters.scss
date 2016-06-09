@@ -22,24 +22,30 @@
     width:100%;
     height:20px;
     background:$bg-color;
+    box-shadow: none;
     padding:0;
+    font-family: 'AzoSans-light';
     font-size: 11px;
     line-height:13px;
-    font-weight: 200;
+    //font-weight: normal;
 
 
     a {
-      padding:3px 0;
-      color: $white-transparent-4;
-      background:$bg-color !important;
+      padding:4px 0 3px 0;
+      color: $primary-color;
+      background: none !important;
     }
 
 
     a:hover {
-      color: $primary-color !important;
-      background:$bg-color;
+      color: $hilite-color;
+      background:$bg-color !important;
     }
 
+    &.open > a {
+      color: $hilite-color;
+      background: $bg-color !important;
+    }
 
     .dropdown-menu {
       margin:0;
@@ -47,8 +53,8 @@
       width:100%;
       height:100%;
       min-width:100%;
-      color: $white-transparent-4;
-
+      color: $white-transparent-5;
+      background: none;
       border-radius:0;
       border:none;
       box-shadow:none;
@@ -58,23 +64,23 @@
 
         //@include calc(height, "33.33% - 1px");
         height:23px;
-        background: $bg-opaque;
+        background: $bg-color;
 
         a {
           height:100%;
-          font-family: 'azo-sans-web';
+          font-family: 'AzoSans-Light';
           font-size: 11px;
           line-height:13px;
-          font-weight: 200;
+          //font-weight: normal;
           color: $primary-color;
           padding:6px 0 0 0;
           border-bottom:1px solid $bg-color;
-
+          background: none !important;
 
         }
 
         a:hover {
-          background: $bg-opaque !important;
+          background: $black-transparent-1 !important;
           color: $hilite-color !important;
         }
 
@@ -84,25 +90,26 @@
     }
   }
 
-  .label.open > a {
-    color: $primary-color;
-  }
-
   .reading {
     //padding-top:20px;
     //margin-top:15px;
     height:70px;
     color: inherit;
+    font-family: 'AzoSans-Regular';
     font-size: 30px;
-    line-height:15px;
-    font-weight:200;
+    line-height:40px;
+    //font-weight:normal;
 
     .small {
       font-size: 14px;
     }
 
     > a {
-      @include center-box();
+      //@include center-box();
+      width: 100%;
+      height: 100%;
+      padding-top:15px;
+      display:  block;
     }
 
   }
@@ -132,6 +139,11 @@
     .reading {
       height:60px;
       font-size: 25px;
+      line-height:33px;
+
+      a {
+        padding-top:12px;
+      }
 
     }
   }

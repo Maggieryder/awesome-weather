@@ -157,7 +157,7 @@ class WeatherResult extends Component {
           <Col xs={12} sm={6} style={noPadding}>
             <Row style={{margin:'6px 8px 0 4px'}}>
               <Col xs={2} style={{padding:'0 0 0 4px'}}>
-                <ToggleBtn toggleFunction={this.toggleUnit.bind(this)} options={unitOptions} styleClass="pull-left" />
+                <ToggleBtn toggleFunction={this.toggleUnit.bind(this)} options={unitOptions} styleClass="unit pull-left" />
               </Col>
               <Col xs={8} style={{padding:'0 0 0 4px'}}>
                 <div className="time">{!isLoading && !response.error ? <h2>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h2> : null}</div>

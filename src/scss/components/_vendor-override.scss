@@ -15,13 +15,18 @@
 }
 
 .list-group-item {
+  font-family: 'AzoSans-Regular';
   color:$default-color;
-  font-weight:400;
+  //font-weight:400;
 }
 
 .modal {
+  font-family: 'AzoSans-Regular';
   color:$default-color;
-  font-weight:400;
+
+  .modal-title {
+    font-family: 'AzoSans-Regular';
+  }
 }
 
 
@@ -34,7 +39,8 @@
   .popover-title {
     padding:5px 14px;
     color:#333;
-    font-weight: 400;
+    font-family: 'AzoSans-Regular';
+    //font-weight: 400;
   }
 
   .popover-content {
@@ -46,10 +52,10 @@
       li {
         padding:4px 8px;
         text-align:center;
-        font-family: 'azo-sans-web';
+        font-family: 'AzoSans-Regular';
         font-size: 14px;
         line-height: 1.4em;
-        font-weight: 300;
+        //font-weight: normal;
 
       }
 

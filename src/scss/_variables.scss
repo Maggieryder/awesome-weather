@@ -27,19 +27,19 @@ $black-transparent-9: rgba(0, 0, 0, .9);
 $black: #000;
 
 // background
-$bg-grad-dark: #172432;
-$bg-grad-lite: #244966;//#24445d;//#214771;//#243C56;
+$bg-grad-dark: rgba(18,28,40,0); // #172432; // rgba(23,42,63,0); //#172432;
+$bg-grad-lite: rgba(23,46,68,.95); // #244966; // rgba(23,46,68,.95); // #244966; // rgba(23,42,63,1); //#244966;//#24445d;//#214771;//#243C56;
 $app-bg: linear-gradient(to top, $bg-grad-lite 10%, $bg-grad-dark 100%);
 
 //$default-color: #787878;
 //$primary-color: #337ab7;
-$default-color: #172432;
+$default-color: #21405a; //#172432;
 $primary-color: $white-transparent-8;
 
 $hilite-color: $white;
 
-$border-color: $white-transparent-1;
-$bg-color: $white-transparent-05;
+$border-color: $white-transparent-2;
+$bg-color: $white-transparent-1;
 $bg-opaque: #21405a;
 
 $ugly: #fc0;

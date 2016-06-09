@@ -5,8 +5,9 @@
     padding:4px 0;
     border-radius:4px;
     @include calc(width, "100% - 4px");
+    font-family: 'AzoSans-Regular';
     font-size:14px;
-    font-weight:300;
+    //font-weight:300;
     line-height:14px;
     color:$primary-color;
     cursor:pointer;

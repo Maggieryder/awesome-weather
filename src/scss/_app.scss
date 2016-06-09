@@ -1,8 +1,12 @@
 
 #app {
   position: relative;
-  /*background: url(../images/avatar.png) no-repeat 100% 50%, $app-bg;*/
-  background: $app-bg;
+  background-color: #172432;
+  background-image: $app-bg, url(../images/rain.jpg); // no-repeat 100% 50%;//fly00712 //$app-bg,
+  background-position: center;
+  background-size: cover;
+  //background-blend-mode: overlay;
+  //background: $app-bg;
   height: 100%;
 }
 
@@ -39,10 +43,15 @@
   //border-top:1px solid $border-color;
 }
 
+.unit {
+  font-family: 'AzoSans-Regular';
+}
+
 .choices {
 
   li {
-    font-weight:300;
+    font-family: 'AzoSans-Regular';
+    //font-weight:300;
     color:$default-color;
   }
 }

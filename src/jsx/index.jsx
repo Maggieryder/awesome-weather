@@ -9,7 +9,7 @@ import reducers from '../reducers'
 
 import '../vendor/bootstrap.min.css'
 //import '../vendor/bootstrap-theme.min.css'
-import '../fonts/magnesium/font.scss'
+import '../fonts/azo/font.scss'
 import '../scss/main.scss'
 
 const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore)

@@ -4,7 +4,7 @@ import { Sparklines, SparklinesCurve/*, SparklinesBars/*, SparklinesReferenceLin
 export default (props) => {
 
   let chartStyle = {
-    stroke:'rgba(255,255,255,.3)',
+    stroke:'rgba(255,255,255,.4)',
     strokeWidth: '1px',
     fill:'#fff',
     fillOpacity: '.05'
