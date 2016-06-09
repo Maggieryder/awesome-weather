@@ -15,7 +15,7 @@ npm start
 * WeatherUnderground
 
 ## Online Demo
-* 
+*
 
 ## Features
 * React Redux Bootstrap architecture
@@ -36,6 +36,6 @@ npm start
 
 * More work on sass
 
-* Adding photos
+* Dynamic photos
 
 * Migrate to React Native for mobile
