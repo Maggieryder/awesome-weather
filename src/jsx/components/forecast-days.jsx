@@ -15,9 +15,9 @@ class DayForecast extends Component {
       return <ForecastDay key={id}
                   id={id}
                   dayIndex={this.props.dayIndex}
-                  day={!isLoading && !response.error ? date.weekday_short : null }
-                  temps={!isLoading && !response.error ? [high[unitType],low[unitType]] : [null, null] }
-                  icon={!isLoading && !response.error ? icon : null }
+                  day={!isLoading && !response.error && !response.results ? date.weekday_short : null }
+                  temps={!isLoading && !response.error && !response.results ? [high[unitType],low[unitType]] : [null, null] }
+                  icon={!isLoading && !response.error && !response.results ? icon : null }
                   onClick={this.props.onSelect.bind(this, id)}
               />
     }
@@ -25,7 +25,7 @@ class DayForecast extends Component {
 
   render() {
     let { forecast, isLoading, response } = this.props.weather
-    let days = isLoading || response.error ? [{},{},{},{}] : forecast.simpleforecast.forecastday //hack attack!!
+    let days = isLoading || response.error || response.results ? [{},{},{},{}] : forecast.simpleforecast.forecastday //hack attack!!
     const rowStyle = {margin:'6px 4px'}
     return (
       <Row style={rowStyle}>

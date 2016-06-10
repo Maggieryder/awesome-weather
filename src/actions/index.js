@@ -23,8 +23,12 @@ export function getWeather(location) {
 export const AUTO_COMPLETE = 'AUTO_COMPLETE'
 
 export function autoComplete(query){
+  const instance = axios.create({
+    headers: {'Content-type':'application/json'},
+    withCredentials: false
+  })
   const requestURL = `${AUTO_COMPLETE_URL}aq?query=${encodeURIComponent(query)}`
-  const request = axios.get(requestURL)
+  const request = instance.get(requestURL)
   return {
     type: AUTO_COMPLETE,
     payload: request

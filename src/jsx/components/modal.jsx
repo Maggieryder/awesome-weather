@@ -15,7 +15,7 @@ class ModalInstance extends Component {
     let { modalOpen, modalContent } = this.props.modal
     console.log('modalContent', modalContent)
     return (
-      <Modal show={modalOpen} onHide={this.toggleModal}>
+      <Modal show={modalOpen} bsSize="small" onHide={this.toggleModal}>
         <Modal.Header closeButton>
           <Modal.Title>{modalContent ? modalContent.title : null }</Modal.Title>
         </Modal.Header>

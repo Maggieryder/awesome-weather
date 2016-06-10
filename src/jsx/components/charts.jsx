@@ -60,7 +60,7 @@ class Charts extends Component {
     let defaultHrs = ['','','','','','','','','','','','','','','','','','','','','','','',''] // hack attack!!
     let rowStyle = {margin:0, overflow:'hidden'}
     let hours, data
-    if(!response.error){
+    if(!response.error && !response.results){
       hours = hourly.map(hour => hour.FCTTIME)
       data = {
         temps: hourly.map(hour => hour.temp.english),
@@ -75,9 +75,9 @@ class Charts extends Component {
     return (
       <Row style={rowStyle}>
         <div className="chart" style={{height:this.state.svgHeight}}>
-          {!response.error && !isLoading ? this.renderChart(data[chart].slice(0,numHrs)) : null }
+          {!response.error && !response.results && !isLoading ? this.renderChart(data[chart].slice(0,numHrs)) : null }
           <ul className="hours">
-            {!response.error && !isLoading ? hours.map(this.renderHour) : defaultHrs.map(this.renderHour)}
+            {!response.error && !response.results && !isLoading ? hours.map(this.renderHour) : defaultHrs.map(this.renderHour)}
           </ul>
         </div>
       </Row>

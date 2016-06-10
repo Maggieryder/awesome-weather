@@ -4,20 +4,33 @@
 
   .form-control,
   .input-group-btn .btn {
-    height:40px;
-    background:$bg-color;
-    border-color:$border-color;
-    color:$hilite-color;
+    height: 40px;
+    background: $bg-color-dark;
+    border-color: $border-color;
+    color: $hilite-color;
     outline-style: none !important;
     box-shadow: none !important;
   }
 
+  .input-group-btn .btn {
+    background: $bg-color;
+  }
+
 }
 
-.list-group-item {
-  font-family: 'AzoSans-Regular';
-  color:$default-color;
-  //font-weight:400;
+.list-group {
+
+  .list-group-item {
+    font-family: 'AzoSans-Regular';
+    color: $default-color;
+
+  }
+
+  .list-group-item:hover {
+    color:$primary-color;
+    background:$default-color;
+  }
+
 }
 
 .modal {
@@ -26,6 +39,21 @@
 
   .modal-title {
     font-family: 'AzoSans-Regular';
+  }
+
+  .list-group{
+
+    margin:-5px -15px;
+
+    .list-group-item {
+      border-radius: 0;
+      border:none;
+      margin:0;
+    }
+
+    .list-group-item:not(:last-child) {
+      border-bottom:1px solid $black-transparent-1;
+    }
   }
 }
 

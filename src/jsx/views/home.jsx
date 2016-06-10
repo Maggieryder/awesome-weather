@@ -9,10 +9,15 @@ class Home extends Component {
   componentWillMount(){
     this.getLocation('autoip');
   }
-  
+
   getLocation = (query) => {
     this.props.loading(true)
     this.props.getWeather(query)
+  }
+
+  handleChoiceSelect = (query) => {
+    console.log('QID', query);
+    this.getLocation(query);
   }
 
   render(){

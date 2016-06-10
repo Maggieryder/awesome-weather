@@ -1,22 +1,23 @@
 var express = require('express'),
-    path = require('path'),
+    path = require('path');
     httpProxy = require('http-proxy');
 
 var proxy = httpProxy.createProxyServer({
   //changeOrigin: true
 });
+
 var app = express();
 
 var isProduction = process.env.NODE_ENV === 'production',
     port = isProduction ? process.env.PORT : 3000,
     publicPath = path.resolve(__dirname, 'dist');
 
-/*
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  //res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
-});*/
+});
 
 
 app.use(function(req, res, next){

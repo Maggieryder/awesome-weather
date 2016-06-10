@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import Bootstrap, { Row, Col, Glyphicon } from 'react-bootstrap';
-import { toggleUnit, toggleFavorite, toggleModal } from '../../actions/index'
+import { getWeather, loading, toggleUnit, toggleFavorite, toggleModal } from '../../actions/index'
 import ToggleBtn from './toggle-btn'
 //import ModalInstance from './modal'
-
+import MultipleChoices from './multiple-choice-list';
 import DayForecast from './forecast-days'
 import Charts from './charts'
 import Meters from './meters'
@@ -46,11 +46,26 @@ class WeatherResult extends Component {
 
   componentWillReceiveProps(props){
     let { response, isLoading } = props.weather
-    //console.log('componentWillReceiveProps', response)
+    console.log('componentWillReceiveProps', props)
     if(!isLoading && response.error){
         console.log('ERROR', response)
         this.props.toggleModal({title:'YIKES!',body:response.error.description})
     }
+    if(!isLoading && response.results){
+      console.log('MULTIPLE CHOICES', response.results)
+      this.props.toggleModal({title:'PICK ONE!',body:<MultipleChoices className="choices" items={response.results} onSelect={this.handleChoiceSelect} />})
+    }
+  }
+
+  handleChoiceSelect = (query) => {
+    this.props.toggleModal(null)
+    console.log('QID', query);
+    this.getLocation(query);
+  }
+
+  getLocation = (query) => {
+    this.props.loading(true)
+    this.props.getWeather(query)
   }
 
   renderWindStr (spd/*, gust*/) {
@@ -127,7 +142,7 @@ class WeatherResult extends Component {
     let {hrIndex, svgWidth, svgHeight} = this.state
     let {response, hourly, location, sunphase, unit, isLoading } = this.props.weather
     let dates, conditions, icons, isDark
-    if (!isLoading && !response.error) {
+    if (!isLoading && !response.error && !response.results) {
       dates = hourly.map(hour => hour.FCTTIME),
       conditions = hourly.map(hour => hour.wx),
       icons = hourly.map(hour => hour.icon),
@@ -160,7 +175,7 @@ class WeatherResult extends Component {
                 <ToggleBtn toggleFunction={this.toggleUnit.bind(this)} options={unitOptions} styleClass="unit pull-left" />
               </Col>
               <Col xs={8} style={{padding:'0 0 0 4px'}}>
-                <div className="time">{!isLoading && !response.error ? <h2>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h2> : null}</div>
+                <div className="time">{!isLoading && !response.error && !response.results ? <h2>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h2> : null}</div>
               </Col>
               <Col xs={2} style={{padding:'0 0 0 4px'}}>
                 <ToggleBtn toggleFunction={this.toggleFavorite.bind(this)} options={favoriteOptions} styleClass="pull-right no-boundary"/>
@@ -170,13 +185,13 @@ class WeatherResult extends Component {
             {!isLoading ?
               <Row style={noMargin}>
                 <Col xs={12} style={noPadding}>
-                  <p>{!response.error ? dates[hrIndex].month_name+' '+dates[hrIndex].mday+', '+dates[hrIndex].year : '' }</p>
+                  <p>{!response.error && !response.results ? dates[hrIndex].month_name+' '+dates[hrIndex].mday+', '+dates[hrIndex].year : '' }</p>
                 </Col>
                 <Col xs={12} style={noPadding}>
-                  {!response.error ? <div style={{width:svgWidth+'px', height:svgHeight+'px', margin: '-5px auto'}}>
+                  {!response.error && !response.results ? <div style={{width:svgWidth+'px', height:svgHeight+'px', margin: '-5px auto'}}>
                     <WeatherIcon stroke="2" opacity={1} desc={icons[hrIndex]} isDark={isDark}/>
                   </div> : null }
-                  <h2>{!response.error ? conditions[hrIndex] : null }</h2>
+                  <h2>{!response.error && !response.results ? conditions[hrIndex] : null }</h2>
                 </Col>
               </Row> :
               <Row style={noMargin}>
@@ -199,4 +214,4 @@ function mapStateToProps({ weather }){
   return { weather }
 }
 
-export default connect(mapStateToProps, { toggleUnit, toggleFavorite, toggleModal })(WeatherResult)
+export default connect(mapStateToProps, { getWeather, loading, toggleUnit, toggleFavorite, toggleModal })(WeatherResult)

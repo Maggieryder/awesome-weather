@@ -38,15 +38,11 @@ class Searchbar extends Component {
     }
   }
 
-  handleChoiceSelect = (query) => {
-    console.log('QID', query);
-    this.getLocation(query);
-  }
-
   getLocation = (query) => {
     this.props.loading(true)
     this.props.getWeather(query)
   }
+
 
   handleSearchMode(){
     this.setState({searchmode:true})
@@ -90,7 +86,6 @@ class Searchbar extends Component {
                   placeholder="City & State/Country OR Zip"
                   value={this.state.term}
                   ref={(ref) => this.myTextInput = ref} />
-          <MultipleChoices className="choices" show={this.state.term.length >= 4} items={locations} onSelect={this.handleChoiceSelect} />
           <div className="input-group-btn" >
             <button className="btn" style={btnStyle}><Glyphicon glyph="search" /></button>
           </div>
