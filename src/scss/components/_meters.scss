@@ -24,7 +24,7 @@
     background:$bg-color;
     box-shadow: none;
     padding:0;
-    font-family: 'AzoSans-light';
+    font-family: $font-family-reg;
     font-size: 11px;
     line-height:13px;
     //font-weight: normal;
@@ -68,7 +68,7 @@
 
         a {
           height:100%;
-          font-family: 'AzoSans-Light';
+          font-family: $font-family-reg;
           font-size: 11px;
           line-height:13px;
           //font-weight: normal;
@@ -95,7 +95,7 @@
     //margin-top:15px;
     height:70px;
     color: inherit;
-    font-family: 'AzoSans-Regular';
+    font-family: $font-family-bold;
     font-size: 30px;
     line-height:40px;
     //font-weight:normal;

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import Bootstrap, { Modal } from 'react-bootstrap';
-import { toggleModal, modal } from '../../actions/index'
+import { Modal } from 'react-bootstrap';
+import { toggleModal } from '../../actions/index'
 
 class ModalInstance extends Component {
   constructor(props) {

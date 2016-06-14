@@ -43,15 +43,6 @@
   //border-top:1px solid $border-color;
 }
 
-.choices {
-
-  li {
-    font-family: 'AzoSans-Regular';
-    //font-weight:300;
-    color:$default-color;
-  }
-}
-
 .center-box {
   @include center-box();
 }

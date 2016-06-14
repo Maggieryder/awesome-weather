@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import Bootstrap, { Nav, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Nav, NavDropdown, MenuItem } from 'react-bootstrap';
 
 let unusedTypes = [ 'dewpoints', 'pressures', 'uvis'];
 
 let suffixes = (type, unit) => {
   switch (type){
-    case "degrees":
+    case 'degrees':
     return <sup>&deg;</sup>
-    case "speed" :
+    case 'speed' :
     return unit==='metric' ? <span className="small"> km/h</span> : <span className="small"> mph</span>
-    case "percentage":
+    case 'percentage':
     return <sup>&#37;</sup>
-    case "measure":
+    case 'measure':
     return unit==='metric' ? <span className="small">mm</span> : <sup>&Prime;</sup>
     default:
     return null
@@ -30,12 +30,12 @@ class Meter extends Component {
     this.props.onClick(this.props.type);
     this.setState({dropdownOpen:false})
   }
-  handleClick = (e) => {
+  handleClick = () => {
     this.props.onClick(this.props.type);
   }
   render(){
     let { data, label, suffix, unit, active, isLoading, hasError } = this.props
-    //console.log('rendering meter...', this.props.type, this.state.dropdownOpen)
+    label==='winds' ? console.log('rendering winds', data) : null;
     return (
       <li className={'meter'+active} >
         <Nav>

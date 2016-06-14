@@ -1,4 +1,6 @@
-// colors //
+/*
+ * Colors
+ * ========================================================================== */
 $transparent: rgba(0, 0, 0, 0);
 
 //whites
@@ -44,3 +46,14 @@ $bg-color-dark: $black-transparent-2;
 $bg-opaque: #21405a;
 
 $ugly: #fc0;
+
+/*
+ * Typography
+ * ==========================================================================*/
+
+ $font-family-reg:      'AzoSans-Light', sans-serif;
+ $font-family-bold:     'AzoSans-Regular', sans-serif;
+
+ /*
+ * Layout
+ * ========================================================================== */

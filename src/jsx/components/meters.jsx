@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import Bootstrap, { Row, Col} from 'react-bootstrap';
+import { Row, Col} from 'react-bootstrap';
 import Meter from './meter'
 
 class Meters extends Component {
@@ -10,7 +10,7 @@ class Meters extends Component {
     this.state = {
       hrIndex: 0,
       hasError:false,
-      chart: 'temps',
+      chart: 'temps'
     }
   }
   handleMeterClick(type){
@@ -59,7 +59,7 @@ class Meters extends Component {
         {type:'winds', label:'Winds', data:hourly.map(hour => hour.wspd[unit]), data2:hourly.map(hour => hour.wdir.dir), suffix:'speed'},
         {type:'precips', label:'Precipitation', data:hourly.map(hour => hour.pop), suffix:'percentage'},
         {type:'feels', label:'Feels like', data:hourly.map(hour => hour.feelslike[unit]), suffix:'degrees'},
-        {type:'skies', label:'Cloud coverage', data:hourly.map(hour => hour.sky), suffix:'percentage'},
+        {type:'skies', label:'Cloud cover', data:hourly.map(hour => hour.sky), suffix:'percentage'},
         {type:'humidities', label:'Humidity', data:hourly.map(hour => hour.humidity), suffix:'percentage'},
         {type:'dewpoints', label:'Dewpoint', data:hourly.map(hour => hour.dewpoint[unit]), suffix:'degrees'},
         {type:'pressures', label:'Pressure', data:hourly.map(hour => hour.mslp[unit]), suffix:''},

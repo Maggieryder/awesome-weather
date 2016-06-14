@@ -1,0 +1,10 @@
+### Directories ###
+src/vendor
+dist
+unused
+node_modules
+.sass-cache
+uploads
+test/temp
+.tmp
+test/scripts/

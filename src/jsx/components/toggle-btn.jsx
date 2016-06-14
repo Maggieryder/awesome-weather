@@ -6,7 +6,7 @@ class ToggleBtn extends Component {
     this.state = {toggle:0};
   }
 
-  handleToggle = (e) => {
+  handleToggle = () => {
     let toggle = this.state.toggle===0 ? 1 : 0;
     this.setState({toggle:toggle})
     this.props.toggleFunction(toggle)

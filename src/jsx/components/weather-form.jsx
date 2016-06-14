@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
-import ReactDOM from 'react-dom'
+//import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import Bootstrap, { Glyphicon } from 'react-bootstrap';
+import { Glyphicon } from 'react-bootstrap';
 
-import { getWeather, loading, autoComplete, locations } from '../../actions/index'
+import { getWeather, loading, autoComplete } from '../../actions/index'
 import ToggleBtn from './toggle-btn'
-import MultipleChoices from './multiple-choice-list';
+//import MultipleChoices from './multiple-choice-list';
 
 class Searchbar extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class Searchbar extends Component {
   onInputChange = (e) => {
     this.setState({term: e.target.value})
     if (e.target.value.length >= 3){
-      this.props.autoComplete(e.target.value)
+      //this.props.autoComplete(e.target.value)
     }
   }
 
@@ -31,7 +31,7 @@ class Searchbar extends Component {
     if (location.length > 0){
       this.setState({
         term:'',
-        searchmode:false,
+        searchmode:false
       })
       this.props.onSearch(false)
       this.getLocation(location)

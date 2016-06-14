@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import Bootstrap, { ListGroup, ListGroupItem } from 'react-bootstrap';
+import React from 'react';
+import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
 export default (props) => {
   let { items, onSelect } = props;

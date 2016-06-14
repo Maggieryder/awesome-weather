@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import Bootstrap, { Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
+import $ from '../../vendor/jquery_1.12.0.min.js'
 
 import Chart from './chart'
 
@@ -12,7 +13,7 @@ class Charts extends Component {
   handleChartHover(id, day) {
     this.props.onMouseOver(id, day)
   }
-  renderChart (data, width, height) {
+  renderChart (data) {
     return (
       <Chart data={data} color="rgba(255,255,255,.6)" width={this.state.svgWidth} height={this.state.svgHeight}/>
     )
@@ -26,12 +27,12 @@ class Charts extends Component {
   componentDidMount() {
     let that = this
     //$( window ).resize(this.updateDimensions}
-    window.addEventListener("resize", that.updateDimensions);
+    window.addEventListener('resize', that.updateDimensions);
   }
   componentWillUnmount() {
     let that = this
     //$( window ).off('resize', this.updateDimensions)
-    window.removeEventListener("resize", that.updateDimensions);
+    window.removeEventListener('resize', that.updateDimensions);
   }
 
   renderHour = (hr, id) => {
@@ -40,18 +41,13 @@ class Charts extends Component {
       if (id < numHrs){
         return <li
                   key={id}
-                  className={ parseInt(hr.hour)%6===0 ? "marker" : null }
+                  className={ parseInt(hr.hour)%6===0 ? 'marker' : null }
                   onMouseOver={this.props.onMouseOver.bind(this,id)} >
                     <div>{!isLoading ? hr.hour==='0' ? 'A' : hr.hour==='12' ? 'P' : '' : '' }</div>
                 </li>
       }
   }
-  emptyHrs = (numHrs) => {
-    //let i = numHrs
-    for (let i = 0; i<24; i++){
-      return <li key="id">{i}</li>
-    }
-  }
+
   render() {
     let {hourly, response, isLoading} = this.props.weather
     let {chart, numHrs} = this.props

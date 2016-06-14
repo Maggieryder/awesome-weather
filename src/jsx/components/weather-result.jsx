@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import Bootstrap, { Row, Col, Glyphicon } from 'react-bootstrap';
+import { Row, Col, Glyphicon } from 'react-bootstrap';
+import $ from '../../vendor/jquery_1.12.0.min.js'
 import { getWeather, loading, toggleUnit, toggleFavorite, toggleModal } from '../../actions/index'
 import ToggleBtn from './toggle-btn'
 //import ModalInstance from './modal'
@@ -36,12 +37,12 @@ class WeatherResult extends Component {
   componentDidMount() {
     let that = this
     //$( window ).resize(this.updateDimensions}
-    window.addEventListener("resize", that.updateDimensions);
+    window.addEventListener('resize', that.updateDimensions);
   }
   componentWillUnmount() {
     let that = this
     //$( window ).off('resize', this.updateDimensions)
-    window.removeEventListener("resize", that.updateDimensions);
+    window.removeEventListener('resize', that.updateDimensions);
   }
 
   componentWillReceiveProps(props){
@@ -140,7 +141,7 @@ class WeatherResult extends Component {
   render() {
 
     let {hrIndex, svgWidth, svgHeight} = this.state
-    let {response, hourly, location, sunphase, unit, isLoading } = this.props.weather
+    let {response, hourly, sunphase, isLoading } = this.props.weather  //unit, location,
     let dates, conditions, icons, isDark
     if (!isLoading && !response.error && !response.results) {
       dates = hourly.map(hour => hour.FCTTIME),
@@ -150,7 +151,7 @@ class WeatherResult extends Component {
       //console.log('isDark',isDark)
     }
 
-    const rowStyle = {margin:'8px 4px 0 4px'}
+    //const rowStyle = {margin:'8px 4px 0 4px'}
 
     const noMargin = {margin:'0px'}
     const noPadding = {padding:'0px'}

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import Bootstrap, { Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 
 import ForecastDay from './forecast-day.jsx'
 

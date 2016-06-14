@@ -1,5 +1,5 @@
 import React from 'react';
-import Bootstrap, { Col } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 
 import WeatherIcon from '../../icons/weather-icon.jsx'
 
@@ -11,7 +11,7 @@ export default (props) => {
 
   return (
     <Col xs={3} className="day">
-     {day ? <div className={dayIndex===id ? "active" : null}
+     {day ? <div className={dayIndex===id ? 'active' : null}
               onClick={onClick} >
               <div>{day}</div>
               <div className="icon" style={dayIndex===id ? iconStyleActive : null}>

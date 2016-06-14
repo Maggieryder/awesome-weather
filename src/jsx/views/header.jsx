@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { toggleLocationList } from '../../actions/index'
-import Bootstrap, { Row, Col, Glyphicon } from 'react-bootstrap';
+import { Col, Glyphicon } from 'react-bootstrap';
 
 import ToggleBtn from '../components/toggle-btn'
 import WeatherForm from '../components/weather-form.jsx';
