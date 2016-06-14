@@ -12,9 +12,9 @@ dist
 unused
 node_modules
 .sass-cache
+.eslintcache
 uploads
 test/temp
-src/vendor
 .tmp
 test/scripts/
 

@@ -4,10 +4,10 @@
 npm install
 
 ## Build
-webpack
+npm run build
 
-## Run
-npm start
+## Run localy with HMR
+npm run dev
 
 **goto loacalhost:3000**
 

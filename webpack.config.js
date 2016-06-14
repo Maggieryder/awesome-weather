@@ -1,3 +1,5 @@
+'use strict'
+
 const path = require('path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
@@ -38,7 +40,7 @@ const common = {
   output: {
     path: PATHS.output,
     filename: 'js/[name].js',
-    publicPath: '/dist/'
+    publicPath: '/'
   },
   module: {
     noParse: [],
@@ -115,7 +117,7 @@ const common = {
 
 let config
 
-if(TARGET === 'start' || !TARGET) {
+if(TARGET === 'dev' || !TARGET) {
   config = merge(common, {
     devtool: 'cheap-module-eval-source-map',
     //debug:true,
@@ -164,7 +166,7 @@ if(TARGET === 'start' || !TARGET) {
   });
 }
 
-if(TARGET === 'build' || TARGET === 'stats') {
+if(TARGET === 'build' || TARGET === 'start' || TARGET === 'stats') {
   config = merge(common, {
     devtool: 'source-map',
     //entry: {
@@ -175,7 +177,7 @@ if(TARGET === 'build' || TARGET === 'stats') {
       path: PATHS.output,
       filename: 'js/[name].js', //.[chunkhash]
       chunkFilename: '[chunkhash].js',
-      publicPath: '/dist/'
+      publicPath: '/'
     },
     /*
     module: {
