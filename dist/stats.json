@@ -1,0 +1,14 @@
+{
+  "assetsByChunkName": {
+    "vendors": [
+      "js/vendors.js",
+      "js/vendors.js.map"
+    ],
+    "app": [
+      "js/app.js",
+      "css/app.css",
+      "js/app.js.map",
+      "css/app.css.map"
+    ]
+  }
+}

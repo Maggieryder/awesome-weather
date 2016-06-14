@@ -8,7 +8,7 @@ logs
 npm-debug.log*
 
 ### Directories ###
-dist
+
 unused
 node_modules
 .sass-cache
