@@ -1,9 +1,9 @@
 import axios from 'axios'
 
 const API_KEY = '0397f1acfa8a3cd2'
-const API_URL = 'http://api.wunderground.com/api/'
+const API_URL = 'https://api.wunderground.com/api/'
 const API_PARAMS = '/geolookup/hourly10day/forecast/astronomy/'
-const AUTO_COMPLETE_URL = 'http://autocomplete.wunderground.com/'//http://autocomplete.wunderground.com/aq?query=san%20f
+const AUTO_COMPLETE_URL = 'https://autocomplete.wunderground.com/'//http://autocomplete.wunderground.com/aq?query=san%20f
 
 export const GET_WEATHER = 'GET_WEATHER'
 
