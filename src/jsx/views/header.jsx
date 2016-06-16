@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { toggleLocationList } from '../../actions/index'
+import { connect } from 'react-redux';
+import { toggleModal, getWeather, loading } from '../../actions/index';
 import { Col, Glyphicon } from 'react-bootstrap';
 
-import ToggleBtn from '../components/toggle-btn'
+import ToggleBtn from '../components/toggle-btn';
 import WeatherForm from '../components/weather-form.jsx';
+import MultipleChoices from '../components/multiple-choice-list';
 
 class Header extends Component {
   constructor(props) {
@@ -15,18 +16,34 @@ class Header extends Component {
     }
   }
   toggleLocationList(val){
-    this.props.toggleLocationList(val)
+    let { favorites } = this.props.favorites
+    let { location } = this.props.weather
+    console.log('location.l', location.l.replace('/q/',''))
+    let body = favorites.length >= 1 ? <MultipleChoices className="favorites" items={favorites} onSelect={this.handleChoiceSelect} /> : <span>You have no favorites</span>
+    this.props.toggleModal({title:'FAVORITES',body:body,lastLocation:location.l.replace('/q/','')})
   }
+
+  handleChoiceSelect = (query) => {
+    this.props.toggleModal(null)
+    console.log('QID', query);
+    this.getLocation(query);
+  }
+
+  getLocation = (query) => {
+    this.props.loading(true)
+    this.props.getWeather(query)
+  }
+
   changeLayout(val){
     this.setState({isSearching:val})
   }
   render(){
     let { location, isLoading } = this.props.weather
+
     let title = !isLoading && location ? location.city +', '+(location.state ? location.state : location.country) : ''
     const noPadding = {padding:'0px'}
     const listOptions = [
-      <Glyphicon glyph="option-vertical" />,
-      <Glyphicon glyph="menu-right" />
+      <Glyphicon glyph="option-vertical" />
     ]
     const toggleLocationList = this.toggleLocationList.bind(this)
 
@@ -50,8 +67,8 @@ class Header extends Component {
   }
 }
 
-function mapStateToProps({weather}){
-  return { weather }
+function mapStateToProps({ weather, favorites}){
+  return { weather, favorites }
 }
 
-export default connect(mapStateToProps, { toggleLocationList })(Header)
+export default connect(mapStateToProps, { toggleModal, getWeather, loading })(Header)

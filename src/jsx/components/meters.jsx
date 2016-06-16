@@ -52,9 +52,10 @@ class Meters extends Component {
     }
 
     let {response, hourly, unit, isLoading} = this.props.weather
+    let validData = !isLoading && !response.error && !response.results
     //console.log('METERS response',response)
 
-    let stats = isLoading || response.error || response.results ? [defaultStat,defaultStat,defaultStat,defaultStat,defaultStat,defaultStat] : [
+    let stats = !validData ? [defaultStat,defaultStat,defaultStat,defaultStat,defaultStat,defaultStat] : [
         {type:'temps', label:'Temperature', data:hourly.map(hour => hour.temp[unit]), suffix:'degrees'},
         {type:'winds', label:'Winds', data:hourly.map(hour => hour.wspd[unit]), data2:hourly.map(hour => hour.wdir.dir), suffix:'speed'},
         {type:'precips', label:'Precipitation', data:hourly.map(hour => hour.pop), suffix:'percentage'},

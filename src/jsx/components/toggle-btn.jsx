@@ -3,7 +3,13 @@ import React, {Component} from 'react'
 class ToggleBtn extends Component {
   constructor(props) {
     super(props);
-    this.state = {toggle:0};
+    //console.log('ToggleBtn PROPS >>', props)
+    this.state = {toggle:props.state};
+  }
+
+  componentWillReceiveProps(nextProps){
+    //console.log('ToggleBtn componentWillReceiveProps', nextProps)
+    this.setState({toggle:nextProps.state})
   }
 
   handleToggle = () => {
@@ -17,7 +23,7 @@ class ToggleBtn extends Component {
 
     return (
       <button className={`toggle-btn ${this.props.styleClass}`} onClick={this.handleToggle}>
-        {this.state.toggle===0 ? options[0] : options[1]}
+        {this.state.toggle===0 ? options[0] : options[options.length -1]}
       </button>
     )
   }

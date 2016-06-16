@@ -64,8 +64,7 @@ class Searchbar extends Component {
       padding:'3px 10px 0'
     }
     const options = [
-      <Glyphicon glyph="search" />,
-      <Glyphicon glyph="remove" />
+      <Glyphicon glyph="search" />
     ]
     if (!this.state.searchmode){
       return <ToggleBtn toggleFunction={this.handleSearchMode.bind(this)} options={options} styleClass="pull-right"/>

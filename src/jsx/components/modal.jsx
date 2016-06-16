@@ -8,7 +8,7 @@ class ModalInstance extends Component {
     super(props);
   }
   toggleModal = () => {
-    this.props.onClose('autoip')
+    this.props.onClose(this.props.modal.modalContent.lastLocation || 'autoip')
     this.props.toggleModal(null)
   }
   render(){

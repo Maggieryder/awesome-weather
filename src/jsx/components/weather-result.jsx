@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Glyphicon } from 'react-bootstrap';
 import $ from '../../vendor/jquery_1.12.0.min.js'
+import _ from 'lodash'
 import { getWeather, loading, toggleUnit, toggleFavorite, toggleModal } from '../../actions/index'
 import ToggleBtn from './toggle-btn'
 //import ModalInstance from './modal'
@@ -131,7 +132,7 @@ class WeatherResult extends Component {
   }
 
   toggleFavorite(val){
-    this.props.toggleFavorite(this.props.weather.location, val)
+    this.props.toggleFavorite(this.props.weather.location)
   }
 
   toggleUnit(val){
@@ -140,10 +141,18 @@ class WeatherResult extends Component {
 
   render() {
 
-    let {hrIndex, svgWidth, svgHeight} = this.state
-    let {response, hourly, sunphase, isLoading } = this.props.weather  //unit, location,
-    let dates, conditions, icons, isDark
-    if (!isLoading && !response.error && !response.results) {
+    let { hrIndex, svgWidth, svgHeight } = this.state
+    let { response, unit, hourly, sunphase, isLoading, location } = this.props.weather  //unit
+    let { favorites } = this.props.favorites
+    let validData = !isLoading && !response.error && !response.results
+    //console.log('validData', validData)
+
+    let dates, conditions, icons, isDark, isFavorite, isMetric
+    if (validData) {
+      let idx = _.findIndex(favorites, function(i) { return i.l === location.l })
+      isFavorite = idx !== -1 ? 1 : 0
+      isMetric = unit==='metric' ? 0 : 1
+      console.log('isFavorite / idx', isFavorite, idx)
       dates = hourly.map(hour => hour.FCTTIME),
       conditions = hourly.map(hour => hour.wx),
       icons = hourly.map(hour => hour.icon),
@@ -173,26 +182,26 @@ class WeatherResult extends Component {
           <Col xs={12} sm={6} style={noPadding}>
             <Row style={{margin:'6px 8px 0 4px'}}>
               <Col xs={2} style={{padding:'0 0 0 4px'}}>
-                <ToggleBtn toggleFunction={this.toggleUnit.bind(this)} options={unitOptions} styleClass="unit pull-left" />
+                <ToggleBtn toggleFunction={this.toggleUnit.bind(this)} options={unitOptions} state={isMetric} styleClass="unit pull-left" />
               </Col>
               <Col xs={8} style={{padding:'0 0 0 4px'}}>
-                <div className="time">{!isLoading && !response.error && !response.results ? <h2>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h2> : null}</div>
+                <div className="time">{validData ? <h2>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h2> : null}</div>
               </Col>
               <Col xs={2} style={{padding:'0 0 0 4px'}}>
-                <ToggleBtn toggleFunction={this.toggleFavorite.bind(this)} options={favoriteOptions} styleClass="pull-right no-boundary"/>
+                <ToggleBtn toggleFunction={this.toggleFavorite.bind(this)} options={favoriteOptions} state={isFavorite} styleClass="pull-right no-boundary"/>
               </Col>
             </Row>
 
             {!isLoading ?
               <Row style={noMargin}>
                 <Col xs={12} style={noPadding}>
-                  <p>{!response.error && !response.results ? dates[hrIndex].month_name+' '+dates[hrIndex].mday+', '+dates[hrIndex].year : '' }</p>
+                  <p>{validData ? dates[hrIndex].month_name+' '+dates[hrIndex].mday+', '+dates[hrIndex].year : '' }</p>
                 </Col>
                 <Col xs={12} style={noPadding}>
-                  {!response.error && !response.results ? <div style={{width:svgWidth+'px', height:svgHeight+'px', margin: '-5px auto'}}>
+                  {validData ? <div style={{width:svgWidth+'px', height:svgHeight+'px', margin: '-5px auto'}}>
                     <WeatherIcon stroke="2" opacity={1} desc={icons[hrIndex]} isDark={isDark}/>
                   </div> : null }
-                  <h2>{!response.error && !response.results ? conditions[hrIndex] : null }</h2>
+                  <h2>{validData ? conditions[hrIndex] : null }</h2>
                 </Col>
               </Row> :
               <Row style={noMargin}>
@@ -211,8 +220,8 @@ class WeatherResult extends Component {
   }
 }
 
-function mapStateToProps({ weather }){
-  return { weather }
+function mapStateToProps({ weather, favorites }){
+  return { weather, favorites }
 }
 
 export default connect(mapStateToProps, { getWeather, loading, toggleUnit, toggleFavorite, toggleModal })(WeatherResult)

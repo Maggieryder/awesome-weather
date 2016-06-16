@@ -1,4 +1,4 @@
-import { GET_WEATHER, TOGGLE_UNIT, TOGGLE_FAVORITE, IS_LOADING } from '../actions/index'
+import { GET_WEATHER, TOGGLE_UNIT, IS_LOADING } from '../actions/index'
 
 const UNITS = ['metric','english']
 const INITIAL_STATE = {
@@ -8,7 +8,6 @@ const INITIAL_STATE = {
   location: {},
   sunphase: {},
   unit: UNITS[0],
-  favorites: [],
   isLoading: false
 }
 
@@ -34,9 +33,6 @@ export default function(state = INITIAL_STATE, action) {
     case TOGGLE_UNIT:
     //console.log('action recieved for UNIT change', action.payload.unit)
     return {...state, unit: UNITS[action.payload.unit]}
-    case TOGGLE_FAVORITE:
-    console.log('action recieved for ADD FAVORITE', action.payload.favorite)
-    return {...state, favorites: [action.payload.favorite]}
     case IS_LOADING:
     //console.log('action recieved for IS LOADING', action.payload.isLoading)
     return {...state, isLoading: [action.payload.isLoading]}
