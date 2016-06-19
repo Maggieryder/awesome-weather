@@ -132,6 +132,7 @@ class WeatherResult extends Component {
       let pos = coords($markers[midnitehours[id-1].id])
       //console.log('coords', pos)
       chart.style.WebkitTransform = 'translate3d('+pos.x*-1+'px, 0, 0)'
+      chart.style.MozTransform = 'translate3d('+pos.x*-1+'px, 0, 0)'
       startHr = parseInt(midnitehours[id-1].id) + 12 //midday
     }
 
