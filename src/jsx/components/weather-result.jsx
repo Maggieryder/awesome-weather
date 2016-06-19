@@ -125,6 +125,7 @@ class WeatherResult extends Component {
     let startHr
     if (id===0){
       chart.style.WebkitTransform = 'translate3d(0, 0, 0)'
+      chart.style.MozTransform = 'translate3d(0, 0, 0)'
       startHr = 0
     } else {
       //console.log('midnitehours[id-1].id', midnitehours[id-1].id)
