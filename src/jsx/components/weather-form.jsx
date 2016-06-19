@@ -11,7 +11,7 @@ import ToggleBtn from './toggle-btn'
 class Searchbar extends Component {
   constructor(props) {
     super(props);
-    console.log('FROM props', props)
+    //console.log('FROM props', props)
     this.state = {
       searchmode:false,
       term:''

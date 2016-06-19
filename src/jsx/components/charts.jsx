@@ -36,27 +36,31 @@ class Charts extends Component {
   }
 
   renderHour = (hr, id) => {
-    let { numHrs } = this.props
+    let { numHrs, hrIndex } = this.props
+    //console.log('hrIndex ...', hrIndex)
     let { response, isLoading } = this.props.weather
       if (id < numHrs){
         return <li
                   key={id}
                   className={ parseInt(hr.hour)%6===0 ? 'marker' : null }
                   onMouseOver={this.props.onMouseOver.bind(this,id)} >
-                    <div>{!isLoading ? hr.hour==='0' ? 'A' : hr.hour==='12' ? 'P' : '' : '' }</div>
+                    <div className={ parseInt(hr.hour)%6===0 ? 'no-marker' : null }>{!isLoading ? hr.hour==='0' ? 'A' : hr.hour==='12' ? 'P' : '' : '' }</div>
+                    <div className={`indicator${id===hrIndex ? ' on' : ''}`} ></div>
                 </li>
       }
   }
 
   render() {
+
     let {hourly, response, isLoading} = this.props.weather
     let {chart, numHrs} = this.props
+    let validData = !isLoading && !response.error && !response.results
     //console.log('RENDER CHART', chart)
     //console.log('CHART response',response)
     let defaultHrs = ['','','','','','','','','','','','','','','','','','','','','','','',''] // hack attack!!
     let rowStyle = {margin:0, overflow:'hidden'}
     let hours, data
-    if(!response.error && !response.results){
+    if( validData ){
       hours = hourly.map(hour => hour.FCTTIME)
       data = {
         temps: hourly.map(hour => hour.temp.english),
@@ -71,9 +75,9 @@ class Charts extends Component {
     return (
       <Row style={rowStyle}>
         <div className="chart" style={{height:this.state.svgHeight}}>
-          {!response.error && !response.results && !isLoading ? this.renderChart(data[chart].slice(0,numHrs)) : null }
+          { validData ? this.renderChart(data[chart].slice(0,numHrs)) : null }
           <ul className="hours">
-            {!response.error && !response.results && !isLoading ? hours.map(this.renderHour) : defaultHrs.map(this.renderHour)}
+            { validData ? hours.map(this.renderHour) : defaultHrs.map(this.renderHour)}
           </ul>
         </div>
       </Row>

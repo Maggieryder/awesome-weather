@@ -10,6 +10,7 @@ import MultipleChoices from './multiple-choice-list';
 import DayForecast from './forecast-days'
 import Charts from './charts'
 import Meters from './meters'
+import coords from '../utils/coords.js'
 
 import WeatherIcon from '../../icons/weather-icon.jsx'
 
@@ -117,9 +118,26 @@ class WeatherResult extends Component {
 
   handleDayClick = (id) => {
     console.log('handleDayClick', id)
+    let chart = document.querySelectorAll('.chart')[0]
+    let { hourly } = this.props.weather,
+    hrs = hourly.map(hour => hour.FCTTIME)
+    let midnitehours = this.midniteHrs(hrs);
+    let startHr
+    if (id===0){
+      chart.style.WebkitTransform = 'translate3d(0, 0, 0)'
+      startHr = 0
+    } else {
+      //console.log('midnitehours[id-1].id', midnitehours[id-1].id)
+      let $markers = $('.hours li')
+      let pos = coords($markers[midnitehours[id-1].id])
+      //console.log('coords', pos)
+      chart.style.WebkitTransform = 'translate3d('+pos.x*-1+'px, 0, 0)'
+      startHr = parseInt(midnitehours[id-1].id) + 12 //midday
+    }
+
     this.setState({
-      //hrIndex:id,
-      dayIndex:id
+      hrIndex: startHr,
+      dayIndex: id
     })
   }
 
@@ -152,7 +170,7 @@ class WeatherResult extends Component {
       let idx = _.findIndex(favorites, function(i) { return i.l === location.l })
       isFavorite = idx !== -1 ? 1 : 0
       isMetric = unit==='metric' ? 0 : 1
-      console.log('isFavorite / idx', isFavorite, idx)
+      //console.log('isFavorite / idx', isFavorite, idx)
       dates = hourly.map(hour => hour.FCTTIME),
       conditions = hourly.map(hour => hour.wx),
       icons = hourly.map(hour => hour.icon),
@@ -212,7 +230,7 @@ class WeatherResult extends Component {
 
         <div className="footer">
           <Meters hrIndex={hrIndex} onSelect={(type)=>{this.setState({chart:type})}}/>
-          <Charts chart={this.state.chart} onMouseOver={this.handleChartHover} numHrs={96}/>
+          <Charts chart={this.state.chart} hrIndex={hrIndex} onMouseOver={this.handleChartHover} numHrs={96}/>
           <DayForecast numDays={4} onSelect={this.handleDayClick} dayIndex={this.state.dayIndex}/>
         </div>
       </div>

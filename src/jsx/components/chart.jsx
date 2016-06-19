@@ -1,5 +1,5 @@
 import React from 'react'
-import { Sparklines, SparklinesCurve/*, SparklinesBars/*, SparklinesReferenceLine*/ } from 'react-sparklines'
+import { Sparklines, SparklinesCurve, SparklinesSpots /*, SparklinesBars/*, SparklinesReferenceLine*/ } from 'react-sparklines'
 
 export default (props) => {
 
@@ -11,10 +11,13 @@ export default (props) => {
   }
 
   return (
-    <Sparklines height={props.height} width={props.width} data={props.data} preserveAspectRatio="none">
+    <Sparklines height={props.height} width={props.width} data={props.data} preserveAspectRatio="none" >
       <SparklinesCurve style={chartStyle}/>
+
     </Sparklines>
   )
 }
 
-/*<SparklinesReferenceLine type="avg" />*/
+/*<SparklinesReferenceLine type="avg" />
+<SparklinesSpots size={4}
+  style={{ stroke: "red", strokeWidth: 3, fill: "white" }} />*/

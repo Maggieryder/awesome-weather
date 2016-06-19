@@ -5,3 +5,15 @@
   border-bottom:1px solid $white-transparent-3;
   overflow:hidden;
 }
+
+.indicator {
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  background: red;
+  opacity:0;
+
+  &.on {
+    opacity:1;
+  }
+}

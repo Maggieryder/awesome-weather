@@ -34,7 +34,8 @@ class Meters extends Component {
                     unit={unit}
                     isLoading={isLoading}
                     hasError={this.state.hasError}
-                    data={(stat.data2 ? stat.data2[hrIndex]+' ' : '') + stat.data ? stat.data[hrIndex] : '...'}
+                    data={stat.data ? stat.data[hrIndex] : '...'}
+                    data2={stat.data2 ? stat.data2[hrIndex] : null}
                     label={stat.label ? stat.label : ''}
                     suffix={stat.suffix ? stat.suffix : ''}
                     onClick={that.handleMeterClick.bind(this)}
@@ -57,7 +58,7 @@ class Meters extends Component {
 
     let stats = !validData ? [defaultStat,defaultStat,defaultStat,defaultStat,defaultStat,defaultStat] : [
         {type:'temps', label:'Temperature', data:hourly.map(hour => hour.temp[unit]), suffix:'degrees'},
-        {type:'winds', label:'Winds', data:hourly.map(hour => hour.wspd[unit]), data2:hourly.map(hour => hour.wdir.dir), suffix:'speed'},
+        {type:'winds', label:'Winds', data:hourly.map(hour => hour.wspd[unit]), data2:hourly.map(hour => hour.wdir.degrees), suffix:'speed'},
         {type:'precips', label:'Precipitation', data:hourly.map(hour => hour.pop), suffix:'percentage'},
         {type:'feels', label:'Feels like', data:hourly.map(hour => hour.feelslike[unit]), suffix:'degrees'},
         {type:'skies', label:'Cloud cover', data:hourly.map(hour => hour.sky), suffix:'percentage'},

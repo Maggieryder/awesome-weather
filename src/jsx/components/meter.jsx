@@ -34,8 +34,27 @@ class Meter extends Component {
     this.props.onClick(this.props.type);
   }
   render(){
-    let { data, label, suffix, unit, active, isLoading, hasError } = this.props
-    label==='winds' ? console.log('rendering winds', data) : null;
+    let { data, data2, label, suffix, unit, active, isLoading, hasError } = this.props
+
+    let arrowStyle, arrow, readingClass = 'reading'
+    if (data2) {
+      //console.log('rendering wind direction', data2)
+      arrowStyle = {
+        transform: `rotate(${data2}deg)`,
+        WebkitTransform: `rotate(${data2}deg)`,
+        MozTransform: `rotate(${data2}deg)`,
+        OTransform: `rotate(${data2}deg)`,
+        MsTransform: `rotate(${data2}deg)`
+      }
+      readingClass = 'reading windy'
+      arrow = <div className="arrow-container">
+                <div className='direction' style={arrowStyle}>
+                  <div className='line'></div>
+                  <div className='arrow'></div>
+                </div>
+              </div>
+
+    };
     return (
       <li className={'meter'+active} >
         <Nav>
@@ -45,9 +64,9 @@ class Meter extends Component {
             <MenuItem eventKey="2">{unusedTypes[2]}</MenuItem>
           </NavDropdown>
         </Nav>
-        <div className="reading" style={{'opacity':this.state.dropdownOpen ? 0 : 1}}>
+        <div className={readingClass} style={{'opacity':this.state.dropdownOpen ? 0 : 1}}>
           <a href="#" onClick={this.handleClick}>
-            {!isLoading && !hasError ? <span>{data}{suffixes(suffix, unit)}</span> : <span>...</span>}
+            {!isLoading && !hasError ? <span>{data2 ? arrow : null} {data}{suffixes(suffix, unit)}</span> : <span>...</span>}
           </a>
         </div>
       </li>
