@@ -8,7 +8,7 @@ let suffixes = (type, unit) => {
     case 'degrees':
     return <sup>&deg;</sup>
     case 'speed' :
-    return unit==='metric' ? <span className="small"> km/h</span> : <span className="small"> mph</span>
+    return unit==='metric' ? <span className="small">km/h</span> : <span className="small">mph</span>
     case 'percentage':
     return <sup>&#37;</sup>
     case 'measure':
@@ -66,7 +66,7 @@ class Meter extends Component {
         </Nav>
         <div className={readingClass} style={{'opacity':this.state.dropdownOpen ? 0 : 1}}>
           <a href="#" onClick={this.handleClick}>
-            {!isLoading && !hasError ? <span>{data2 ? arrow : null} {data}{suffixes(suffix, unit)}</span> : <span>...</span>}
+            {!isLoading && !hasError ? <span>{data2 ? arrow : null}{data}{suffixes(suffix, unit)}</span> : <span>...</span>}
           </a>
         </div>
       </li>

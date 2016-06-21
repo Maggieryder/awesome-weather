@@ -10,7 +10,8 @@ class Meters extends Component {
     this.state = {
       hrIndex: 0,
       hasError:false,
-      chart: 'temps'
+      chart: 'temps',
+      unusedStats: []
     }
   }
   handleMeterClick(type){
@@ -25,6 +26,7 @@ class Meters extends Component {
     let that = this
     let {hrIndex} = this.props
     let { unit, isLoading } = this.props.weather
+    let unusedStats = []
     const colStyle = {
       padding:'0 0 0 4px'
     }
@@ -42,7 +44,7 @@ class Meters extends Component {
                     onLabelChange={that.handleLabelChange}
                     active={this.state.chart===stat.type ? ' active' : ''} />
       </Col>
-    }
+    } 
   }
   render(){
     let defaultStat = {
