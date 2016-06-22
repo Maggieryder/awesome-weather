@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component, PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { Row, Col} from 'react-bootstrap';
 import Meter from './meter'
@@ -6,7 +6,7 @@ import Meter from './meter'
 class Meters extends Component {
   constructor(props) {
     super(props);
-    console.log('METERS PROPS >>', this.props)
+    //console.log('METERS PROPS >>', this.props)
     this.state = {
       hrIndex: 0,
       hasError:false,
@@ -26,7 +26,7 @@ class Meters extends Component {
     let that = this
     let {hrIndex} = this.props
     let { unit, isLoading } = this.props.weather
-    let unusedStats = []
+
     const colStyle = {
       padding:'0 0 0 4px'
     }
@@ -44,13 +44,13 @@ class Meters extends Component {
                     onLabelChange={that.handleLabelChange}
                     active={this.state.chart===stat.type ? ' active' : ''} />
       </Col>
-    } 
+    }
   }
   render(){
     let defaultStat = {
       type:'',
       label:'',
-      data: [],
+      data: '',
       suffix:''
     }
 
@@ -71,12 +71,25 @@ class Meters extends Component {
         {type:'uvis', label:'UVI', data:hourly.map(hour => hour.mslp[unit]), suffix:''}
       ]
 
+    let unusedStats = []
+
     return (
       <Row style={{margin:'8px 4px 0 4px'}}>
         {stats.map(this.renderStat)}
       </Row>
     );
   }
+}
+
+Meters.propTypes = {
+  onSelect: PropTypes.func.isRequired,
+  hrIndex: PropTypes.number.isRequired,
+  weather: PropTypes.shape({
+    unit: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    response: PropTypes.object.isRequired,
+    hourly: PropTypes.array
+  })
 }
 
 function mapStateToProps({weather}){

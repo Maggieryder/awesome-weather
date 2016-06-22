@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Col } from 'react-bootstrap';
 
 import WeatherIcon from '../../icons/weather-icon.jsx'
 
-export default (props) => {
+const DayCast = (props) => {
 
   let { id, dayIndex, day, temps, icon, onClick } = props
+  //console.log('DAY day/icon', day, icon)
 
   let iconStyleActive = { opacity:1 }
 
@@ -24,3 +25,14 @@ export default (props) => {
   )
 
 }
+
+DayCast.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  id: PropTypes.number.isRequired,
+  dayIndex: PropTypes.number.isRequired,
+  icon: PropTypes.string.isRequired,
+  day: PropTypes.string.isRequired,
+  temps: PropTypes.array.isRequired
+}
+
+export default DayCast

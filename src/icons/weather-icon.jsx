@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component, PropTypes } from 'react'
 
 import Cloudy from './icon-mostly-cloudy.jsx'
 import PCloudy from './icon-partly-cloudy.jsx'
@@ -7,7 +7,7 @@ import MCloudy from './icon-mostly-cloudy.jsx'
 import Clear from './icon-clear.jsx'
 import ClearNt from './icon-clear-night.jsx'
 import Rain from './icon-rain.jsx'
-import RainChnce from './icon-rain-chance.jsx'
+//import RainChnce from './icon-rain-chance.jsx'
 import Showers from './icon-showers.jsx'
 import ShowersChnce from './icon-showers-chance.jsx'
 import Snow from './icon-snow.jsx'
@@ -58,7 +58,8 @@ let svgStyle = {
   opacity:.8
 }
 
-export default class extends Component {
+class WeatherIcon extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -72,7 +73,7 @@ export default class extends Component {
   componentWillReceiveProps (nextProps){
     this.setState({
       opacity: nextProps.opacity,
-      isDark:nextProps.isDark,
+      isDark: nextProps.isDark,
       icon: nextProps.desc
     })
   }
@@ -89,3 +90,12 @@ export default class extends Component {
     )
   }
 }
+
+WeatherIcon.propTypes = {
+  stroke: PropTypes.string.isRequired,
+  opacity: PropTypes.number.isRequired,
+  desc: PropTypes.string.isRequired,
+  isDark: PropTypes.bool
+}
+
+export default WeatherIcon

@@ -38,7 +38,7 @@ export function autoComplete(query){
 export const TOGGLE_UNIT = 'TOGGLE_UNIT'
 
 export function toggleUnit(val) {
-  console.log('toggle value', val)
+  //console.log('toggle value', val)
 
   return {
     type: TOGGLE_UNIT,
@@ -49,7 +49,7 @@ export function toggleUnit(val) {
 export const TOGGLE_FAVORITE = 'TOGGLE_FAVORITE'
 
 export function toggleFavorite(loc) {
-  console.log('toggle favorite', loc)
+  //console.log('toggle favorite', loc)
 
   return {
     type: TOGGLE_FAVORITE,

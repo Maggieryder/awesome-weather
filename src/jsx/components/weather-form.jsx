@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component, PropTypes } from 'react'
 //import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -39,7 +39,7 @@ class Searchbar extends Component {
   }
 
   getLocation = (query) => {
-    this.props.loading(true)
+    this.props.loading(1)
     this.props.getWeather(query)
   }
 
@@ -69,12 +69,7 @@ class Searchbar extends Component {
     if (!this.state.searchmode){
       return <ToggleBtn toggleFunction={this.handleSearchMode.bind(this)} options={options} styleClass="pull-right"/>
     }
-    let results = [
-      {city:'San Antonio', state:'AZ', l:'werghj'},
-      {city:'New York', state:'NY', l:'qwerty'},
-      {city:'Boston', state:'MA', l:'asdg'}
-    ]
-    let locations = this.props.locations.locations
+    let { locations } = this.props.locations
     return (
 
       <form onSubmit={this.onFormSubmit}>
@@ -93,6 +88,13 @@ class Searchbar extends Component {
       </form>
     )
   }
+}
+
+Searchbar.propTypes = {
+  getWeather: PropTypes.func.isRequired,
+  onSearch: PropTypes.func.isRequired,
+  loading: PropTypes.func.isRequired,
+  locations: PropTypes.object
 }
 
 function mapDispatchToProps(dispatch) {

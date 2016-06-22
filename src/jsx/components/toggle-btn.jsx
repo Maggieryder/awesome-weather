@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component, PropTypes } from 'react'
 
 class ToggleBtn extends Component {
   constructor(props) {
@@ -27,6 +27,13 @@ class ToggleBtn extends Component {
       </button>
     )
   }
+}
+
+ToggleBtn.propTypes = {
+  state: PropTypes.number,
+  options: PropTypes.array.isRequired,
+  styleClass: PropTypes.string,
+  toggleFunction: PropTypes.func.isRequired
 }
 
 export default ToggleBtn;

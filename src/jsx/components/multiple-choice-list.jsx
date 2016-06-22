@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
-export default (props) => {
+const ChoiceList = (props) => {
   let { items, onSelect } = props;
 
   return (
@@ -14,3 +14,10 @@ export default (props) => {
     </ListGroup>
   );
 }
+
+ChoiceList.propTypes = {
+  items: PropTypes.array.isRequired,
+  onSelect: PropTypes.func.isRequired
+}
+
+export default ChoiceList

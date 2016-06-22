@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component, PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { Modal } from 'react-bootstrap';
 import { toggleModal } from '../../actions/index'
@@ -13,7 +13,7 @@ class ModalInstance extends Component {
   }
   render(){
     let { modalOpen, modalContent } = this.props.modal
-    console.log('modalContent', modalContent)
+    //console.log('modalContent', modalContent)
     return (
       <Modal show={modalOpen} bsSize="small" onHide={this.toggleModal}>
         <Modal.Header closeButton>
@@ -25,6 +25,15 @@ class ModalInstance extends Component {
       </Modal>
     );
   }
+}
+
+ModalInstance.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  toggleModal: PropTypes.func.isRequired,
+  modal: PropTypes.shape({
+    modalContent: PropTypes.object,
+    modalOpen: PropTypes.bool.isRequired
+  })
 }
 
 function mapStateToProps({ modal }){

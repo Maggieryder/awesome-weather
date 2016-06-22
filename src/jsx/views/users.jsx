@@ -14,4 +14,8 @@ class Users extends Component {
   }
 }
 
+Users.propTypes = {
+  children: PropTypes.node
+}
+
 export default Users

@@ -1,6 +1,8 @@
 import { GET_WEATHER, TOGGLE_UNIT, IS_LOADING } from '../actions/index'
 
 const UNITS = ['metric','english']
+const LOADING_STATES = [false, true]
+
 const INITIAL_STATE = {
   response: {},
   forecast: {},
@@ -8,10 +10,8 @@ const INITIAL_STATE = {
   location: {},
   sunphase: {},
   unit: UNITS[0],
-  isLoading: false
+  isLoading: LOADING_STATES[0]
 }
-
-let favoriteLocations = []
 
 export default function(state = INITIAL_STATE, action) {
   switch(action.type){
@@ -28,14 +28,15 @@ export default function(state = INITIAL_STATE, action) {
       hourly: action.payload.data.hourly_forecast,
       location: action.payload.data.location,
       sunphase: action.payload.data.sun_phase,
-      isLoading: false
+      isLoading: LOADING_STATES[0]
     }
     case TOGGLE_UNIT:
     //console.log('action recieved for UNIT change', action.payload.unit)
     return {...state, unit: UNITS[action.payload.unit]}
     case IS_LOADING:
-    //console.log('action recieved for IS LOADING', action.payload.isLoading)
-    return {...state, isLoading: [action.payload.isLoading]}
+    //console.log('action recieved for IS LOADING', LOADING_STATES[action.payload.isLoading])
+    return {...state, isLoading: LOADING_STATES[action.payload.isLoading] }
+
     default:
       return state
   }

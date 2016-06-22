@@ -217,7 +217,8 @@ if(TARGET === 'build' || TARGET === 'start' || TARGET === 'stats') {
       */
       // Setting DefinePlugin affects React library size!
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) //'production'
+        //'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) //'production'
+        'process.env':{'NODE_ENV': JSON.stringify('production')}
       }),
       new webpack.optimize.UglifyJsPlugin({
         compress: {

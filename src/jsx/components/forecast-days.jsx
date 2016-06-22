@@ -1,10 +1,10 @@
-import React, {Component} from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Row } from 'react-bootstrap';
 
 import ForecastDay from './forecast-day.jsx'
 
-class DayForecast extends Component {
+class DaysForecast extends Component {
 
   renderDay = (day, id) => {
     let {date, icon, high, low} = day
@@ -16,9 +16,9 @@ class DayForecast extends Component {
       return <ForecastDay key={id}
                   id={id}
                   dayIndex={this.props.dayIndex}
-                  day={validData ? date.weekday_short : null }
+                  day={validData ? date.weekday_short : '' }
                   temps={validData ? [high[unitType],low[unitType]] : [null, null] }
-                  icon={validData ? icon : null }
+                  icon={validData ? icon : '' }
                   onClick={this.props.onSelect.bind(this, id)}
               />
     }
@@ -36,8 +36,20 @@ class DayForecast extends Component {
   }
 }
 
+DaysForecast.propTypes = {
+  onSelect: PropTypes.func.isRequired,
+  numDays: PropTypes.number.isRequired,
+  dayIndex: PropTypes.number.isRequired,
+  weather: PropTypes.shape({
+    unit: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    response: PropTypes.object.isRequired,
+    forecast: PropTypes.object
+  })
+}
+
 function mapStateToProps({weather}){
   return { weather }
 }
 
-export default connect(mapStateToProps)(DayForecast)
+export default connect(mapStateToProps)(DaysForecast)

@@ -1,10 +1,10 @@
-import React from 'react'
-import { Sparklines, SparklinesCurve, SparklinesSpots /*, SparklinesBars/*, SparklinesReferenceLine*/ } from 'react-sparklines'
+import React, { PropTypes } from 'react'
+import { Sparklines, SparklinesCurve /*, SparklinesSpots, SparklinesBars/*, SparklinesReferenceLine*/ } from 'react-sparklines'
 
-export default (props) => {
+const Chart = (props) => {
 
   let chartStyle = {
-    stroke:'rgba(255,255,255,.4)',
+    stroke: props.color,
     strokeWidth: '1px',
     fill:'#fff',
     fillOpacity: '.05'
@@ -17,6 +17,15 @@ export default (props) => {
     </Sparklines>
   )
 }
+
+Chart.propTypes = {
+  data: PropTypes.array.isRequired,
+  height: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
+  color: PropTypes.string
+}
+
+export default Chart
 
 /*<SparklinesReferenceLine type="avg" />
 <SparklinesSpots size={4}

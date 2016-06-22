@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 
-export default (props) => {
+const ChanceShowers = (props) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 200 150" enable-background="new 0 0 200 150">
       <g style={props.style}>
@@ -16,3 +16,7 @@ export default (props) => {
     </svg>
   )
 }
+
+ChanceShowers.propTypes = {style: PropTypes.object.isRequired}
+
+export default ChanceShowers;

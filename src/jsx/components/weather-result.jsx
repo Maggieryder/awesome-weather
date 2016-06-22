@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component, PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Glyphicon } from 'react-bootstrap';
 import $ from '../../vendor/jquery_1.12.0.min.js'
@@ -17,7 +17,7 @@ import WeatherIcon from '../../icons/weather-icon.jsx'
 class WeatherResult extends Component {
   constructor(props) {
     super(props);
-    console.log('RESULT PROPS >>', this.props)
+    //console.log('RESULT PROPS >>', this.props)
     this.state = {
       hrIndex: 0,
       dayIndex: 0,
@@ -55,7 +55,7 @@ class WeatherResult extends Component {
         this.props.toggleModal({title:'YIKES!',body:response.error.description})
     }
     if(!isLoading && response.results){
-      console.log('MULTIPLE CHOICES', response.results)
+      //console.log('MULTIPLE CHOICES', response.results)
       this.props.toggleModal({title:'PICK ONE!',body:<MultipleChoices className="choices" items={response.results} onSelect={this.handleChoiceSelect} />})
     }
   }
@@ -67,7 +67,7 @@ class WeatherResult extends Component {
   }
 
   getLocation = (query) => {
-    this.props.loading(true)
+    this.props.loading(1)
     this.props.getWeather(query)
   }
 
@@ -117,7 +117,7 @@ class WeatherResult extends Component {
   }
 
   handleDayClick = (id) => {
-    console.log('handleDayClick', id)
+    //console.log('handleDayClick', id)
     let chart = document.querySelectorAll('.chart')[0]
     let { hourly } = this.props.weather,
     hrs = hourly.map(hour => hour.FCTTIME)
@@ -151,7 +151,7 @@ class WeatherResult extends Component {
     return ((hr > sunrise ) && (hr < sunset)) ? false : true
   }
 
-  toggleFavorite(val){
+  toggleFavorite(){
     this.props.toggleFavorite(this.props.weather.location)
   }
 
@@ -238,6 +238,25 @@ class WeatherResult extends Component {
       </div>
     )
   }
+}
+
+WeatherResult.propTypes = {
+  getWeather: PropTypes.func.isRequired,
+  loading: PropTypes.func.isRequired,
+  toggleUnit: PropTypes.func.isRequired,
+  toggleModal: PropTypes.func.isRequired,
+  toggleFavorite: PropTypes.func.isRequired,
+  weather: PropTypes.shape({
+    unit: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    response: PropTypes.object.isRequired,
+    hourly: PropTypes.array,
+    sunphase: PropTypes.object,
+    location: PropTypes.object
+  }),
+  favorites: PropTypes.shape({
+    favorites: PropTypes.array.isRequired
+  })
 }
 
 function mapStateToProps({ weather, favorites }){

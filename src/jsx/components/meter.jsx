@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Nav, NavDropdown, MenuItem } from 'react-bootstrap';
 
 let unusedTypes = [ 'dewpoints', 'pressures', 'uvis'];
@@ -35,6 +35,7 @@ class Meter extends Component {
   }
   render(){
     let { data, data2, label, suffix, unit, active, isLoading, hasError } = this.props
+    //console.log('rendering METER props', this.props)
 
     let arrowStyle, arrow, readingClass = 'reading'
     if (data2) {
@@ -54,7 +55,7 @@ class Meter extends Component {
                 </div>
               </div>
 
-    };
+    }
     return (
       <li className={'meter'+active} >
         <Nav>
@@ -72,6 +73,20 @@ class Meter extends Component {
       </li>
     )
   }
+}
+
+Meter.propTypes = {
+  type: PropTypes.string.isRequired,
+  unit: PropTypes.string.isRequired,
+  data: PropTypes.string.isRequired,
+  data2: PropTypes.string,
+  label: PropTypes.string.isRequired,
+  suffix: PropTypes.string.isRequired,
+  active: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  hasError: PropTypes.bool.isRequired,
+  onClick: React.PropTypes.func.isRequired,
+  onLabelChange: React.PropTypes.func
 }
 
 export default Meter

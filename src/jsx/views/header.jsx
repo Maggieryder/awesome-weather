@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { toggleModal, getWeather, loading } from '../../actions/index';
 import { Col, Glyphicon } from 'react-bootstrap';
@@ -15,10 +15,10 @@ class Header extends Component {
       isSearching:false
     }
   }
-  toggleLocationList(val){
+  toggleLocationList(){
     let { favorites } = this.props.favorites
     let { location } = this.props.weather
-    console.log('location.l', location.l.replace('/q/',''))
+    //console.log('location.l', location.l.replace('/q/',''))
     let body = favorites.length >= 1 ? <MultipleChoices className="favorites" items={favorites} onSelect={this.handleChoiceSelect} /> : <span>You have no favorites</span>
     this.props.toggleModal({title:'FAVORITES',body:body,lastLocation:location.l.replace('/q/','')})
   }
@@ -37,8 +37,10 @@ class Header extends Component {
   changeLayout(val){
     this.setState({isSearching:val})
   }
+
   render(){
     let { location, isLoading } = this.props.weather
+    //console.log('HEADER isLoading', isLoading)
 
     let title = !isLoading && location ? location.city +', '+(location.state ? location.state : location.country) : ''
     const noPadding = {padding:'0px'}
@@ -65,6 +67,19 @@ class Header extends Component {
       </header>
     );
   }
+}
+
+Header.propTypes = {
+  getWeather: PropTypes.func.isRequired,
+  loading: PropTypes.func.isRequired,
+  toggleModal: PropTypes.func.isRequired,
+  weather: PropTypes.shape({
+    isLoading: PropTypes.bool.isRequired,
+    location: PropTypes.object
+  }),
+  favorites: PropTypes.shape({
+    favorites: PropTypes.array.isRequired
+  })
 }
 
 function mapStateToProps({ weather, favorites}){

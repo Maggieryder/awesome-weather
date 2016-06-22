@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Row } from 'react-bootstrap';
 import $ from '../../vendor/jquery_1.12.0.min.js'
@@ -38,7 +38,7 @@ class Charts extends Component {
   renderHour = (hr, id) => {
     let { numHrs, hrIndex } = this.props
     //console.log('hrIndex ...', hrIndex)
-    let { response, isLoading } = this.props.weather
+    let { isLoading } = this.props.weather
       if (id < numHrs){
         return <li
                   key={id}
@@ -83,6 +83,18 @@ class Charts extends Component {
       </Row>
     )
   }
+}
+
+Charts.propTypes = {
+  numHrs: PropTypes.number.isRequired,
+  hrIndex: PropTypes.number.isRequired,
+  chart: PropTypes.string.isRequired,
+  onMouseOver: PropTypes.func.isRequired,
+  weather: PropTypes.shape({
+    isLoading: PropTypes.bool.isRequired,
+    response: PropTypes.object.isRequired,
+    hourly: PropTypes.array
+  })
 }
 
 function mapStateToProps({weather}){
