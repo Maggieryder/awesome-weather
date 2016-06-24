@@ -24,17 +24,17 @@ class Meter extends Component {
     this.state = {
       dropdownOpen:false
     }
+    this.onClick = this.props.onClick.bind(this)
+    this.onLabelChange = this.props.onLabelChange.bind(this)
   }
   handleSelect = (e) => {
-    this.props.onLabelChange(unusedTypes[e])
-    this.props.onClick(this.props.type);
+    this.onLabelChange(unusedTypes[e])
+    this.onClick(this.props.type);
     this.setState({dropdownOpen:false})
   }
-  handleClick = () => {
-    this.props.onClick(this.props.type);
-  }
+
   render(){
-    let { data, data2, label, suffix, unit, active, isLoading, hasError } = this.props
+    let { type, data, data2, label, suffix, unit, active, isLoading, hasError } = this.props
     //console.log('rendering METER props', this.props)
 
     let arrowStyle, arrow, readingClass = 'reading'
@@ -66,8 +66,8 @@ class Meter extends Component {
           </NavDropdown>
         </Nav>
         <div className={readingClass} style={{'opacity':this.state.dropdownOpen ? 0 : 1}}>
-          <a href="#" onClick={this.handleClick}>
-            {!isLoading && !hasError ? <span>{data2 ? arrow : null}{data}{suffixes(suffix, unit)}</span> : <span>...</span>}
+          <a href="#" onClick={()=>{this.onClick(type)}}>
+            {!isLoading && !hasError ? <span>{data2 ? arrow : ''}{data}{suffixes(suffix, unit)}</span> : <span>...</span>}
           </a>
         </div>
       </li>
@@ -85,8 +85,8 @@ Meter.propTypes = {
   active: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
   hasError: PropTypes.bool.isRequired,
-  onClick: React.PropTypes.func.isRequired,
-  onLabelChange: React.PropTypes.func
+  onClick: PropTypes.func.isRequired,
+  onLabelChange: PropTypes.func
 }
 
 export default Meter

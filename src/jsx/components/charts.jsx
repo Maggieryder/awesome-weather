@@ -9,13 +9,12 @@ class Charts extends Component {
   constructor(props) {
     super(props);
     this.state = {svgWidth:0, svgHeight:0}
+    this.onMouseOver = this.props.onMouseOver
   }
-  handleChartHover(id, day) {
-    this.props.onMouseOver(id, day)
-  }
+
   renderChart (data) {
     return (
-      <Chart data={data} color="rgba(255,255,255,.6)" width={this.state.svgWidth} height={this.state.svgHeight}/>
+      <Chart data={data} width={this.state.svgWidth} height={this.state.svgHeight}/>
     )
   }
   updateDimensions = () => {
@@ -43,7 +42,7 @@ class Charts extends Component {
         return <li
                   key={id}
                   className={ parseInt(hr.hour)%6===0 ? 'marker' : null }
-                  onMouseOver={this.props.onMouseOver.bind(this,id)} >
+                  onMouseOver={this.onMouseOver.bind(this,id)} >
                     <div className={ parseInt(hr.hour)%6===0 ? 'no-marker' : null }>{!isLoading ? hr.hour==='0' ? 'A' : hr.hour==='12' ? 'P' : '' : '' }</div>
                     <div className={`indicator${id===hrIndex ? ' on' : ''}`} ></div>
                 </li>
@@ -86,15 +85,17 @@ class Charts extends Component {
 }
 
 Charts.propTypes = {
-  numHrs: PropTypes.number.isRequired,
+  numHrs: PropTypes.number,
   hrIndex: PropTypes.number.isRequired,
   chart: PropTypes.string.isRequired,
   onMouseOver: PropTypes.func.isRequired,
-  weather: PropTypes.shape({
-    isLoading: PropTypes.bool.isRequired,
-    response: PropTypes.object.isRequired,
-    hourly: PropTypes.array
-  })
+  weather: PropTypes.object.isRequired
+}
+Charts.defaultProps = {
+  numHrs: 96,
+  hrIndex: 0,
+  chart: 'temps',
+  weather: {}
 }
 
 function mapStateToProps({weather}){

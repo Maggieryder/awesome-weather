@@ -5,6 +5,7 @@ class ToggleBtn extends Component {
     super(props);
     //console.log('ToggleBtn PROPS >>', props)
     this.state = {toggle:props.state};
+    this.toggleFunction = this.props.toggleFunction.bind(this)
   }
 
   componentWillReceiveProps(nextProps){
@@ -15,14 +16,14 @@ class ToggleBtn extends Component {
   handleToggle = () => {
     let toggle = this.state.toggle===0 ? 1 : 0;
     this.setState({toggle:toggle})
-    this.props.toggleFunction(toggle)
+    this.toggleFunction(toggle)
   }
 
   render(){
-    const { options } = this.props
+    const { options, styleClass } = this.props
 
     return (
-      <button className={`toggle-btn ${this.props.styleClass}`} onClick={this.handleToggle}>
+      <button className={`toggle-btn ${styleClass}`} onClick={this.handleToggle}>
         {this.state.toggle===0 ? options[0] : options[options.length -1]}
       </button>
     )
@@ -32,8 +33,12 @@ class ToggleBtn extends Component {
 ToggleBtn.propTypes = {
   state: PropTypes.number,
   options: PropTypes.array.isRequired,
-  styleClass: PropTypes.string,
+  styleClass: PropTypes.string.isRequired,
   toggleFunction: PropTypes.func.isRequired
+}
+
+ToggleBtn.defaultProps = {
+  state: 0
 }
 
 export default ToggleBtn;

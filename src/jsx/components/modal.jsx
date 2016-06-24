@@ -17,7 +17,7 @@ class ModalInstance extends Component {
     return (
       <Modal show={modalOpen} bsSize="small" onHide={this.toggleModal}>
         <Modal.Header closeButton>
-          <Modal.Title>{modalContent ? modalContent.title : null }</Modal.Title>
+          <Modal.Title>{modalContent ? modalContent.title || 'ERROR!' : null }</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {modalContent ? modalContent.body : null }

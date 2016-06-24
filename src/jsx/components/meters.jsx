@@ -13,18 +13,19 @@ class Meters extends Component {
       chart: 'temps',
       unusedStats: []
     }
+    this.onSelect = this.props.onSelect
   }
-  handleMeterClick(type){
+  handleMeterClick = (type) => {
     //console.log('Meter CLICK', type)
     this.setState({chart:type})
-    this.props.onSelect(type)
+    this.onSelect(type)
   }
-  handleLabelChange(e){
+  handleLabelChange = (e) => {
     console.log('LABEL CHANGE', e)
   }
   renderStat = (stat, id) => {
     let that = this
-    let {hrIndex} = this.props
+    let { hrIndex } = this.props
     let { unit, isLoading } = this.props.weather
 
     const colStyle = {
@@ -37,10 +38,10 @@ class Meters extends Component {
                     isLoading={isLoading}
                     hasError={this.state.hasError}
                     data={stat.data ? stat.data[hrIndex] : '...'}
-                    data2={stat.data2 ? stat.data2[hrIndex] : null}
+                    data2={stat.data2 ? stat.data2[hrIndex] : ''}
                     label={stat.label ? stat.label : ''}
                     suffix={stat.suffix ? stat.suffix : ''}
-                    onClick={that.handleMeterClick.bind(this)}
+                    onClick={that.handleMeterClick}
                     onLabelChange={that.handleLabelChange}
                     active={this.state.chart===stat.type ? ' active' : ''} />
       </Col>
@@ -84,12 +85,12 @@ class Meters extends Component {
 Meters.propTypes = {
   onSelect: PropTypes.func.isRequired,
   hrIndex: PropTypes.number.isRequired,
-  weather: PropTypes.shape({
-    unit: PropTypes.string.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-    response: PropTypes.object.isRequired,
-    hourly: PropTypes.array
-  })
+  weather: PropTypes.object.isRequired
+}
+
+Meters.defaultProps = {
+  hrIndex: 0,
+  weather: {}
 }
 
 function mapStateToProps({weather}){

@@ -38,7 +38,7 @@ export function autoComplete(query){
 export const TOGGLE_UNIT = 'TOGGLE_UNIT'
 
 export function toggleUnit(val) {
-  //console.log('toggle value', val)
+  //console.log('toggle UNIT value', val)
 
   return {
     type: TOGGLE_UNIT,

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap';
 
-import { getWeather, loading, autoComplete } from '../../actions/index'
+import { autoComplete } from '../../actions/index'
 import ToggleBtn from './toggle-btn'
 //import MultipleChoices from './multiple-choice-list';
 
@@ -16,6 +16,8 @@ class Searchbar extends Component {
       searchmode:false,
       term:''
     }
+    this.onSearch = this.props.onSearch
+    this.onSubmit = this.props.onSubmit
   }
 
   onInputChange = (e) => {
@@ -33,27 +35,29 @@ class Searchbar extends Component {
         term:'',
         searchmode:false
       })
-      this.props.onSearch(false)
-      this.getLocation(location)
+      this.onSearch(false)
+      this.onSubmit(location)
     }
   }
-
-  getLocation = (query) => {
-    this.props.loading(1)
-    this.props.getWeather(query)
-  }
-
 
   handleSearchMode(){
     this.setState({searchmode:true})
-    this.props.onSearch(true)
-    setTimeout(this.handleFocus.bind(this), 100)
+    this.onSearch(true)
+    setTimeout(this.handleFocus, 100)
   }
 
-  handleFocus(){
+  handleFocus = () => {
     if (this.myTextInput !== null) {
       this.myTextInput.focus();
     }
+  }
+
+  handleBlur = () => {
+    if (this.myTextInput !== null) {
+      this.myTextInput.blur();
+    }
+    this.setState({searchmode:false})
+    this.onSearch(false)
   }
 
   render(){
@@ -75,6 +79,7 @@ class Searchbar extends Component {
       <form onSubmit={this.onFormSubmit}>
         <div className="input-group" >
           <input onChange={this.onInputChange}
+                  onBlur={this.handleBlur}
                   type="text"
                   className="form-control"
                   placeholder="City & State/Country OR Zip"
@@ -91,14 +96,17 @@ class Searchbar extends Component {
 }
 
 Searchbar.propTypes = {
-  getWeather: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   onSearch: PropTypes.func.isRequired,
-  loading: PropTypes.func.isRequired,
   locations: PropTypes.object
 }
 
+Searchbar.defaultProps = {
+  locations: {}
+}
+
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getWeather, loading, autoComplete }, dispatch)
+  return bindActionCreators({ autoComplete }, dispatch)
 }
 
 function mapStateToProps({ weather, locations }){
@@ -111,12 +119,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(Searchbar)
 let popover = <Popover id="popover" title="Choose meter" >
                 <MultipleChoices items={response.results} onSelect={this.handleChoiceSelect} />
               </Popover>;
-componentWillReceiveProps(props){
-  let { modal } = props
-  console.log('componentWillReceiveProps', modal)
-  if( modal && !modal.modalOpen ){
-      //this.getLocation('autoip');
-  }
-}
-<console.log('CHOICES', response.results)
+
 MultipleChoices items={response.results} onSelect={this.handleChoiceSelect} />*/

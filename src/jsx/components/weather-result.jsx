@@ -25,6 +25,8 @@ class WeatherResult extends Component {
       svgWidth:200,
       svgHeight:150
     }
+    this.toggleModal = this.props.toggleModal
+    this.toggleUnit = this.props.toggleUnit
   }
 
   updateDimensions = () => {
@@ -52,16 +54,16 @@ class WeatherResult extends Component {
     console.log('componentWillReceiveProps', props)
     if(!isLoading && response.error){
         console.log('ERROR', response)
-        this.props.toggleModal({title:'YIKES!',body:response.error.description})
+        this.toggleModal({body:response.error.description})
     }
     if(!isLoading && response.results){
       //console.log('MULTIPLE CHOICES', response.results)
-      this.props.toggleModal({title:'PICK ONE!',body:<MultipleChoices className="choices" items={response.results} onSelect={this.handleChoiceSelect} />})
+      this.toggleModal({title:'WHICH ONE?',body:<MultipleChoices className="choices" items={response.results} onSelect={this.handleChoiceSelect} />})
     }
   }
 
   handleChoiceSelect = (query) => {
-    this.props.toggleModal(null)
+    this.toggleModal(null)
     console.log('QID', query);
     this.getLocation(query);
   }
@@ -71,18 +73,22 @@ class WeatherResult extends Component {
     this.props.getWeather(query)
   }
 
-  renderWindStr (spd/*, gust*/) {
-    let str
-    switch (spd){
-      case 'Calm':
-      //case 'Variable':
-      str = spd.toLowerCase()
-      break
-      default:
-      //str = gust > spd ? spd +' - '+gust : spd
-      str = spd
-    }
-    return str
+  afterdark(sp, now){
+    let hr = parseInt(now),
+    sunrise = parseInt(sp.sunrise.minute)<30 ? parseInt(sp.sunrise.hour) : parseInt(sp.sunrise.hour)+1,
+    sunset = parseInt(sp.sunset.minute)<30 ? parseInt(sp.sunset.hour) : parseInt(sp.sunset.hour)+1
+    //console.log(hr, sunrise, sunset )
+    return ((hr > sunrise ) && (hr < sunset)) ? false : true
+  }
+
+  midniteHrs(hrs){
+    let arr = []
+    hrs.map((hr, id) => {
+      if (hr.hour === '0') {
+        arr.push({id:id})
+      }
+    })
+    return arr
   }
 
   handleChartHover = (id) => {
@@ -104,16 +110,6 @@ class WeatherResult extends Component {
       hrIndex:id,
       dayIndex:dayIndex
     })
-  }
-
-  midniteHrs(hrs){
-    let arr = []
-    hrs.map((hr, id) => {
-      if (hr.hour === '0') {
-        arr.push({id:id})
-      }
-    })
-    return arr
   }
 
   handleDayClick = (id) => {
@@ -143,29 +139,18 @@ class WeatherResult extends Component {
     })
   }
 
-  afterdark(sp, now){
-    let hr = parseInt(now),
-    sunrise = parseInt(sp.sunrise.minute)<30 ? parseInt(sp.sunrise.hour) : parseInt(sp.sunrise.hour)+1,
-    sunset = parseInt(sp.sunset.minute)<30 ? parseInt(sp.sunset.hour) : parseInt(sp.sunset.hour)+1
-    //console.log(hr, sunrise, sunset )
-    return ((hr > sunrise ) && (hr < sunset)) ? false : true
-  }
-
-  toggleFavorite(){
+  toggleFavorite = () => {
     this.props.toggleFavorite(this.props.weather.location)
-  }
-
-  toggleUnit(val){
-    this.props.toggleUnit(val)
   }
 
   render() {
 
     let { hrIndex, svgWidth, svgHeight } = this.state
-    let { response, unit, hourly, sunphase, isLoading, location } = this.props.weather  //unit
+    let { response, unit, hourly, sunphase, isLoading, location } = this.props.weather
     let { favorites } = this.props.favorites
     let validData = !isLoading && !response.error && !response.results
     //console.log('validData', validData)
+    //console.log('RESULT unit is metric', unit==='metric')
 
     let dates, conditions, icons, isDark, isFavorite, isMetric
     if (validData) {
@@ -180,10 +165,9 @@ class WeatherResult extends Component {
       //console.log('isDark',isDark)
     }
 
-    //const rowStyle = {margin:'8px 4px 0 4px'}
-
     const noMargin = {margin:'0px'}
     const noPadding = {padding:'0px'}
+    const colStyle = {padding:'0 0 0 4px'}
 
     const favoriteOptions = [
       <Glyphicon glyph="heart-empty" />,
@@ -201,14 +185,14 @@ class WeatherResult extends Component {
         <Row style={noMargin}>
           <Col xs={12} sm={6} style={noPadding}>
             <Row style={{margin:'6px 8px 0 4px'}}>
-              <Col xs={2} style={{padding:'0 0 0 4px'}}>
-                <ToggleBtn toggleFunction={this.toggleUnit.bind(this)} options={unitOptions} state={isMetric} styleClass="unit pull-left" />
+              <Col xs={2} style={colStyle}>
+                <ToggleBtn toggleFunction={this.toggleUnit} options={unitOptions} state={isMetric} styleClass="unit pull-left" />
               </Col>
-              <Col xs={8} style={{padding:'0 0 0 4px'}}>
+              <Col xs={8} style={colStyle}>
                 <div className="time">{validData ? <h2>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h2> : null}</div>
               </Col>
-              <Col xs={2} style={{padding:'0 0 0 4px'}}>
-                <ToggleBtn toggleFunction={this.toggleFavorite.bind(this)} options={favoriteOptions} state={isFavorite} styleClass="pull-right no-boundary"/>
+              <Col xs={2} style={colStyle}>
+                <ToggleBtn toggleFunction={this.toggleFavorite} options={favoriteOptions} state={isFavorite} styleClass="pull-right no-boundary"/>
               </Col>
             </Row>
 
@@ -232,8 +216,8 @@ class WeatherResult extends Component {
 
         <div className="footer">
           <Meters hrIndex={hrIndex} onSelect={(type)=>{this.setState({chart:type})}}/>
-          <Charts chart={this.state.chart} hrIndex={hrIndex} onMouseOver={this.handleChartHover} numHrs={96}/>
-          <DayForecast numDays={4} onSelect={this.handleDayClick} dayIndex={this.state.dayIndex}/>
+          <Charts hrIndex={hrIndex} chart={this.state.chart} onMouseOver={this.handleChartHover}/>
+          <DayForecast dayIndex={this.state.dayIndex} onSelect={this.handleDayClick}/>
         </div>
       </div>
     )
@@ -256,6 +240,17 @@ WeatherResult.propTypes = {
   }),
   favorites: PropTypes.shape({
     favorites: PropTypes.array.isRequired
+  })
+}
+
+WeatherResult.defaultProps = {
+  weather: PropTypes.shape({
+    unit: 'metris',
+    isLoading: false,
+    response: {},
+    hourly: [],
+    sunphase: {},
+    location: {}
   })
 }
 
