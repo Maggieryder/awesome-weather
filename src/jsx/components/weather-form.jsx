@@ -6,7 +6,7 @@ import { Glyphicon } from 'react-bootstrap';
 
 import { autoComplete } from '../../actions/index'
 import ToggleBtn from './toggle-btn'
-//import MultipleChoices from './multiple-choice-list';
+//import MultipleChoices from 'ChoiceList';
 
 class Searchbar extends Component {
   constructor(props) {
@@ -29,15 +29,19 @@ class Searchbar extends Component {
 
   onFormSubmit = (e) => {
     e.preventDefault()
+    this.reset()
     let location = this.state.term
     if (location.length > 0){
-      this.setState({
-        term:'',
-        searchmode:false
-      })
-      this.onSearch(false)
       this.onSubmit(location)
     }
+  }
+
+  reset = () => {
+    this.setState({
+      term:'',
+      searchmode:false
+    })
+    this.onSearch(false)
   }
 
   handleSearchMode(){
@@ -56,8 +60,8 @@ class Searchbar extends Component {
     if (this.myTextInput !== null) {
       this.myTextInput.blur();
     }
-    this.setState({searchmode:false})
-    this.onSearch(false)
+    this.reset()
+    //onBlur={this.handleBlur}
   }
 
   render(){
@@ -79,7 +83,7 @@ class Searchbar extends Component {
       <form onSubmit={this.onFormSubmit}>
         <div className="input-group" >
           <input onChange={this.onInputChange}
-                  onBlur={this.handleBlur}
+
                   type="text"
                   className="form-control"
                   placeholder="City & State/Country OR Zip"

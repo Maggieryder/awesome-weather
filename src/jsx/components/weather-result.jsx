@@ -1,18 +1,18 @@
 import React, { Component, PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Glyphicon } from 'react-bootstrap';
-import $ from '../../vendor/jquery_1.12.0.min.js'
+import $ from 'jquery'
 import _ from 'lodash'
 import { getWeather, loading, toggleUnit, toggleFavorite, toggleModal } from '../../actions/index'
-import ToggleBtn from './toggle-btn'
-//import ModalInstance from './modal'
-import MultipleChoices from './multiple-choice-list';
-import DayForecast from './forecast-days'
-import Charts from './charts'
-import Meters from './meters'
+import ToggleBtn from 'ToggleBtn'
+//import ModalInstance from 'Modal'
+import MultipleChoices from 'ChoiceList';
+import DayForecast from 'Days'
+import Charts from 'Charts'
+import Meters from 'Meters'
 import coords from '../utils/coords.js'
 
-import WeatherIcon from '../../icons/weather-icon.jsx'
+import WeatherIcon from 'WeatherIcon'
 
 class WeatherResult extends Component {
   constructor(props) {
@@ -51,7 +51,7 @@ class WeatherResult extends Component {
 
   componentWillReceiveProps(props){
     let { response, isLoading } = props.weather
-    console.log('componentWillReceiveProps', props)
+    //console.log('componentWillReceiveProps', props)
     if(!isLoading && response.error){
         console.log('ERROR', response)
         this.toggleModal({body:response.error.description})
@@ -149,14 +149,16 @@ class WeatherResult extends Component {
     let { response, unit, hourly, sunphase, isLoading, location } = this.props.weather
     let { favorites } = this.props.favorites
     let validData = !isLoading && !response.error && !response.results
+
     //console.log('validData', validData)
     //console.log('RESULT unit is metric', unit==='metric')
 
-    let dates, conditions, icons, isDark, isFavorite, isMetric
+    let dates, conditions, icons, isDark, isFavorite, isMetric = unit==='metric' ? 0 : 1
+
     if (validData) {
       let idx = _.findIndex(favorites, function(i) { return i.l === location.l })
       isFavorite = idx !== -1 ? 1 : 0
-      isMetric = unit==='metric' ? 0 : 1
+
       //console.log('isFavorite / idx', isFavorite, idx)
       dates = hourly.map(hour => hour.FCTTIME),
       conditions = hourly.map(hour => hour.wx),
@@ -215,7 +217,7 @@ class WeatherResult extends Component {
         </Row>
 
         <div className="footer">
-          <Meters hrIndex={hrIndex} onSelect={(type)=>{this.setState({chart:type})}}/>
+          <Meters hrIndex={hrIndex} chart={this.state.chart} onSelect={(type)=>{this.setState({chart:type})}}/>
           <Charts hrIndex={hrIndex} chart={this.state.chart} onMouseOver={this.handleChartHover}/>
           <DayForecast dayIndex={this.state.dayIndex} onSelect={this.handleDayClick}/>
         </div>
@@ -245,7 +247,7 @@ WeatherResult.propTypes = {
 
 WeatherResult.defaultProps = {
   weather: PropTypes.shape({
-    unit: 'metris',
+    unit: 'metric',
     isLoading: false,
     response: {},
     hourly: [],

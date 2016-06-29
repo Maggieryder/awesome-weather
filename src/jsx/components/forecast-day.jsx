@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Col } from 'react-bootstrap';
 
-import WeatherIcon from '../../icons/weather-icon.jsx'
+import WeatherIcon from 'WeatherIcon'
 
 const DayCast = (props) => {
 

@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { toggleModal, getWeather, loading } from '../../actions/index';
 import { Col, Glyphicon } from 'react-bootstrap';
 
-import ToggleBtn from '../components/toggle-btn';
-import WeatherForm from '../components/weather-form.jsx';
-import MultipleChoices from '../components/multiple-choice-list';
+import ToggleBtn from 'ToggleBtn';
+import WeatherForm from 'WeatherForm';
+import MultipleChoices from 'ChoiceList';
 
 class Header extends Component {
   constructor(props) {

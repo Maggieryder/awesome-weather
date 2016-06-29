@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Row } from 'react-bootstrap';
-import $ from '../../vendor/jquery_1.12.0.min.js'
+import $ from 'jquery'
 
 import Chart from './chart'
 
@@ -67,7 +67,10 @@ class Charts extends Component {
         winds: hourly.map(hour => hour.wspd.metric),
         precips: hourly.map(hour => hour.pop),
         skies: hourly.map(hour => hour.sky),
-        humidities: hourly.map(hour => hour.humidity)
+        humidities: hourly.map(hour => hour.humidity),
+        pressures: hourly.map(hour => hour.mslp.english),
+        dewpoints: hourly.map(hour => hour.dewpoint.english),
+        uvis: hourly.map(hour => hour.uvi)
       }
     }
 

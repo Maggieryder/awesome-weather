@@ -8,9 +8,18 @@ class ToggleBtn extends Component {
     this.toggleFunction = this.props.toggleFunction.bind(this)
   }
 
+  shouldComponentUpdate(nextProps) {
+    if (this.props.state !== nextProps.state) {
+      //console.log('ToggleBtn shouldComponentUpdate', this.props.state !== nextProps.state)
+    }
+   return this.props.state !== nextProps.state
+  }
+
   componentWillReceiveProps(nextProps){
-    //console.log('ToggleBtn componentWillReceiveProps', nextProps)
-    this.setState({toggle:nextProps.state})
+    if (this.props.state !== nextProps.state) {
+      //console.log('ToggleBtn componentWillReceiveProps', nextProps)
+      this.setState({toggle:nextProps.state})
+    }
   }
 
   handleToggle = () => {
@@ -20,6 +29,7 @@ class ToggleBtn extends Component {
   }
 
   render(){
+    console.log('RENDERING...')
     const { options, styleClass } = this.props
 
     return (

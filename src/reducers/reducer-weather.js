@@ -31,7 +31,7 @@ export default function(state = INITIAL_STATE, action) {
       isLoading: LOADING_STATES[0]
     }
     case TOGGLE_UNIT:
-    //console.log('action recieved for UNIT change', action.payload.unit)
+    console.log('action recieved for UNIT change', action.payload.unit)
     return {...state, unit: UNITS[action.payload.unit]}
     case IS_LOADING:
     //console.log('action recieved for IS LOADING', LOADING_STATES[action.payload.isLoading])

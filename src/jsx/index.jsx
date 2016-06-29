@@ -9,7 +9,7 @@ import reducers from '../reducers'
 
 
 /// remove thses possibly?? See webpack tute
-import '../vendor/jquery_1.12.0.min.js'
+//import '../vendor/jquery_1.12.0.min.js'
 import '../vendor/bootstrap.min.css'
 //import '../vendor/bootstrap-theme.min.css'
 import '../scss/main.scss'

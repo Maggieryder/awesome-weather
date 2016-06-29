@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Nav, NavDropdown, MenuItem } from 'react-bootstrap';
 
-let unusedTypes = [ 'dewpoints', 'pressures', 'uvis'];
-
 let suffixes = (type, unit) => {
   switch (type){
     case 'degrees':
@@ -28,14 +26,27 @@ class Meter extends Component {
     this.onLabelChange = this.props.onLabelChange.bind(this)
   }
   handleSelect = (e) => {
-    this.onLabelChange(unusedTypes[e])
-    this.onClick(this.props.type);
+    let { hiddenStats, id } = this.props
+    this.onLabelChange(hiddenStats[e], id, e)
+    this.onClick(hiddenStats[e].type);
     this.setState({dropdownOpen:false})
   }
 
+  renderDropdown = () => {
+    let { label, hiddenStats } = this.props
+    //console.log('rendering METER DROPDOWN hiddenStats', hiddenStats[0] )
+    return  hiddenStats.length > 0 ? <Nav>
+              <NavDropdown className="label" title={label} id="nav-dropdown" onSelect={this.handleSelect} onToggle={()=>{this.setState({dropdownOpen:!this.state.dropdownOpen})}}>
+                <MenuItem eventKey="0">{hiddenStats[0].label}</MenuItem>
+                <MenuItem eventKey="1">{hiddenStats[1].label}</MenuItem>
+                <MenuItem eventKey="2">{hiddenStats[2].label}</MenuItem>
+              </NavDropdown>
+            </Nav>  : <div className="label">{label}</div>
+  }
+
   render(){
-    let { type, data, data2, label, suffix, unit, active, isLoading, hasError } = this.props
-    //console.log('rendering METER props', this.props)
+    let { type, data, data2, suffix, unit, active, isLoading, hasError } = this.props
+    //console.log('rendering METER hiddenStats', hiddenStats[0] )
 
     let arrowStyle, arrow, readingClass = 'reading'
     if (data2) {
@@ -58,13 +69,7 @@ class Meter extends Component {
     }
     return (
       <li className={'meter'+active} >
-        <Nav>
-          <NavDropdown className="label" title={label} id="nav-dropdown" onSelect={this.handleSelect} onToggle={()=>{this.setState({dropdownOpen:!this.state.dropdownOpen})}}>
-            <MenuItem eventKey="0">{unusedTypes[0]}</MenuItem>
-            <MenuItem eventKey="1">{unusedTypes[1]}</MenuItem>
-            <MenuItem eventKey="2">{unusedTypes[2]}</MenuItem>
-          </NavDropdown>
-        </Nav>
+        {this.renderDropdown()}
         <div className={readingClass} style={{'opacity':this.state.dropdownOpen ? 0 : 1}}>
           <a href="#" onClick={()=>{this.onClick(type)}}>
             {!isLoading && !hasError ? <span>{data2 ? arrow : ''}{data}{suffixes(suffix, unit)}</span> : <span>...</span>}
@@ -76,6 +81,7 @@ class Meter extends Component {
 }
 
 Meter.propTypes = {
+  id: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
   unit: PropTypes.string.isRequired,
   data: PropTypes.string.isRequired,
@@ -85,6 +91,7 @@ Meter.propTypes = {
   active: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
   hasError: PropTypes.bool.isRequired,
+  hiddenStats: PropTypes.array,
   onClick: PropTypes.func.isRequired,
   onLabelChange: PropTypes.func
 }

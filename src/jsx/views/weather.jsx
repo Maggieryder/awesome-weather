@@ -2,8 +2,8 @@ import React, { Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { getWeather, loading} from '../../actions/index';
 
-import ModalInstance from '../components/modal'
-import WeatherResult from '../components/weather-result';
+import ModalInstance from 'Modal'
+import WeatherResult from 'WeatherResult';
 
 class Home extends Component {
   componentWillMount(){

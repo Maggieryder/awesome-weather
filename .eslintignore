@@ -5,6 +5,7 @@ unused
 node_modules
 .sass-cache
 uploads
+tests
 test/temp
 .tmp
 test/scripts/

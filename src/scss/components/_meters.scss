@@ -17,13 +17,16 @@
   }
 
   .label {
-    position:relative;
-  //  left:0; top:0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width:100%;
     height:20px;
     background:$bg-color;
     box-shadow: none;
     padding:0;
+    color: $primary-color;
     font-family: $font-family-reg;
     font-size: 11px;
     line-height:13px;
@@ -31,11 +34,12 @@
 
 
     a {
+      display: inline-block;
+      width:100%;
       padding:4px 0 3px 0;
       color: $primary-color;
       background: none !important;
     }
-
 
     a:hover {
       color: $hilite-color;

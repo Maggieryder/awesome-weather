@@ -14,8 +14,10 @@ const pkg = require('./package.json');
 
 const TARGET = process.env.npm_lifecycle_event;
 const PATHS = {
+  app_dir: path.join(__dirname, 'src'),
   source: path.join(__dirname, 'src/jsx/index.jsx'), //path.resolve(__dirname, 'src', 'jsx', 'index.jsx')
   output: path.join(__dirname, 'dist'), //path.resolve(__dirname, 'dist')
+  tests: path.join(__dirname, 'tests'),
   style: path.join(__dirname, 'src', 'scss', 'main.scss'),
   vendor: path.join(__dirname, 'src', 'vendor'),
   images: path.join(__dirname, 'src', 'images'),
@@ -32,9 +34,27 @@ const common = {
     vendors: ['react','react-dom','redux','react-redux','redux-promise','react-router','react-bootstrap','react-sparklines','axios']//Object.keys(pkg.dependencies)
     //style: PATHS.style
   },
+  //externals: {
+    //jquery: 'jQuery'
+  //},
   resolve: {
-    //root: __dirname,
-    //alias:{},
+    root: __dirname,
+    alias: {
+      //src: PATHS.app_dir,
+      Styles: PATHS.app_dir + '/scss/main.scss',
+      Shell: PATHS.app_dir + '/jsx/views/shell.jsx',
+      Header: PATHS.app_dir + '/jsx/views/header.jsx',
+      Weather: PATHS.app_dir + '/jsx/views/weather.jsx',
+      WeatherForm: PATHS.app_dir + '/jsx/components/weather-form.jsx',
+      WeatherResult: PATHS.app_dir + '/jsx/components/weather-result.jsx',
+      WeatherIcon: PATHS.app_dir + '/icons/weather-icon.jsx',
+      Charts: PATHS.app_dir + '/jsx/components/charts.jsx',
+      Meters: PATHS.app_dir + '/jsx/components/meters.jsx',
+      Days: PATHS.app_dir + '/jsx/components/forecast-days.jsx',
+      ToggleBtn: PATHS.app_dir + '/jsx/components/toggle-btn.jsx',
+      ChoiceList: PATHS.app_dir + '/jsx/components/multiple-choice-list.jsx',
+      Modal: PATHS.app_dir + '/jsx/components/modal.jsx'
+    },
     extensions: ['', '.js', '.jsx']
   },
   output: {
@@ -92,6 +112,11 @@ const common = {
     //extractSCSS,
     //extractCSS,
     new ExtractTextPlugin('css/[name].css'),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery'
+    }),
     new webpack.NoErrorsPlugin()
   ],
   postcss: [autoprefixer({browsers: ['last 5 versions']})],
@@ -162,6 +187,19 @@ if(TARGET === 'dev' || !TARGET) {
     },*/
     plugins: [
       new webpack.HotModuleReplacementPlugin()
+    ]
+  });
+}
+
+if(TARGET === 'test') {
+  config = merge(common, {
+    devtool: 'inline-source-map',
+    cache: false,
+
+    plugins: [
+      //new webpack.DefinePlugin({
+        //'process.env.NODE_ENV': JSON.stringify('test')
+      //})
     ]
   });
 }
