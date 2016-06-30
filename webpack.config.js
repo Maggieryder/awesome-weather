@@ -30,13 +30,13 @@ const extractCSS = new ExtractTextPlugin('css/vendors.css')
 const common = {
   context: __dirname,
   entry: {
-    app: [PATHS.source],
-    vendors: ['react','react-dom','redux','react-redux','redux-promise','react-router','react-bootstrap','react-sparklines','axios']//Object.keys(pkg.dependencies)
+    vendors: ['react','react-dom','redux','react-redux','redux-promise','react-router','react-bootstrap','react-sparklines','axios'],
+    app: [PATHS.source]//Object.keys(pkg.dependencies)
     //style: PATHS.style
   },
-  //externals: {
+  externals: {
     //jquery: 'jQuery'
-  //},
+  },
   resolve: {
     root: __dirname,
     alias: {
@@ -49,13 +49,14 @@ const common = {
       WeatherResult: PATHS.app_dir + '/jsx/components/weather-result.jsx',
       WeatherIcon: PATHS.app_dir + '/icons/weather-icon.jsx',
       Charts: PATHS.app_dir + '/jsx/components/charts.jsx',
+      Meter: PATHS.app_dir + '/jsx/components/meter.jsx',
       Meters: PATHS.app_dir + '/jsx/components/meters.jsx',
       Days: PATHS.app_dir + '/jsx/components/forecast-days.jsx',
       ToggleBtn: PATHS.app_dir + '/jsx/components/toggle-btn.jsx',
       ChoiceList: PATHS.app_dir + '/jsx/components/multiple-choice-list.jsx',
       Modal: PATHS.app_dir + '/jsx/components/modal.jsx'
     },
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx', 'json']
   },
   output: {
     path: PATHS.output,
@@ -90,11 +91,10 @@ const common = {
         //loader: ExtractTextPlugin.extract('style', 'css!postcss!sass')
         include: PATHS.style
       },
-      /*{
+      {
         test: /\.json?$/,
-        loaders: ['json'],
-        include: PATHS.searchIndex
-      },*/
+        loader: 'json'
+      },
       // images & fonts
       {
         test:   /\.(ttf|eot|woff|woff2|png|gif|jpe?g|svg)$/i,
@@ -195,11 +195,24 @@ if(TARGET === 'test') {
   config = merge(common, {
     devtool: 'inline-source-map',
     cache: false,
-
+    externals: {
+      //jquery: 'jQuery',
+      'cheerio': 'window',
+      'react/addons': true,
+      'react/lib/ExecutionEnvironment': true,
+      'react/lib/ReactContext': 'window'
+    },
     plugins: [
       //new webpack.DefinePlugin({
         //'process.env.NODE_ENV': JSON.stringify('test')
       //})
+      /*
+      new webpack.NormalModuleReplacementPlugin(/^\.\/package$/, function(result) {
+        if(/cheerio/.test(result.context)) {
+            result.request = './package.json'
+        }
+      })
+      */
     ]
   });
 }

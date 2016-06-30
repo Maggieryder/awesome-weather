@@ -17,12 +17,12 @@ class Meters extends Component {
       usedStats: [defaultStat,defaultStat,defaultStat,defaultStat,defaultStat,defaultStat],
       hiddenStats: []
     }
-    this.onSelect = this.props.onSelect
+    this.onSelect = this.props.onSelect.bind(this)
   }
   componentWillReceiveProps(nextProps){
     //console.log('METERS componentWillReceiveProps', nextProps.chart)
-    console.log('METERS componentWillReceiveProps', nextProps.weather.unit)
-    this.setStats(nextProps.chart, this.state.listOrder)
+    //console.log('METERS componentWillReceiveProps', nextProps.weather.unit)
+    this.setStats(nextProps.chart, this.state.listOrder, nextProps.weather.unit)
   }
 
   handleMeterClick = (type) => {
@@ -32,13 +32,14 @@ class Meters extends Component {
   }
   handleLabelChange = (e, id, id2) => {
     let { listOrder } = this.state
+    let { unit } = this.props.weather
     console.log('LABEL CHANGE', e.type, id, id2)
     //let swap = usedStats.splice(id, 1, e)[0]
     //console.log('usedStats', usedStats)
     //hiddenStats.splice(id2, 1, swap)
     //console.log('hiddenStats', hiddenStats)
     let newListOrder = this.swap(listOrder, parseInt(id), (id2*1+6));
-    this.setStats(e.type, newListOrder)
+    this.setStats(e.type, newListOrder, unit)
   }
   swap(arr, x, y){
     let b = arr[x];
@@ -47,25 +48,25 @@ class Meters extends Component {
     return arr;
   }
 
-  setStats = ( chart, listOrder ) => {
+  setStats = ( chart, listOrder, unit ) => {
     let { defaultStat } = this.props
-    let { response, hourly, unit, isLoading } = this.props.weather
+    let { response, hourly, isLoading } = this.props.weather
     let validData = !isLoading && !response.error && !response.results
-    console.log('>>>>>>>>>>>>>>>Stats UNIT', unit)
-    let data =  [
-        {type:'temps', label:'Temperature', data:hourly.map(hour => hour.temp[unit]), suffix:'degrees'},
-        {type:'winds', label:'Winds', data:hourly.map(hour => hour.wspd[unit]), data2:hourly.map(hour => hour.wdir.degrees), suffix:'speed'},
-        {type:'precips', label:'Precipitation', data:hourly.map(hour => hour.pop), suffix:'percentage'},
-        {type:'feels', label:'Feels like', data:hourly.map(hour => hour.feelslike[unit]), suffix:'degrees'},
-        {type:'skies', label:'Cloud cover', data:hourly.map(hour => hour.sky), suffix:'percentage'},
-        {type:'humidities', label:'Humidity', data:hourly.map(hour => hour.humidity), suffix:'percentage'},
-        {type:'dewpoints', label:'Dewpoint', data:hourly.map(hour => hour.dewpoint[unit]), suffix:'degrees'},
-        {type:'pressures', label:'Pressure', data:hourly.map(hour => hour.mslp[unit]), suffix:''},
-        //{type:'snow', label:'Snow', data:hourly.map(hour => hour.snow[unit]), suffix:'measure'},
-        {type:'uvis', label:'UVI', data:hourly.map(hour => hour.uvi), suffix:''}
-      ]
+    //console.log('>>>>>>>>>>>>>>>Stats UNIT', unit)
     let stats = []
     if ( validData ) {
+      let data =  [
+          {type:'temps', label:'Temperature', data:hourly.map(hour => hour.temp[unit]), suffix:'degrees'},
+          {type:'winds', label:'Winds', data:hourly.map(hour => hour.wspd[unit]), data2:hourly.map(hour => hour.wdir.degrees), suffix:'speed'},
+          {type:'precips', label:'Precipitation', data:hourly.map(hour => hour.pop), suffix:'percentage'},
+          {type:'feels', label:'Feels like', data:hourly.map(hour => hour.feelslike[unit]), suffix:'degrees'},
+          {type:'skies', label:'Cloud cover', data:hourly.map(hour => hour.sky), suffix:'percentage'},
+          {type:'humidities', label:'Humidity', data:hourly.map(hour => hour.humidity), suffix:'percentage'},
+          {type:'dewpoints', label:'Dewpoint', data:hourly.map(hour => hour.dewpoint[unit]), suffix:'degrees'},
+          {type:'pressures', label:'Pressure', data:hourly.map(hour => hour.mslp[unit]), suffix:''},
+          //{type:'snow', label:'Snow', data:hourly.map(hour => hour.snow[unit]), suffix:'measure'},
+          {type:'uvis', label:'UVI', data:hourly.map(hour => hour.uvi), suffix:''}
+        ]
       for (let i = 0; i < listOrder.length; i++){
         stats.push(_.find(data, { 'type': listOrder[i] }));
       }
@@ -74,7 +75,6 @@ class Meters extends Component {
         stats.push(defaultStat);
       }
     }
-
     //console.log('Stats', stats)
     //console.log('setStats', chart, this.props.chart, this.state.chart)
     this.setState({

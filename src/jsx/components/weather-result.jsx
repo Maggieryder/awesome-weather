@@ -53,7 +53,7 @@ class WeatherResult extends Component {
     let { response, isLoading } = props.weather
     //console.log('componentWillReceiveProps', props)
     if(!isLoading && response.error){
-        console.log('ERROR', response)
+        //console.log('ERROR', response.error.description)
         this.toggleModal({body:response.error.description})
     }
     if(!isLoading && response.results){

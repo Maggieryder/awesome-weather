@@ -22,8 +22,8 @@ class Meter extends Component {
     this.state = {
       dropdownOpen:false
     }
-    this.onClick = this.props.onClick.bind(this)
-    this.onLabelChange = this.props.onLabelChange.bind(this)
+    this.onClick = this.props.onClick
+    this.onLabelChange = this.props.onLabelChange
   }
   handleSelect = (e) => {
     let { hiddenStats, id } = this.props

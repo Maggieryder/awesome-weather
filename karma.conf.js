@@ -2,19 +2,19 @@ const webpackConfig = require('./webpack.config.js');
 
 module.exports = function (config) {
   config.set({
-    //basePath: '',
+    basePath: '',
     browsers: ['Chrome'],
     singleRun: true,
     frameworks: ['jasmine'],
     files: [
-      //'node_modules/jquery/dist/jquery.min.js',
+      'node_modules/jquery/dist/jquery.min.js',
       //'node_modules/foundation-sites/dist/foundation.min.js',
       'src/tests/**/*.test.jsx'
     ],
     preprocessors: {
       'src/tests/**/*.test.jsx': ['webpack', 'sourcemap']
     },
-    reporters: ['dots'],
+    reporters: ['progress'],
     client: {
       // log console output in our test console
       //captureConsole: true
@@ -27,7 +27,8 @@ module.exports = function (config) {
       require('karma-webpack'),
       require('karma-jasmine'),
       require('karma-sourcemap-loader'),
-      require('karma-chrome-launcher')
+      require('karma-chrome-launcher'),
+      require('karma-jasmine-html-reporter')
     ],
     port: 9876,
     colors: true,
