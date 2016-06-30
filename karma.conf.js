@@ -30,6 +30,11 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter')
     ],
+    babelPreprocessor: {
+      options: {
+        presets: ['airbnb']
+      }
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

@@ -15,7 +15,7 @@ npm run dev
 * WeatherUnderground
 
 ## Online Demo
-*
+* http://calm-caverns-93331.herokuapp.com/#/
 
 ## Features
 * React Redux Bootstrap architecture
@@ -24,11 +24,11 @@ npm run dev
 
 
 ## Todo
+* Touch events
+
 * AutoComplete on search bar
 
 * More on timeline functionality
-
-* More on UI meter switching
 
 * Radar mapStateToProps
 
@@ -37,5 +37,7 @@ npm run dev
 * More work on sass
 
 * Dynamic photos
+
+* More work Jasmine/Enzyme testing
 
 * Migrate to React Native for mobile
