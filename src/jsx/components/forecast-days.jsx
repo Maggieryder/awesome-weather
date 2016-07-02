@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Row } from 'react-bootstrap';
 
-import ForecastDay from './forecast-day.jsx'
+import ForecastDay from 'forecast-day.jsx'
 
 class DaysForecast extends Component {
   constructor(props) {

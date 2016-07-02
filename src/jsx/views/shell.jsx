@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 
-import Header from './header.jsx'
+import Header from 'header'
 //import Footer from './footer.jsx'
 
 const Shell = (props) => {

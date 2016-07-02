@@ -39,22 +39,15 @@ const common = {
   },
   resolve: {
     root: __dirname,
+    modulesDirectories: [
+      'node_modules',
+      PATHS.app_dir + '/jsx',
+      PATHS.app_dir + '/jsx/components',
+      PATHS.app_dir + '/jsx/views',
+      PATHS.app_dir + '/icons'
+    ],
     alias: {
-      //src: PATHS.app_dir,
-      Styles: PATHS.app_dir + '/scss/main.scss',
-      Shell: PATHS.app_dir + '/jsx/views/shell.jsx',
-      Header: PATHS.app_dir + '/jsx/views/header.jsx',
-      Weather: PATHS.app_dir + '/jsx/views/weather.jsx',
-      WeatherForm: PATHS.app_dir + '/jsx/components/weather-form.jsx',
-      WeatherResult: PATHS.app_dir + '/jsx/components/weather-result.jsx',
-      WeatherIcon: PATHS.app_dir + '/icons/weather-icon.jsx',
-      Charts: PATHS.app_dir + '/jsx/components/charts.jsx',
-      Meter: PATHS.app_dir + '/jsx/components/meter.jsx',
-      Meters: PATHS.app_dir + '/jsx/components/meters.jsx',
-      Days: PATHS.app_dir + '/jsx/components/forecast-days.jsx',
-      ToggleBtn: PATHS.app_dir + '/jsx/components/toggle-btn.jsx',
-      ChoiceList: PATHS.app_dir + '/jsx/components/multiple-choice-list.jsx',
-      Modal: PATHS.app_dir + '/jsx/components/modal.jsx'
+      Styles: PATHS.app_dir + '/scss/main.scss'
     },
     extensions: ['', '.js', '.jsx', 'json']
   },
@@ -76,7 +69,6 @@ const common = {
       {
         test: /\.(js|jsx)$/,
         loader: 'react-hot!babel?cacheDirectory',
-        //include: PATHS.source
         exclude: /node_modules/
       },
       // Define development specific CSS setup
@@ -99,7 +91,6 @@ const common = {
       {
         test:   /\.(ttf|eot|woff|woff2|png|gif|jpe?g|svg)$/i,
         loader: 'url?limit=8192&context=src&name=[path][name].[ext]!img?minimize'//,
-          //include: PATHS.images
       }
     ]
   },

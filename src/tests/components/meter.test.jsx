@@ -2,7 +2,7 @@ import React from 'react';
 //import ReactDOM from 'react-dom';
 import jasmineEnzyme from 'jasmine-enzyme';
 import { shallow, mount, render } from 'enzyme';
-import Meter from 'Meter';
+import Meter from 'meter';
 
 describe('<Meter/>', () => {
 

@@ -5,8 +5,8 @@ import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap';
 
 import { autoComplete } from '../../actions/index'
-import ToggleBtn from './toggle-btn'
-//import MultipleChoices from 'ChoiceList';
+import ToggleBtn from 'toggle-btn'
+//import MultipleChoices from 'multiple-choice-list';
 
 class Searchbar extends Component {
   constructor(props) {
@@ -55,7 +55,7 @@ class Searchbar extends Component {
       this.myTextInput.focus();
     }
   }
-
+  // this isn't working quite like I planned
   handleBlur = () => {
     if (this.myTextInput !== null) {
       this.myTextInput.blur();
@@ -83,7 +83,6 @@ class Searchbar extends Component {
       <form onSubmit={this.onFormSubmit}>
         <div className="input-group" >
           <input onChange={this.onInputChange}
-
                   type="text"
                   className="form-control"
                   placeholder="City & State/Country OR Zip"
@@ -123,5 +122,4 @@ export default connect(mapStateToProps, mapDispatchToProps)(Searchbar)
 let popover = <Popover id="popover" title="Choose meter" >
                 <MultipleChoices items={response.results} onSelect={this.handleChoiceSelect} />
               </Popover>;
-
-MultipleChoices items={response.results} onSelect={this.handleChoiceSelect} />*/
+*/

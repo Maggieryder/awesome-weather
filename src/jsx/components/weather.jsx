@@ -4,17 +4,17 @@ import { Row, Col, Glyphicon } from 'react-bootstrap';
 import $ from 'jquery'
 import _ from 'lodash'
 import { getWeather, loading, toggleUnit, toggleFavorite, toggleModal } from '../../actions/index'
-import ToggleBtn from 'ToggleBtn'
-//import ModalInstance from 'Modal'
-import MultipleChoices from 'ChoiceList';
-import DayForecast from 'Days'
-import Charts from 'Charts'
-import Meters from 'Meters'
+import ToggleBtn from 'toggle-btn'
+import ModalInstance from 'modal'
+import MultipleChoices from 'multiple-choice-list';
+import DayForecast from 'forecast-days'
+import Charts from 'charts'
+import Meters from 'meters'
 import coords from '../utils/coords.js'
 
-import WeatherIcon from 'WeatherIcon'
+import WeatherIcon from 'weather-icon'
 
-class WeatherResult extends Component {
+class Weather extends Component {
   constructor(props) {
     super(props);
     //console.log('RESULT PROPS >>', this.props)
@@ -37,7 +37,9 @@ class WeatherResult extends Component {
   }
   componentWillMount() {
       this.updateDimensions();
+      this.getLocation('autoip');
   }
+
   componentDidMount() {
     let that = this
     //$( window ).resize(this.updateDimensions}
@@ -73,6 +75,10 @@ class WeatherResult extends Component {
     this.props.getWeather(query)
   }
 
+  toggleFavorite = () => {
+    this.props.toggleFavorite(this.props.weather.location)
+  }
+
   afterdark(sp, now){
     let hr = parseInt(now),
     sunrise = parseInt(sp.sunrise.minute)<30 ? parseInt(sp.sunrise.hour) : parseInt(sp.sunrise.hour)+1,
@@ -81,31 +87,38 @@ class WeatherResult extends Component {
     return ((hr > sunrise ) && (hr < sunset)) ? false : true
   }
 
-  midniteHrs(hrs){
-    let arr = []
-    hrs.map((hr, id) => {
-      if (hr.hour === '0') {
-        arr.push({id:id})
-      }
+  midniteHrs(){
+    let indexes = [],
+    { hourly } = this.props.weather,
+    hrs = hourly.map(hour => parseInt(hour.FCTTIME.hour))
+    hrs.map((value, id) => {
+       if (value === 0) {
+         indexes.push({id:id})
+       }
     })
-    return arr
+   return indexes
+   /*
+    indexes = hrs.map(function(value, index) {
+        if(value === 0) {
+          return {id:index}
+        }
+    }).filter(isFinite)
+    console.log(indexes)
+    return indexes
+    */
   }
 
   handleChartHover = (id) => {
     //console.log('handleChartHover', id)
-    let { hourly } = this.props.weather,
-    hrs = hourly.map(hour => hour.FCTTIME),
-    midnitehours = this.midniteHrs(hrs);
-    //console.log('midnitehours', midnitehours)
+    let indexes = this.midniteHrs()
+    //console.log('indexes', indexes)
     let dayIndex = 0
-    for (let i=0; i < midnitehours.length; i++){
-      //console.log('midnitehours[i].id', midnitehours[i].id)
-      if (midnitehours[i].id > parseInt(id)){
+    for (let i=0; i < indexes.length; i++){
+      if (indexes[i].id > parseInt(id)){
         dayIndex = i;
         break;
       }
     }
-    //console.log('dayIndex', dayIndex)
     this.setState({
       hrIndex:id,
       dayIndex:dayIndex
@@ -115,32 +128,25 @@ class WeatherResult extends Component {
   handleDayClick = (id) => {
     //console.log('handleDayClick', id)
     let chart = document.querySelectorAll('.chart')[0]
-    let { hourly } = this.props.weather,
-    hrs = hourly.map(hour => hour.FCTTIME)
-    let midnitehours = this.midniteHrs(hrs);
+    let midniteIndexes = this.midniteHrs();
+    //console.log('midnitehours', midniteIndexes)
     let startHr
     if (id===0){
       chart.style.WebkitTransform = 'translate3d(0, 0, 0)'
       chart.style.MozTransform = 'translate3d(0, 0, 0)'
       startHr = 0
     } else {
-      //console.log('midnitehours[id-1].id', midnitehours[id-1].id)
       let $markers = $('.hours li')
-      let pos = coords($markers[midnitehours[id-1].id])
+      let pos = coords($markers[midniteIndexes[id-1].id])
       //console.log('coords', pos)
       chart.style.WebkitTransform = 'translate3d('+pos.x*-1+'px, 0, 0)'
       chart.style.MozTransform = 'translate3d('+pos.x*-1+'px, 0, 0)'
-      startHr = parseInt(midnitehours[id-1].id) + 12 //midday
+      startHr = parseInt(midniteIndexes[id-1].id) + 12 //midday
     }
-
     this.setState({
       hrIndex: startHr,
       dayIndex: id
     })
-  }
-
-  toggleFavorite = () => {
-    this.props.toggleFavorite(this.props.weather.location)
   }
 
   render() {
@@ -148,8 +154,7 @@ class WeatherResult extends Component {
     let { hrIndex, svgWidth, svgHeight } = this.state
     let { response, unit, hourly, sunphase, isLoading, location } = this.props.weather
     let { favorites } = this.props.favorites
-    let validData = !isLoading && !response.error && !response.results
-
+    let validData = !isLoading && !response.error && !response.results && hourly.length >= 1
     //console.log('validData', validData)
     //console.log('RESULT unit is metric', unit==='metric')
 
@@ -158,7 +163,6 @@ class WeatherResult extends Component {
     if (validData) {
       let idx = _.findIndex(favorites, function(i) { return i.l === location.l })
       isFavorite = idx !== -1 ? 1 : 0
-
       //console.log('isFavorite / idx', isFavorite, idx)
       dates = hourly.map(hour => hour.FCTTIME),
       conditions = hourly.map(hour => hour.wx),
@@ -221,12 +225,14 @@ class WeatherResult extends Component {
           <Charts hrIndex={hrIndex} chart={this.state.chart} onMouseOver={this.handleChartHover}/>
           <DayForecast dayIndex={this.state.dayIndex} onSelect={this.handleDayClick}/>
         </div>
+
+        <ModalInstance onClose={this.getLocation}/>
       </div>
     )
   }
 }
 
-WeatherResult.propTypes = {
+Weather.propTypes = {
   getWeather: PropTypes.func.isRequired,
   loading: PropTypes.func.isRequired,
   toggleUnit: PropTypes.func.isRequired,
@@ -245,7 +251,7 @@ WeatherResult.propTypes = {
   })
 }
 
-WeatherResult.defaultProps = {
+Weather.defaultProps = {
   weather: PropTypes.shape({
     unit: 'metric',
     isLoading: false,
@@ -260,4 +266,4 @@ function mapStateToProps({ weather, favorites }){
   return { weather, favorites }
 }
 
-export default connect(mapStateToProps, { getWeather, loading, toggleUnit, toggleFavorite, toggleModal })(WeatherResult)
+export default connect(mapStateToProps, { getWeather, loading, toggleUnit, toggleFavorite, toggleModal })(Weather)

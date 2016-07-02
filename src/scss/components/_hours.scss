@@ -4,7 +4,7 @@ ul.hours {
   bottom:-1px;
   //border-left: 1px solid $bg-lite-transparent;
   //-webkit-transform: 'translate3d(0, -100%, 0)';
-  z-index:5;
+  //z-index:5;
   width: 100%;
   height: auto;
   margin:0;
@@ -16,6 +16,8 @@ ul.hours {
     float:left;
     @include calc(width, "1.04166667%");
     text-align: center;
+    font-family: $font-family-bold;
+    color: $white-transparent-2;
     font-size:10px;
     line-height:25px;
     //border-left: 1px solid $bg-lite-transparent-weak;
@@ -31,7 +33,7 @@ ul.hours {
       //padding-top:20%;
       //@include center-box();
       &:not(.no-marker) {
-        border-left: 1px solid $white-transparent-3;
+        border-left: 1px solid $white-transparent-2;
       }
 
     }
@@ -69,7 +71,7 @@ ul.hours {
   //li:nth-child(6n):not(:last-child) {
   //li:nth-child(6n)
   li.marker {
-    border-left: 1px solid $white-transparent-5;
+    border-left: 1px solid $white-transparent-4;
   }
 
 }
@@ -79,7 +81,8 @@ ul.hours {
   ul.hours {
 
     li {
-      height:30px;
+      font-size:8px;
+      height:24px;
       line-height:15px;
 
       .indicator {

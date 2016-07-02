@@ -3,7 +3,7 @@ const ReactDOM = require('react-dom');
 const $ = require('jquery');
 const TestUtils = require('react-addons-test-utils');
 
-import Charts from 'Charts';
+import Charts from 'charts';
 
 xdescribe('Charts', () => {
   it('renders', () => {

@@ -3,8 +3,8 @@ import {Router, Route, IndexRoute, useRouterHistory} from 'react-router'
 import { createHashHistory } from 'history'
 const appHistory = useRouterHistory(createHashHistory)({ queryKey: false })
 
-import Shell from 'Shell'
-import Weather from 'Weather'
+import Shell from 'shell'
+import Weather from 'weather'
 import Users from './views/users.jsx'
 import User from './views/user.jsx'
 import NoMatch from './views/404.jsx'

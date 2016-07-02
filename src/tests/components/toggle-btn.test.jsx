@@ -3,7 +3,7 @@ const ReactDOM = require('react-dom');
 const $ = require('jquery');
 const TestUtils = require('react-addons-test-utils');
 
-import ToggleBtn from 'ToggleBtn';
+import ToggleBtn from 'toggle-btn';
 
 var customMatcher = {
   toContain : function(expected) {

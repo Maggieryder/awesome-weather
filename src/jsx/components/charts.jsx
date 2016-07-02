@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Row } from 'react-bootstrap';
 import $ from 'jquery'
 
-import Chart from './chart'
+import Chart from 'chart'
 
 class Charts extends Component {
   constructor(props) {
@@ -37,13 +37,14 @@ class Charts extends Component {
   renderHour = (hr, id) => {
     let { numHrs, hrIndex } = this.props
     //console.log('hrIndex ...', hrIndex)
+    //<div className={ parseInt(hr.hour)%6===0 ? 'no-marker' : null }>{!isLoading ? hr.hour==='0' ? 'A' : hr.hour==='12' ? 'P' : '' : '' }</div>
     let { isLoading } = this.props.weather
       if (id < numHrs){
         return <li
                   key={id}
                   className={ parseInt(hr.hour)%6===0 ? 'marker' : null }
                   onMouseOver={this.onMouseOver.bind(this,id)} >
-                    <div className={ parseInt(hr.hour)%6===0 ? 'no-marker' : null }>{!isLoading ? hr.hour==='0' ? 'A' : hr.hour==='12' ? 'P' : '' : '' }</div>
+                    <div className={ parseInt(hr.hour)%6===0 ? 'no-marker' : null }>{!isLoading ? hr.hour : '' }</div>
                     <div className={`indicator${id===hrIndex ? ' on' : ''}`} ></div>
                 </li>
       }
@@ -51,7 +52,7 @@ class Charts extends Component {
 
   render() {
 
-    let {hourly, response, isLoading} = this.props.weather
+    let {hourly, response, unit, isLoading} = this.props.weather
     let {chart, numHrs} = this.props
     let validData = !isLoading && !response.error && !response.results
     //console.log('RENDER CHART', chart)
@@ -62,22 +63,22 @@ class Charts extends Component {
     if( validData ){
       hours = hourly.map(hour => hour.FCTTIME)
       data = {
-        temps: hourly.map(hour => hour.temp.english),
-        feels: hourly.map(hour => hour.feelslike.english),
-        winds: hourly.map(hour => hour.wspd.metric),
-        precips: hourly.map(hour => hour.pop),
-        skies: hourly.map(hour => hour.sky),
-        humidities: hourly.map(hour => hour.humidity),
-        pressures: hourly.map(hour => hour.mslp.english),
-        dewpoints: hourly.map(hour => hour.dewpoint.english),
-        uvis: hourly.map(hour => hour.uvi)
+        temps: hourly.map(hour => parseInt(hour.temp.english)),
+        feels: hourly.map(hour => parseInt(hour.feelslike.english)),
+        winds: hourly.map(hour => parseInt(hour.wspd.metric)),
+        precips: hourly.map(hour => parseInt(hour.pop)),
+        skies: hourly.map(hour => parseInt(hour.sky)),
+        humidities: hourly.map(hour => parseInt(hour.humidity)),
+        pressures: hourly.map(hour => parseInt(hour.mslp.metric)),
+        dewpoints: hourly.map(hour => parseInt(hour.dewpoint.english)),
+        uvis: hourly.map(hour => parseInt(hour.uvi))
       }
     }
 
     return (
       <Row style={rowStyle}>
         <div className="chart" style={{height:this.state.svgHeight}}>
-          { validData ? this.renderChart(data[chart].slice(0,numHrs)) : null }
+          { validData ? this.renderChart(data[chart].slice(0,96)) : null }
           <ul className="hours">
             { validData ? hours.map(this.renderHour) : defaultHrs.map(this.renderHour)}
           </ul>

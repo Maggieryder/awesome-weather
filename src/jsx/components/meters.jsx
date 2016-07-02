@@ -2,7 +2,7 @@ import React, { Component, PropTypes} from 'react'
 import { connect } from 'react-redux'
 import { Row, Col} from 'react-bootstrap';
 import _ from 'lodash'
-import Meter from './meter'
+import Meter from 'meter'
 
 class Meters extends Component {
   constructor(props) {
