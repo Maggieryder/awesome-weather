@@ -17,7 +17,7 @@ class Chart extends Component {
     }
   }
 
-
+/*
   onDraw (data, color) {
     if (data.type === 'point') {
       if (data.element.node.parentNode.querySelectorAll('line')[this.state.index] === data.element.node) {
@@ -31,7 +31,7 @@ class Chart extends Component {
       }
     }
   }
-
+*/
   render(){
     let { width, height } = this.props;
     //console.log(this.props)
@@ -75,7 +75,6 @@ class Chart extends Component {
                 className={'ct-hours'}
                 data={data}
                 options={options}
-                listener={listener}
                 type='Line'
                 />
       </div>

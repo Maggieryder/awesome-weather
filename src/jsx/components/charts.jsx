@@ -6,17 +6,29 @@ import coords from '../utils/coords.js'
 
 import Chart from 'chart'
 
+
 class Charts extends Component {
   constructor(props) {
     super(props);
     this.state = {
       svgWidth:0,
       svgHeight:0,
-      transformX:0
+      isTouching: false,
     }
     this.onUpdate = this.props.onUpdate
   }
 
+  componentDidMount() {
+    let that = this
+    //document.addEventListener(that.is_touch ? 'touchmove' : 'mousemove', that.onTouchMove, true);
+    document.addEventListener(that.is_touch ? 'touchend' : 'mouseup', that.onTouchEnd, false);
+  }
+  componentWillUnmount() {
+    let that = this
+    //document.removeEventListener(that.is_touch ? 'touchmove' : 'mousemove', that.onTouchMove, true);
+    document.removeEventListener(that.is_touch ? 'touchend' : 'mouseup', that.onTouchEnd, false);
+  }
+/*
     getScrollLeftOffset (element) {
       let offset = element.offsetLeft;
       let offsetParent = element.offsetParent;
@@ -31,43 +43,37 @@ class Charts extends Component {
         }
       }
       return offset;
-    }
+    }*/
 
     onTouchStart (evt) {
       console.log('TOUCHED DOWN')
       evt.preventDefault();
       this.is_touch = (evt.touches);
-      let { transform } = this.props
-      //let node = evt.currentTarget.previousSibling;
+      let { transform, numHrs } = this.props
       let node = evt.currentTarget;
       //console.log(node, coords(node));
-
-
-      //let chrt = node.querySelector('.ct-chart');
       //let grid = node.querySelector('.ct-grids');
-      //console.log(this.getTransformOffsetX(node))
       //let curTransform = new WebKitCSSMatrix(window.getComputedStyle(node).webkitTransform);
       //let curTransform = new MSCSSMatrix(window.getComputedStyle(node).webkitTransform);
       // curTransform.m41 is the transformed x
-      this.columnwidth = node.offsetWidth/96
+      this.columnwidth = node.offsetWidth/numHrs
       //console.log('>>>>>>> CHART width >>>>>> COL WIDTH',node.offsetWidth, this.columnwidth); //widths
       //console.log('translated X', curTransform.m41); //real offset left
       //console.log('INDEX - curTransform.m41)/this.columnwidth', Math.abs(Math.floor((curTransform.m41)/this.columnwidth)))
 
       //let bbox = grid.getBBox();
       //console.log(bbox)
-      //this.columnwidth = bbox.width / 96;
-
       //this.offset = this.getScrollLeftOffset(node) + bbox.x + (this.columnwidth / 2);
+
       this.offset = transform
       console.log('this.offset', this.offset, )
-      //console.log('are these the same?',this.getScrollLeftOffset(node), coords(node))
       this.touching = true;
-      this.onTouchMove(evt);
+      this.setState({isTouching: true})
+      //this.onTouchMove(evt);
     }
 
     onTouchMove (evt) {
-      if(this.touching){
+      if(this.state.isTouching){
         let x;
         if (this.is_touch) {
           if(evt.touches && evt.touches[0]){
@@ -76,18 +82,19 @@ class Charts extends Component {
         } else {
           x = evt.clientX - this.offset;
         }
-        /*this.setState({
-          index: Math.round(x / this.columnwidth)
-        });*/
         //console.log('x', x)
         console.log('TOUCH MOVING INDEX', Math.floor(x / this.columnwidth))
         this.onUpdate(Math.floor(x / this.columnwidth))
+      } else {
+        console.log('TOUCH MOVING', this.state.isTouching)
       }
     }
 
     onTouchEnd (evt){
-      console.log('TOUCH ENDED')
+      //document.removeEventListener(this.is_touch ? 'touchend' : 'mouseup', this.onTouchEnd, false);
       this.touching = false;
+      this.setState({isTouching: false})
+      //console.log('TOUCH ENDED', this.touching)
     }
 
   renderChart (data) {
@@ -118,10 +125,7 @@ class Charts extends Component {
     //<div className={ parseInt(hr.hour)%6===0 ? 'no-marker' : null }>{!isLoading ? hr.hour==='0' ? 'A' : hr.hour==='12' ? 'P' : '' : '' }</div>
     let { isLoading } = this.props.weather
       if (id < numHrs){
-        return <li
-                  key={id}
-                  className={ parseInt(hr.hour)%6===0 ? 'marker' : null }
-                   >
+        return <li key={id} className={ parseInt(hr.hour)%6===0 ? 'marker' : null }>
                     <div className={ parseInt(hr.hour)%6===0 ? 'no-marker' : null }>{!isLoading ? hr.hour : '' }</div>
                     <div className={`indicator${id===hrIndex ? ' on' : ''}`} ></div>
                 </li>
@@ -160,8 +164,11 @@ class Charts extends Component {
             onTouchStart={this.onTouchStart.bind(this)}
             onMouseMove={this.onTouchMove.bind(this)}
             onTouchMove={this.onTouchMove.bind(this)}
+            onMouseLeave={this.onTouchEnd.bind(this)}
+            onTouchCancel={this.onTouchEnd.bind(this)}
             onMouseUp={this.onTouchEnd.bind(this)}
-            onTouchEnd={this.onTouchEnd.bind(this)}>
+            onTouchEnd={this.onTouchEnd.bind(this)}
+            >
           { validData ? this.renderChart(data[chart].slice(0,96)) : null }
           <ul className="hours">
             { validData ? hours.map(this.renderHour) : defaultHrs.map(this.renderHour)}
@@ -178,13 +185,15 @@ Charts.propTypes = {
   chart: PropTypes.string.isRequired,
   onUpdate: PropTypes.func.isRequired,
   weather: PropTypes.object.isRequired,
-  transform:PropTypes.number
+  isTouching: PropTypes.bool,
+  transform: PropTypes.number
 }
 Charts.defaultProps = {
   numHrs: 96,
   hrIndex: 0,
   chart: 'temps',
   weather: {},
+  isTouching: false,
   transform: 0
 }
 
@@ -194,4 +203,9 @@ function mapStateToProps({weather}){
 
 export default connect(mapStateToProps)(Charts)
 
-/*onMouseOver={this.onUpdate.bind(this,id)}*/
+/*
+onMouseMove={this.onTouchMove.bind(this)}
+onTouchMove={this.onTouchMove.bind(this)}
+onMouseUp={this.onTouchEnd.bind(this)}
+onTouchEnd={this.onTouchEnd.bind(this)}
+*/
