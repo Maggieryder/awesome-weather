@@ -23,7 +23,8 @@ class Weather extends Component {
       dayIndex: 0,
       chart: 'temps',
       svgWidth:200,
-      svgHeight:150
+      svgHeight:150,
+      svgTransform: 0
     }
     this.toggleModal = this.props.toggleModal
     this.toggleUnit = this.props.toggleUnit
@@ -108,7 +109,7 @@ class Weather extends Component {
     */
   }
 
-  handleChartHover = (id) => {
+  handleChartUpdate = (id) => {
     //console.log('handleChartHover', id)
     let indexes = this.midniteHrs()
     //console.log('indexes', indexes)
@@ -132,21 +133,29 @@ class Weather extends Component {
     //console.log('midnitehours', midniteIndexes)
     let startHr
     if (id===0){
-      chart.style.WebkitTransform = 'translate3d(0, 0, 0)'
-      chart.style.MozTransform = 'translate3d(0, 0, 0)'
+      this.moveChartTo({x:0})
       startHr = 0
     } else {
       let $markers = $('.hours li')
       let pos = coords($markers[midniteIndexes[id-1].id])
-      //console.log('coords', pos)
-      chart.style.WebkitTransform = 'translate3d('+pos.x*-1+'px, 0, 0)'
-      chart.style.MozTransform = 'translate3d('+pos.x*-1+'px, 0, 0)'
+      console.log('coords', pos)
+      this.moveChartTo(pos)
       startHr = parseInt(midniteIndexes[id-1].id) + 12 //midday
     }
     this.setState({
       hrIndex: startHr,
       dayIndex: id
     })
+  }
+
+  moveChartTo = (pos) => {
+    let chart = document.querySelectorAll('.chart')[0]
+    chart.style.WebkitTransform = 'translate3d('+pos.x*-1+'px, 0, 0)'
+    chart.style.MozTransform = 'translate3d('+pos.x*-1+'px, 0, 0)'
+    chart.style.MsTransform = 'translate3d('+pos.x*-1+'px, 0, 0)'
+    chart.style.OTransform = 'translate3d('+pos.x*-1+'px, 0, 0)'
+    chart.style.Transform = 'translate3d('+pos.x*-1+'px, 0, 0)'
+    this.setState({svgTransform: pos.x*-1})
   }
 
   render() {
@@ -222,7 +231,7 @@ class Weather extends Component {
 
         <div className="footer">
           <Meters hrIndex={hrIndex} chart={this.state.chart} onSelect={(type)=>{this.setState({chart:type})}}/>
-          <Charts hrIndex={hrIndex} chart={this.state.chart} onMouseOver={this.handleChartHover}/>
+          <Charts hrIndex={hrIndex} chart={this.state.chart} transform={this.state.svgTransform} onUpdate={this.handleChartUpdate}/>
           <DayForecast dayIndex={this.state.dayIndex} onSelect={this.handleDayClick}/>
         </div>
 

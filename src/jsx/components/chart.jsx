@@ -17,56 +17,6 @@ class Chart extends Component {
     }
   }
 
-  getScrollLeftOffset (element) {
-    let offset = element.offsetLeft;
-    let offsetParent = element.offsetParent;
-    while (element.parentNode) {
-      element = element.parentNode;
-      if (element.scrollLeft) {
-        offset -= element.scrollLeft;
-      }
-      if (offsetParent && element === offsetParent) {
-        offset += element.offsetLeft;
-        offsetParent = element.offsetParent;
-      }
-    }
-    return offset;
-  }
-
-  onTouchStart (evt) {
-    console.log('TOUCHED DOWN')
-    evt.preventDefault();
-    this.is_touch = (evt.touches);
-    let node = evt.currentTarget.previousSibling;
-    let grid = node.querySelector('.ct-grids');
-    let bbox = grid.getBBox();
-    this.columnwidth = bbox.width / this.props.data.length;
-    this.offset = this.getScrollLeftOffset(node) + bbox.x + (this.columnwidth / 2);
-    this.touching = true;
-    this.onTouchMove(evt);
-  }
-
-  onTouchMove (evt) {
-    console.log('TOUCH MOVING')
-    if(this.touching){
-      let x;
-      if (this.is_touch) {
-        if(evt.touches && evt.touches[0]){
-          x = evt.touches[0].clientX - this.offset;
-        }
-      } else {
-        x = evt.clientX - this.offset;
-      }
-      this.setState({
-        index: Math.round(x / this.columnwidth)
-      });
-    }
-  }
-
-  onTouchEnd (evt){
-    console.log('TOUCH ENDED')
-    this.touching = false;
-  }
 
   onDraw (data, color) {
     if (data.type === 'point') {
@@ -127,12 +77,7 @@ class Chart extends Component {
                 options={options}
                 listener={listener}
                 type='Line'
-                onMouseDown={this.onTouchStart}
-                onTouchStart={this.onTouchStart}
-                onMouseMove={this.onTouchMove}
-                onTouchMove={this.onTouchMove}
-                onMouseUp={this.onTouchEnd}
-                onTouchEnd={this.onTouchEnd}/>
+                />
       </div>
     )
   }

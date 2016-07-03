@@ -8,6 +8,12 @@
   -moz-transition: -moz-transform .5s ease-out;
 }
 
+.ct-chart {
+  position: absolute;
+  z-index: 10;
+  cursor:pointer;
+}
+
 .ct-chart .ct-label.ct-vertical,
 .ct-chart .ct-label.ct-horizontal {
   color: rgba(255, 255, 255, 0.5);
@@ -58,14 +64,14 @@
   /* Colour of your points */
   stroke: red;
   /* Size of your points */
-  stroke-width: 48px;
+  stroke-width: 20px;
   opacity: 0;
   /* Make your points appear as squares */
   stroke-linecap: round;
 }
 
 .ct-series-a .ct-point:hover {
-  opacity: 1;
+  //opacity: 1;
 }
 
 @keyframes dashoffset-twelve {
