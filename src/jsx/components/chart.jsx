@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import Chartist from 'chartist'
 import ChartistGraph from 'chartist-line'
 
-import coords from '../utils/coords.js'
 
 import 'css!sass!chartist/dist/scss/chartist.scss'
 
@@ -63,11 +62,11 @@ class Chart extends Component {
       })
     }
 
-    let listener : {
+    //let listener : {
       //draw: (data) => {
       //  self.onDraw(data, 'red');
       //}
-    }
+    //}
 
     return (
       <div>

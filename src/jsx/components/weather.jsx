@@ -128,7 +128,6 @@ class Weather extends Component {
 
   handleDayClick = (id) => {
     //console.log('handleDayClick', id)
-    let chart = document.querySelectorAll('.chart')[0]
     let midniteIndexes = this.midniteHrs();
     //console.log('midnitehours', midniteIndexes)
     let startHr

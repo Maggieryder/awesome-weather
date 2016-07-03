@@ -13,20 +13,9 @@ class Charts extends Component {
     this.state = {
       svgWidth:0,
       svgHeight:0,
-      isTouching: false,
+      isTouching: false
     }
     this.onUpdate = this.props.onUpdate
-  }
-
-  componentDidMount() {
-    let that = this
-    //document.addEventListener(that.is_touch ? 'touchmove' : 'mousemove', that.onTouchMove, true);
-    document.addEventListener(that.is_touch ? 'touchend' : 'mouseup', that.onTouchEnd, false);
-  }
-  componentWillUnmount() {
-    let that = this
-    //document.removeEventListener(that.is_touch ? 'touchmove' : 'mousemove', that.onTouchMove, true);
-    document.removeEventListener(that.is_touch ? 'touchend' : 'mouseup', that.onTouchEnd, false);
   }
 /*
     getScrollLeftOffset (element) {
@@ -48,7 +37,7 @@ class Charts extends Component {
     onTouchStart (evt) {
       console.log('TOUCHED DOWN')
       evt.preventDefault();
-      this.is_touch = (evt.touches);
+      this.is_touch = (evt.changedTouches);
       let { transform, numHrs } = this.props
       let node = evt.currentTarget;
       //console.log(node, coords(node));
@@ -76,8 +65,8 @@ class Charts extends Component {
       if(this.state.isTouching){
         let x;
         if (this.is_touch) {
-          if(evt.touches && evt.touches[0]){
-            x = evt.touches[0].clientX - this.offset;
+          if(evt.changedTouches && evt.changedTouches[0]){
+            x = evt.changedTouches[0].clientX - this.offset;
           }
         } else {
           x = evt.clientX - this.offset;
@@ -111,12 +100,12 @@ class Charts extends Component {
   componentDidMount() {
     let that = this
     //$( window ).resize(this.updateDimensions}
-    window.addEventListener('resize', that.updateDimensions);
+    window.addEventListener('resize', that.updateDimensions)
   }
   componentWillUnmount() {
     let that = this
     //$( window ).off('resize', this.updateDimensions)
-    window.removeEventListener('resize', that.updateDimensions);
+    window.removeEventListener('resize', that.updateDimensions)
   }
 
   renderHour = (hr, id) => {
@@ -134,7 +123,7 @@ class Charts extends Component {
 
   render() {
 
-    let {hourly, response, unit, isLoading} = this.props.weather
+    let {hourly, response, isLoading} = this.props.weather //unit,
     let {chart, numHrs} = this.props
     let validData = !isLoading && !response.error && !response.results
     //console.log('RENDER CHART', chart)
@@ -167,9 +156,8 @@ class Charts extends Component {
             onMouseLeave={this.onTouchEnd.bind(this)}
             onTouchCancel={this.onTouchEnd.bind(this)}
             onMouseUp={this.onTouchEnd.bind(this)}
-            onTouchEnd={this.onTouchEnd.bind(this)}
-            >
-          { validData ? this.renderChart(data[chart].slice(0,96)) : null }
+            onTouchEnd={this.onTouchEnd.bind(this)}>
+          { validData ? this.renderChart(data[chart].slice(0,numHrs)) : null }
           <ul className="hours">
             { validData ? hours.map(this.renderHour) : defaultHrs.map(this.renderHour)}
           </ul>
@@ -204,8 +192,12 @@ function mapStateToProps({weather}){
 export default connect(mapStateToProps)(Charts)
 
 /*
+onMouseDown={this.onTouchStart.bind(this)}
+onTouchStart={this.onTouchStart.bind(this)}
 onMouseMove={this.onTouchMove.bind(this)}
 onTouchMove={this.onTouchMove.bind(this)}
+onMouseLeave={this.onTouchEnd.bind(this)}
+onTouchCancel={this.onTouchEnd.bind(this)}
 onMouseUp={this.onTouchEnd.bind(this)}
 onTouchEnd={this.onTouchEnd.bind(this)}
 */

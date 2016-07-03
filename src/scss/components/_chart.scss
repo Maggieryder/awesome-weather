@@ -8,10 +8,19 @@
   -moz-transition: -moz-transform .5s ease-out;
 }
 
-.ct-chart {
-  position: absolute;
+.interactive {
+  position:absolute;
+  display:block;
+  width:100%;
   z-index: 10;
   cursor:pointer;
+  background: $ugly;
+  opacity:.3;
+}
+
+
+.ct-chart {
+
 }
 
 .ct-chart .ct-label.ct-vertical,

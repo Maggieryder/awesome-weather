@@ -12,7 +12,7 @@ class Meters extends Component {
     this.state = {
       hrIndex: 0,
       hasError:false,
-      chart: 'temps',
+      chart: chart,
       listOrder: ['temps', 'winds', 'precips', 'feels', 'skies', 'humidities', 'dewpoints', 'pressures', 'uvis'],
       usedStats: [defaultStat,defaultStat,defaultStat,defaultStat,defaultStat,defaultStat],
       hiddenStats: []
