@@ -2,8 +2,6 @@ import React, {Component, PropTypes } from 'react';
 
 class ChartistGraph extends Component {
 
-  displayName: 'ChartistGraph'
-
   componentWillReceiveProps(newProps) {
     this.updateChart(newProps);
   }

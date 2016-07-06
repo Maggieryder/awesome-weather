@@ -29,7 +29,7 @@ class ToggleBtn extends Component {
   }
 
   render(){
-    //console.log('RENDERING...')
+    //console.log('Toggle RENDERING...', this.props.styleClass)
     const { options, styleClass } = this.props
 
     return (

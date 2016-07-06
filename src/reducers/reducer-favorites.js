@@ -1,8 +1,10 @@
 import _ from 'lodash'
+
+import { setLocalDataArray, getLocalDataArray } from '../api/persist-data'
 import { TOGGLE_FAVORITE } from '../actions/index'
 
 const INITIAL_STATE = {
-  favorites: []
+  favorites: getLocalDataArray('favorites')
 }
 
 export default function(state = INITIAL_STATE, action) {
@@ -21,6 +23,7 @@ export default function(state = INITIAL_STATE, action) {
       else {
         favorites.push(action.payload.favorite)
       }
+      setLocalDataArray('favorites', favorites)
       return {...state, favorites }
     }
 

@@ -2,9 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Row } from 'react-bootstrap';
 import $ from 'jquery'
-import coords from '../utils/coords.js'
+import { getTouchCoords } from '../utils/coords.js'
 
 import Chart from 'chart'
+import Hour from 'hour'
 
 
 class Charts extends Component {
@@ -12,79 +13,46 @@ class Charts extends Component {
     super(props);
     this.state = {
       svgWidth:0,
-      svgHeight:0,
-      isTouching: false
+      svgHeight:0
     }
     this.onUpdate = this.props.onUpdate
   }
-/*
-    getScrollLeftOffset (element) {
-      let offset = element.offsetLeft;
-      let offsetParent = element.offsetParent;
-      while (element.parentNode) {
-        element = element.parentNode;
-        if (element.scrollLeft) {
-          offset -= element.scrollLeft;
-        }
-        if (offsetParent && element === offsetParent) {
-          offset += element.offsetLeft;
-          offsetParent = element.offsetParent;
-        }
-      }
-      return offset;
-    }*/
 
     onTouchStart (evt) {
-      console.log('TOUCHED DOWN')
+      //console.log('TOUCHED DOWN')
       evt.preventDefault();
       this.is_touch = (evt.changedTouches);
       let { transform, numHrs } = this.props
       let node = evt.currentTarget;
-      //console.log(node, coords(node));
-      //let grid = node.querySelector('.ct-grids');
-      //let curTransform = new WebKitCSSMatrix(window.getComputedStyle(node).webkitTransform);
-      //let curTransform = new MSCSSMatrix(window.getComputedStyle(node).webkitTransform);
-      // curTransform.m41 is the transformed x
       this.columnwidth = node.offsetWidth/numHrs
-      //console.log('>>>>>>> CHART width >>>>>> COL WIDTH',node.offsetWidth, this.columnwidth); //widths
-      //console.log('translated X', curTransform.m41); //real offset left
-      //console.log('INDEX - curTransform.m41)/this.columnwidth', Math.abs(Math.floor((curTransform.m41)/this.columnwidth)))
+      //console.log('>>>>>>> CHART width >>>>>> CHART height',node.offsetWidth, node.offsetHeight); //widths
 
+      //let grid = node.querySelector('.ct-grids');
       //let bbox = grid.getBBox();
-      //console.log(bbox)
-      //this.offset = this.getScrollLeftOffset(node) + bbox.x + (this.columnwidth / 2);
+      //console.log(bbox) //only shows up if axisX:showGrid is set to true in chart.jsx
 
-      this.offset = transform
-      console.log('this.offset', this.offset, )
+      this.offset = {x:transform,y:0}
+      //console.log('this.offset', this.offset )
       this.touching = true;
-      this.setState({isTouching: true})
-      //this.onTouchMove(evt);
+      this.onTouchMove(evt);
     }
 
     onTouchMove (evt) {
-      if(this.state.isTouching){
-        let x;
-        if (this.is_touch) {
-          if(evt.changedTouches && evt.changedTouches[0]){
-            x = evt.changedTouches[0].clientX - this.offset;
-          }
-        } else {
-          x = evt.clientX - this.offset;
-        }
-        //console.log('x', x)
-        console.log('TOUCH MOVING INDEX', Math.floor(x / this.columnwidth))
+      if(this.touching){
+        let x = getTouchCoords(evt, this.offset).x
+        //console.log('TOUCH MOVING INDEX', Math.floor(x / this.columnwidth))
         this.onUpdate(Math.floor(x / this.columnwidth))
       } else {
-        console.log('TOUCH MOVING', this.state.isTouching)
+        //console.log('TOUCH MOVING', this.state.isTouching)
       }
     }
 
     onTouchEnd (evt){
-      //document.removeEventListener(this.is_touch ? 'touchend' : 'mouseup', this.onTouchEnd, false);
       this.touching = false;
-      this.setState({isTouching: false})
       //console.log('TOUCH ENDED', this.touching)
     }
+
+
 
   renderChart (data) {
     return (
@@ -110,15 +78,11 @@ class Charts extends Component {
 
   renderHour = (hr, id) => {
     let { numHrs, hrIndex } = this.props
-    //console.log('hrIndex ...', hrIndex)
-    //<div className={ parseInt(hr.hour)%6===0 ? 'no-marker' : null }>{!isLoading ? hr.hour==='0' ? 'A' : hr.hour==='12' ? 'P' : '' : '' }</div>
     let { isLoading } = this.props.weather
-      if (id < numHrs){
-        return <li key={id} className={ parseInt(hr.hour)%6===0 ? 'marker' : null }>
-                    <div className={ parseInt(hr.hour)%6===0 ? 'no-marker' : null }>{!isLoading ? hr.hour : '' }</div>
-                    <div className={`indicator${id===hrIndex ? ' on' : ''}`} ></div>
-                </li>
-      }
+    //console.log('hrIndex ...', hrIndex)
+    if (id < numHrs){
+      return <Hour key={id} id={id} hr={hr} hrIndex={hrIndex} isLoading={isLoading} />
+    }
   }
 
   render() {
@@ -128,7 +92,7 @@ class Charts extends Component {
     let validData = !isLoading && !response.error && !response.results
     //console.log('RENDER CHART', chart)
     //console.log('CHART response',response)
-    let defaultHrs = ['','','','','','','','','','','','','','','','','','','','','','','',''] // hack attack!!
+    let defaultHrs = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}] // hack attack!!
     let rowStyle = {margin:0, overflow:'hidden'}
     let hours, data
     if( validData ){
@@ -159,7 +123,7 @@ class Charts extends Component {
             onTouchEnd={this.onTouchEnd.bind(this)}>
           { validData ? this.renderChart(data[chart].slice(0,numHrs)) : null }
           <ul className="hours">
-            { validData ? hours.map(this.renderHour) : defaultHrs.map(this.renderHour)}
+            { validData ? hours.slice(0,numHrs).map(this.renderHour) : defaultHrs.map(this.renderHour)}
           </ul>
         </div>
       </Row>
@@ -173,7 +137,6 @@ Charts.propTypes = {
   chart: PropTypes.string.isRequired,
   onUpdate: PropTypes.func.isRequired,
   weather: PropTypes.object.isRequired,
-  isTouching: PropTypes.bool,
   transform: PropTypes.number
 }
 Charts.defaultProps = {
@@ -181,7 +144,6 @@ Charts.defaultProps = {
   hrIndex: 0,
   chart: 'temps',
   weather: {},
-  isTouching: false,
   transform: 0
 }
 
@@ -192,12 +154,9 @@ function mapStateToProps({weather}){
 export default connect(mapStateToProps)(Charts)
 
 /*
-onMouseDown={this.onTouchStart.bind(this)}
-onTouchStart={this.onTouchStart.bind(this)}
-onMouseMove={this.onTouchMove.bind(this)}
-onTouchMove={this.onTouchMove.bind(this)}
-onMouseLeave={this.onTouchEnd.bind(this)}
-onTouchCancel={this.onTouchEnd.bind(this)}
-onMouseUp={this.onTouchEnd.bind(this)}
-onTouchEnd={this.onTouchEnd.bind(this)}
+
+//let curTransform = new WebKitCSSMatrix(window.getComputedStyle(node).webkitTransform);
+//let curTransform = new MSCSSMatrix(window.getComputedStyle(node).webkitTransform);
+// curTransform.m41 is the transformed x
+//console.log('INDEX', Math.abs(Math.floor((curTransform.m41)/this.columnwidth)))
 */

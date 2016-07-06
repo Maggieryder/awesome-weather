@@ -4,13 +4,14 @@ import { Row, Col, Glyphicon } from 'react-bootstrap';
 import $ from 'jquery'
 import _ from 'lodash'
 import { getWeather, loading, toggleUnit, toggleFavorite, toggleModal } from '../../actions/index'
+import { getLocalData, setLocalData } from '../../api/persist-data'
 import ToggleBtn from 'toggle-btn'
 import ModalInstance from 'modal'
 import MultipleChoices from 'multiple-choice-list';
 import DayForecast from 'forecast-days'
 import Charts from 'charts'
 import Meters from 'meters'
-import coords from '../utils/coords.js'
+import { getElementPosition } from '../utils/coords.js'
 
 import WeatherIcon from 'weather-icon'
 
@@ -21,7 +22,7 @@ class Weather extends Component {
     this.state = {
       hrIndex: 0,
       dayIndex: 0,
-      chart: 'temps',
+      chart: getLocalData('chart') ? getLocalData('chart') : 'temps',
       svgWidth:200,
       svgHeight:150,
       svgTransform: 0
@@ -80,6 +81,11 @@ class Weather extends Component {
     this.props.toggleFavorite(this.props.weather.location)
   }
 
+  handleMeterClick = (type) => {
+    setLocalData('chart', type)
+    this.setState({chart:type})
+  }
+
   afterdark(sp, now){
     let hr = parseInt(now),
     sunrise = parseInt(sp.sunrise.minute)<30 ? parseInt(sp.sunrise.hour) : parseInt(sp.sunrise.hour)+1,
@@ -136,8 +142,8 @@ class Weather extends Component {
       startHr = 0
     } else {
       let $markers = $('.hours li')
-      let pos = coords($markers[midniteIndexes[id-1].id])
-      console.log('coords', pos)
+      let pos = getElementPosition($markers[midniteIndexes[id-1].id])
+      //console.log('coords', pos)
       this.moveChartTo(pos)
       startHr = parseInt(midniteIndexes[id-1].id) + 12 //midday
     }
@@ -164,7 +170,8 @@ class Weather extends Component {
     let { favorites } = this.props.favorites
     let validData = !isLoading && !response.error && !response.results && hourly.length >= 1
     //console.log('validData', validData)
-    //console.log('RESULT unit is metric', unit==='metric')
+    //console.log('WEATHER chart', this.state.chart)
+    //console.log('WEATHER unit', unit)
 
     let dates, conditions, icons, isDark, isFavorite, isMetric = unit==='metric' ? 0 : 1
 
@@ -229,7 +236,7 @@ class Weather extends Component {
         </Row>
 
         <div className="footer">
-          <Meters hrIndex={hrIndex} chart={this.state.chart} onSelect={(type)=>{this.setState({chart:type})}}/>
+          <Meters hrIndex={hrIndex} chart={this.state.chart} onSelect={this.handleMeterClick}/>
           <Charts hrIndex={hrIndex} chart={this.state.chart} transform={this.state.svgTransform} onUpdate={this.handleChartUpdate}/>
           <DayForecast dayIndex={this.state.dayIndex} onSelect={this.handleDayClick}/>
         </div>

@@ -25,6 +25,11 @@ class Meter extends Component {
     this.onClick = this.props.onClick
     this.onLabelChange = this.props.onLabelChange
   }
+
+  shouldComponentUpdate(nextProps, nextState){
+    return JSON.stringify(this.props) !== JSON.stringify(nextProps) || this.state !== nextState
+  }
+
   handleSelect = (e) => {
     let { hiddenStats, id } = this.props
     this.onLabelChange(hiddenStats[e], id, e)
@@ -47,6 +52,7 @@ class Meter extends Component {
   render(){
     let { type, data, data2, suffix, unit, active, isLoading, hasError } = this.props
     //console.log('rendering METER hiddenStats', hiddenStats[0] )
+    //console.log('rendering METER', type)
 
     let arrowStyle, arrow, readingClass = 'reading'
     if (data2) {

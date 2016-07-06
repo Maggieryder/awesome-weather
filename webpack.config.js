@@ -44,7 +44,8 @@ const common = {
       PATHS.app_dir + '/jsx',
       PATHS.app_dir + '/jsx/components',
       PATHS.app_dir + '/jsx/views',
-      PATHS.app_dir + '/icons'
+      PATHS.app_dir + '/icons',
+      PATHS.app_dir + '/api'
     ],
     alias: {
       Styles: PATHS.app_dir + '/scss/main.scss'
@@ -68,7 +69,7 @@ const common = {
     loaders: [
       {
         test: /\.(js|jsx)$/,
-        loader: 'react-hot!babel?cacheDirectory',
+        loader: 'babel?cacheDirectory', //react-hot!
         exclude: /node_modules/
       },
       // Define development specific CSS setup

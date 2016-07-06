@@ -29,6 +29,7 @@ class DaysForecast extends Component {
   }
 
   render() {
+    //console.log('rendering DAYS')
     let { forecast, isLoading, response } = this.props.weather
     let days = isLoading || response.error || response.results ? [{},{},{},{}] : forecast.simpleforecast.forecastday //hack attack!!
     const rowStyle = {margin:'6px 4px'}
