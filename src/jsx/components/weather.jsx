@@ -32,10 +32,16 @@ class Weather extends Component {
   }
 
   updateDimensions = () => {
+    /*let height = $(window).height() - 52 // minus header height
+    let footerHt = 320
+    console.log('updateDimensions', $(window).width(), height - footerHt)
     this.setState({
-      svgWidth: $(window).width()>=768 ? 400 : $(window).width()>=414 ? 280 : $(window).width()>=375 ? 200 : 160,
-      svgHeight: $(window).width()>=768 ? 300 : $(window).width()>=414 ? 210 : $(window).width()>=375 ? 150 : 120
-    });
+      svgWidth: $(window).width()>=768 ? 600 : $(window).width()>=414 ? 320 : $(window).width()>=375 ? 250 : 168,
+      //svgHeight: $(window).width()>=768 ? 300 : $(window).width()>=414 ? 240 : $(window).width()>=375 ? 188 : 126
+      svgHeight: $(window).height()>=640 ? 450 : $(window).height()>=414 ? 240 : $(window).width()>=375 ? 188 : 126
+    });*/
+    //this.setState({hrIndex: 0,dayIndex:0, svgTransform:0})
+    //this.moveChartTo(0)
   }
   componentWillMount() {
       this.updateDimensions();
@@ -187,8 +193,9 @@ class Weather extends Component {
     }
 
     const noMargin = {margin:'0px'}
-    const noPadding = {padding:'0px'}
-    const colStyle = {padding:'0 0 0 4px'}
+    const noPadding = {padding:'0px', width:'100%', margin:'0px'}
+    const noPaddingUnderlay = {padding:'0px', width:'100%', margin:'-50px 0px 0px 0px !importa'}
+    const colStyle = {padding:'6px 8px 0px'}
 
     const favoriteOptions = [
       <Glyphicon glyph="heart-empty" />,
@@ -201,47 +208,37 @@ class Weather extends Component {
     ]
 
     return (
-      <div>
+      <div className='flex-container'>
 
-        <Row style={noMargin}>
-          <Col xs={12} sm={6} style={noPadding}>
-            <Row style={{margin:'6px 8px 0 4px'}}>
-              <Col xs={2} style={colStyle}>
-                <ToggleBtn toggleFunction={this.toggleUnit} options={unitOptions} state={isMetric} styleClass="unit pull-left" />
-              </Col>
-              <Col xs={8} style={colStyle}>
-                <div className="time">{validData ? <h2>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h2> : null}</div>
-              </Col>
-              <Col xs={2} style={colStyle}>
-                <ToggleBtn toggleFunction={this.toggleFavorite} options={favoriteOptions} state={isFavorite} styleClass="pull-right no-boundary"/>
-              </Col>
-            </Row>
+        <div className='main flex-column-1 flex-container'>
+          <Row className='flex-column-none' style={{margin:'0px', zIndex:5}}>
+            <Col xs={2} style={colStyle}>
+              <ToggleBtn toggleFunction={this.toggleUnit} options={unitOptions} state={isMetric} styleClass="unit pull-left" />
+            </Col>
+            <Col xs={8} style={colStyle}>
+              <div className='time'>{validData ? <h2>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h2> : null}</div>
+            </Col>
+            <Col xs={2} style={colStyle}>
+              <ToggleBtn toggleFunction={this.toggleFavorite} options={favoriteOptions} state={isFavorite} styleClass="pull-right no-boundary"/>
+            </Col>
+          </Row>
+          {!isLoading ?
+          <div className='flex-column-1'>
+            {validData ? <div className='icon-main'>
+              <WeatherIcon stroke="2" opacity={1} desc={icons[hrIndex]} isDark={isDark}/>
+            </div> : null }
+            <h2 className='icon-description'>{validData ? conditions[hrIndex] : null }</h2>
+          </div> : <div className='flex-column-1 vertical-container' ><h2>LOADING...</h2></div>}
+        </div>
 
-            {!isLoading ?
-              <Row style={noMargin}>
-                <Col xs={12} style={noPadding}>
-                  <p>{validData ? dates[hrIndex].month_name+' '+dates[hrIndex].mday+', '+dates[hrIndex].year : '' }</p>
-                </Col>
-                <Col xs={12} style={noPadding}>
-                  {validData ? <div style={{width:svgWidth+'px', height:svgHeight+'px', margin: '-5px auto'}}>
-                    <WeatherIcon stroke="2" opacity={1} desc={icons[hrIndex]} isDark={isDark}/>
-                  </div> : null }
-                  <h2>{validData ? conditions[hrIndex] : null }</h2>
-                </Col>
-              </Row> :
-              <Row style={noMargin}>
-                <Col xs={12} style={{height:'200px', paddingTop:'100px'}}>LOADING...</Col>
-              </Row>}
-          </Col>
-        </Row>
-
-        <div className="footer">
+        <div className='footer flex-column-none'>
           <Meters hrIndex={hrIndex} chart={this.state.chart} onSelect={this.handleMeterClick}/>
           <Charts hrIndex={hrIndex} chart={this.state.chart} transform={this.state.svgTransform} onUpdate={this.handleChartUpdate}/>
           <DayForecast dayIndex={this.state.dayIndex} onSelect={this.handleDayClick}/>
         </div>
 
         <ModalInstance onClose={this.getLocation}/>
+
       </div>
     )
   }
@@ -282,3 +279,7 @@ function mapStateToProps({ weather, favorites }){
 }
 
 export default connect(mapStateToProps, { getWeather, loading, toggleUnit, toggleFavorite, toggleModal })(Weather)
+
+// style={{width:svgWidth+'px', height:svgHeight+'px', margin: '-10px auto'}}
+//{/*<p className='icon-overlay'>{validData ? dates[hrIndex].month_name+' '+dates[hrIndex].mday+', '+dates[hrIndex].year : '' }</p>*/}
+//<Col xs={12} style={{height:'200px', paddingTop:'100px'}}>LOADING...</Col>

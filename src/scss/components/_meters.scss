@@ -3,7 +3,7 @@
   overflow:hidden;
   @include calc(width, "100% - 4px");
   height: 90px;//96px;
-  margin-bottom:8px;
+  margin-top:8px;
   border-radius: 4px;
   text-align: center;
   //background:$bg-lite-transparent-weakest;
@@ -222,6 +222,18 @@
 
     .arrow-container {
       -webkit-transform: scale(.9, .9);
+    }
+  }
+}
+
+@media screen and (max-height: 360px) {
+
+  .reading {
+
+    //font-size: 20px !important;
+
+    .arrow-container {
+      display: none !important;
     }
   }
 }

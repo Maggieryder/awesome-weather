@@ -12,7 +12,7 @@ ul.hours {
 
   li {
     position:relative;
-    height:50px;
+    height:40px;
     float:left;
   //  @include calc(width, "1.04166667%");
     @include calc(width, "100% / 96");
@@ -27,7 +27,7 @@ ul.hours {
 
     div {
     	position: absolute;
-      height:50%;
+      height:60%;
     	left: 0;
     	bottom: 0;
     	right: 0;
@@ -73,7 +73,7 @@ ul.hours {
 
 }
 
-@media screen and (max-width: 414px) {
+@media screen and (max-width: 568px) {
 
   ul.hours {
 
@@ -84,6 +84,20 @@ ul.hours {
 
       .indicator {
         height:4px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 414px) {
+
+  ul.hours {
+
+    li {
+      color:$transparent;
+
+      &.marker {
+        color:$white-transparent-4;
       }
     }
   }

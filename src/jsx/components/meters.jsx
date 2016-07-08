@@ -106,7 +106,7 @@ class Meters extends Component {
     let { usedStats } = this.state
     //console.log('RENDERING METERS')
     return (
-      <Row style={{margin:'8px 4px 0 4px'}}>
+      <Row style={{margin:'0px 4px'}}>
         {usedStats.map(this.renderStat)}
       </Row>
     );

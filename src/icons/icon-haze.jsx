@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 
 const Haze = (props) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 200 150" enable-background="new 0 0 200 150">
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" width='100%' height='100%' viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" enable-background="new 0 0 200 150">
       <g style={props.style}>
         <path d="M36,86.08s27.62,16.08,64,0,64.48,0,64.48,0"/>
         <path d="M36,101.08s27.62,16.08,64,0,64.48,0,64.48,0"/>

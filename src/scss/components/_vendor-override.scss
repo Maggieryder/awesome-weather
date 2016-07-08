@@ -120,3 +120,9 @@
   margin:6px 8px;
   //border:1px solid $bg-lite-transparent-weak;
 }
+
+@media (min-width: 568px) {
+  .col-xs-4 {
+    width: 16.66666667%;
+  }
+}

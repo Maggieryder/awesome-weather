@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 
 const Hot = (props) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" viewBox="0 0 200 150" enable-background="new 0 0 200 150">
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0" y="0" width='100%' height='100%' viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet" enable-background="new 0 0 200 150">
       <g style={props.style}>
         <path d="M68,94c15.83,22.79,0,35,0,35"/>
         <path d="M81,75.18C81.06,80.3,82.85,86.59,88,94c15.83,22.79,0,35,0,35"/>

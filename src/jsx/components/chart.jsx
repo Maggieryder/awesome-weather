@@ -43,8 +43,8 @@ class Chart extends Component {
       series: [this.props.data]
     }
     let options = {
-      width: width + 25,
-      height: height + 20,
+      width: '100%',
+      height: '100%',
       low: sorteddata[0],
       high: sorteddata[sorteddata.length-1],
       showArea: true,

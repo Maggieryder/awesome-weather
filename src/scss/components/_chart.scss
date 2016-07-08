@@ -1,7 +1,9 @@
 .chart {
   position:relative;
+  display:block;
   width:400%;
   height:100px;
+  margin-top:-10px;
   border-bottom:1px solid $white-transparent-3;
   //overflow:hidden;
   -webkit-transition: -webkit-transform .5s ease-out;
@@ -12,7 +14,11 @@
 .ct-chart {
   //background: $white-transparent-1;
   //z-index:5;
-
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
 }
 
 .ct-chart .ct-label.ct-vertical,
@@ -25,13 +31,15 @@
   shape-rendering: crispEdges;
 }
 .ct-chart .ct-grid {
-  -webkit-transform: translate3d(-10px, -15px, 0);
-  -moz-transform: translate3d(-10px, -15px, 0);
+  -webkit-transform: translate3d(-10px, 5px, 0);
+  -moz-transform: translate3d(-10px, 5px, 0);
+  transform: translate3d(-10px, 5px, 0);
 }
 .ct-chart .ct-series {
   fill: none;
-  -webkit-transform: translate3d(-10px, -15px, 0);
-  -moz-transform: translate3d(-10px, -15px, 0);
+  -webkit-transform: translate3d(-10px, 5px, 0);
+  -moz-transform: translate3d(-10px, 5px, 0);
+  transform: translate3d(-10px, 5px, 0);
 }
 
 .ct-chart .ct-series.ct-series-a .ct-line {// temp
@@ -107,10 +115,59 @@
   }
 }
 
+@media screen and (max-height: 414px) {
+  .chart {
+
+    height:85px !important;
+
+    .ct-chart .ct-series.ct-series-a {
+
+      .ct-line {
+        stroke-dasharray: none;
+        animation: none;
+      }
+
+      .ct-area {
+        fill: $white;
+        fill-opacity:0.1;
+      }
+
+    }
+  }
+}
+
+
 @media screen and (max-width: 414px) {
 
-  .ct-chart .ct-series.ct-series-a .ct-line {// temp
-    stroke-dasharray: 1px 7px;
-    animation: dashoffset-eight 2s infinite linear;
+  .chart {
+
+    height:85px !important;
+
+    .ct-chart .ct-series.ct-series-a {
+
+      .ct-line {
+        stroke-dasharray: none;
+        animation: none;
+      }
+
+      .ct-area {
+        fill: $white;
+        fill-opacity:0.1;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 359px) {
+
+  .chart {
+    height:70px !important;
+  }
+}
+
+@media screen and (max-height: 360px) {
+
+  .chart {
+    height:70px !important;
   }
 }

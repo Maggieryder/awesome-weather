@@ -60,7 +60,13 @@ class Charts extends Component {
     )
   }
   updateDimensions = () => {
-      this.setState({svgWidth: $(window).width()*4, svgHeight: $(window).width()>500 ? 100 : $(window).width()>=375 ? 85 : 50});
+  /*  let svgHeight, svgWidth = $(window).width()*4
+    if ($(window).width()>=414 && $(window).height()>414){
+      svgHeight = 100
+    } else if ($(window).width()<414 || $(window).height()<=414){
+      svgHeight = $(window).height() >=360 ? 85 : 70;
+    }
+    this.setState({svgWidth: svgWidth, svgHeight: svgHeight});*/
   }
   componentWillMount() {
       this.updateDimensions();
@@ -112,7 +118,7 @@ class Charts extends Component {
 
     return (
       <Row style={rowStyle}>
-        <div className="chart" style={{height:this.state.svgHeight}}
+        <div className="chart"
             onMouseDown={this.onTouchStart.bind(this)}
             onTouchStart={this.onTouchStart.bind(this)}
             onMouseMove={this.onTouchMove.bind(this)}

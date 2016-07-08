@@ -2,13 +2,13 @@
   padding:0 0 0 4px;
 
   > div {
-    padding:4px 0;
+    padding:4px 0 2px;
     border-radius:4px;
     @include calc(width, "100% - 4px");
     font-family: $font-family-bold;
-    font-size:14px;
+    font-size:13px;
     //font-weight:300;
-    line-height:14px;
+    line-height:13px;
     color:$primary-color;
     cursor:pointer;
     background:$bg-color;
@@ -23,10 +23,24 @@
     .icon {
       width:45px;
       height:36px;
-      margin:0 auto;
+      margin:-3px auto 0px;
       opacity:.8
     }
 
   }
 
+}
+
+@media screen and (max-height: 359px) {
+
+  .day {
+    > div {
+      padding:4px 4px 4px 8px;
+    }
+
+    .icon {
+      float:left;
+      margin-top:-18px !important;
+    }
+  }
 }
