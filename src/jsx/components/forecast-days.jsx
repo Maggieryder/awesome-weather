@@ -10,12 +10,16 @@ class DaysForecast extends Component {
     this.onSelect = this.props.onSelect
   }
 
+  validData(){
+    let { isLoading, response } = this.props.weather
+    return !isLoading && !response.error && !response.results
+  }
+
   renderDay = (day, id) => {
     let { date, icon, high, low } = day
     let { dayIndex, numDays, unit } = this.props
-    let { isLoading, response } = this.props.weather
-    let validData = !isLoading && !response.error && !response.results
     let unitType = unit==='metric' ? 'celsius' : 'fahrenheit'
+    let validData = this.validData()
 
     if (id < numDays){
       return <ForecastDay key={id}
@@ -31,8 +35,8 @@ class DaysForecast extends Component {
 
   render() {
     //console.log('rendering DAYS')
-    let { forecast, isLoading, response } = this.props.weather
-    let days = isLoading || response.error || response.results ? [{},{},{},{}] : forecast.simpleforecast.forecastday //hack attack!!
+    let { forecast } = this.props.weather
+    let days = this.validData() ? forecast.simpleforecast.forecastday : [{},{},{},{}] //hack attack!!
     const rowStyle = {margin:'6px 4px'}
     return (
       <Row style={rowStyle}>

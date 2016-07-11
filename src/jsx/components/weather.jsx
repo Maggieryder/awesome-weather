@@ -157,7 +157,7 @@ class Weather extends Component {
 
   render() {
     let { unit } = this.props
-    let { hrIndex, dayIndex, chart, svgTransform } = this.state //, svgWidth, svgHeight
+    let { hrIndex, dayIndex, chart, svgTransform } = this.state 
     let { response, hourly, sunphase, isLoading, location } = this.props.weather
 
     let validData = !isLoading && !response.error && !response.results && hourly.length >= 1

@@ -135,7 +135,6 @@ function mapStateToProps({weather}){
 export default connect(mapStateToProps)(Charts)
 
 /*
-<Chart data={data} width={this.state.svgWidth} height={this.state.svgHeight}/>
 //let curTransform = new WebKitCSSMatrix(window.getComputedStyle(node).webkitTransform);
 //let curTransform = new MSCSSMatrix(window.getComputedStyle(node).webkitTransform);
 // curTransform.m41 is the transformed x

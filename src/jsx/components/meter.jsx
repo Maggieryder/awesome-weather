@@ -105,13 +105,3 @@ Meter.propTypes = {
 }
 
 export default Meter
-
-/*
-let popover = <Popover id="popover" title="Choose meter" >
-                <ul>
-                  <li>Other meter</li>
-                  <li>Another meter</li>
-                  <li>Last meter</li>
-                </ul>
-              </Popover>;
-*/

@@ -20,7 +20,7 @@ const DayCast = (props) => {
               </div>
               <div>{temps[0]}&deg; / {temps[1]}&deg; </div>
             </div> :
-            <div style={{height:'74px', paddingTop:'25px'}}>...</div>}
+            <div className='vertical-container'>...</div>}
     </Col>
   )
 
