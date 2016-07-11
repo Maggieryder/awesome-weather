@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { Row, Col, Glyphicon } from 'react-bootstrap';
 import $ from 'jquery'
 import _ from 'lodash'
-import { getWeather, loading, toggleUnit, toggleFavorite, toggleModal } from '../../actions/index'
+import moment from 'moment'
+import { getWeather, loading, toggleUnit, addFavorite, removeFavorite, toggleModal } from '../../actions/index'
 import { getLocalData, setLocalData } from '../../api/persist-data'
 import ToggleBtn from 'toggle-btn'
 import ModalInstance from 'modal'
@@ -23,40 +24,21 @@ class Weather extends Component {
       hrIndex: 0,
       dayIndex: 0,
       chart: getLocalData('chart') ? getLocalData('chart') : 'temps',
-      svgWidth:200,
-      svgHeight:150,
       svgTransform: 0
     }
     this.toggleModal = this.props.toggleModal
     this.toggleUnit = this.props.toggleUnit
   }
 
-  updateDimensions = () => {
-    /*let height = $(window).height() - 52 // minus header height
-    let footerHt = 320
-    console.log('updateDimensions', $(window).width(), height - footerHt)
-    this.setState({
-      svgWidth: $(window).width()>=768 ? 600 : $(window).width()>=414 ? 320 : $(window).width()>=375 ? 250 : 168,
-      //svgHeight: $(window).width()>=768 ? 300 : $(window).width()>=414 ? 240 : $(window).width()>=375 ? 188 : 126
-      svgHeight: $(window).height()>=640 ? 450 : $(window).height()>=414 ? 240 : $(window).width()>=375 ? 188 : 126
-    });*/
-    //this.setState({hrIndex: 0,dayIndex:0, svgTransform:0})
-    //this.moveChartTo(0)
-  }
   componentWillMount() {
-      this.updateDimensions();
       this.getLocation('autoip');
   }
 
   componentDidMount() {
-    let that = this
-    //$( window ).resize(this.updateDimensions}
-    window.addEventListener('resize', that.updateDimensions);
+    // add listeners
   }
   componentWillUnmount() {
-    let that = this
-    //$( window ).off('resize', this.updateDimensions)
-    window.removeEventListener('resize', that.updateDimensions);
+    // remove listeners
   }
 
   componentWillReceiveProps(props){
@@ -79,17 +61,30 @@ class Weather extends Component {
   }
 
   getLocation = (query) => {
-    this.props.loading(1)
+    this.props.loading(true)
     this.props.getWeather(query)
   }
 
   toggleFavorite = () => {
-    this.props.toggleFavorite(this.props.weather.location)
+    let { location } = this.props.weather
+    if (this.isFavorite(location)===1) {
+      this.props.removeFavorite(location)
+    } else {
+      this.props.addFavorite(location)
+    }
+  }
+
+  isFavorite = (location) => {
+    let { favorites } = this.props
+    //let { location } = this.props.weather
+    if (!location) return 0
+    let idx = _.findIndex(favorites, function(i) { return i.l === location.l })
+    return idx !== -1 ? 1 : 0
   }
 
   handleMeterClick = (type) => {
     setLocalData('chart', type)
-    this.setState({chart:type})
+    this.setState({chart: type})
   }
 
   afterdark(sp, now){
@@ -110,15 +105,6 @@ class Weather extends Component {
        }
     })
    return indexes
-   /*
-    indexes = hrs.map(function(value, index) {
-        if(value === 0) {
-          return {id:index}
-        }
-    }).filter(isFinite)
-    console.log(indexes)
-    return indexes
-    */
   }
 
   handleChartUpdate = (id) => {
@@ -170,21 +156,17 @@ class Weather extends Component {
   }
 
   render() {
+    let { unit } = this.props
+    let { hrIndex, dayIndex, chart, svgTransform } = this.state //, svgWidth, svgHeight
+    let { response, hourly, sunphase, isLoading, location } = this.props.weather
 
-    let { hrIndex, svgWidth, svgHeight } = this.state
-    let { response, unit, hourly, sunphase, isLoading, location } = this.props.weather
-    let { favorites } = this.props.favorites
     let validData = !isLoading && !response.error && !response.results && hourly.length >= 1
     //console.log('validData', validData)
-    //console.log('WEATHER chart', this.state.chart)
-    //console.log('WEATHER unit', unit)
+    //console.log('WEATHER isFavorite', this.isFavorite())
 
-    let dates, conditions, icons, isDark, isFavorite, isMetric = unit==='metric' ? 0 : 1
+    let dates, conditions, icons, isDark, isMetric = unit==='metric' ? 0 : 1
 
     if (validData) {
-      let idx = _.findIndex(favorites, function(i) { return i.l === location.l })
-      isFavorite = idx !== -1 ? 1 : 0
-      //console.log('isFavorite / idx', isFavorite, idx)
       dates = hourly.map(hour => hour.FCTTIME),
       conditions = hourly.map(hour => hour.wx),
       icons = hourly.map(hour => hour.icon),
@@ -193,8 +175,7 @@ class Weather extends Component {
     }
 
     const noMargin = {margin:'0px'}
-    const noPadding = {padding:'0px', width:'100%', margin:'0px'}
-    const noPaddingUnderlay = {padding:'0px', width:'100%', margin:'-50px 0px 0px 0px !importa'}
+    const noPadding = {padding:'0px'}
     const colStyle = {padding:'6px 8px 0px'}
 
     const favoriteOptions = [
@@ -206,22 +187,24 @@ class Weather extends Component {
       <span>&deg;C</span>,
       <span>&deg;F</span>
     ]
-
+    //{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}
     return (
       <div className='flex-container'>
 
         <div className='main flex-column-1 flex-container'>
+
           <Row className='flex-column-none' style={{margin:'0px', zIndex:5}}>
             <Col xs={2} style={colStyle}>
               <ToggleBtn toggleFunction={this.toggleUnit} options={unitOptions} state={isMetric} styleClass="unit pull-left" />
             </Col>
             <Col xs={8} style={colStyle}>
-              <div className='time'>{validData ? <h2>{dates[hrIndex].weekday_name}, {dates[hrIndex].civil}</h2> : null}</div>
+              <div className='time'>{validData ? <h2>{moment.unix(dates[hrIndex].epoch).format('dddd, h:mm a')}</h2> : null}</div>
             </Col>
             <Col xs={2} style={colStyle}>
-              <ToggleBtn toggleFunction={this.toggleFavorite} options={favoriteOptions} state={isFavorite} styleClass="pull-right no-boundary"/>
+              <ToggleBtn toggleFunction={this.toggleFavorite} options={favoriteOptions} state={this.isFavorite(location)} styleClass="pull-right no-boundary"/>
             </Col>
           </Row>
+
           {!isLoading ?
           <div className='flex-column-1'>
             {validData ? <div className='icon-main'>
@@ -229,12 +212,13 @@ class Weather extends Component {
             </div> : null }
             <h2 className='icon-description'>{validData ? conditions[hrIndex] : null }</h2>
           </div> : <div className='flex-column-1 vertical-container' ><h2>LOADING...</h2></div>}
+
         </div>
 
         <div className='footer flex-column-none'>
-          <Meters hrIndex={hrIndex} chart={this.state.chart} onSelect={this.handleMeterClick}/>
-          <Charts hrIndex={hrIndex} chart={this.state.chart} transform={this.state.svgTransform} onUpdate={this.handleChartUpdate}/>
-          <DayForecast dayIndex={this.state.dayIndex} onSelect={this.handleDayClick}/>
+          <Meters hrIndex={hrIndex} chart={chart} onSelect={this.handleMeterClick}/>
+          <Charts hrIndex={hrIndex} chart={chart} transform={svgTransform} onUpdate={this.handleChartUpdate}/>
+          <DayForecast dayIndex={dayIndex} onSelect={this.handleDayClick}/>
         </div>
 
         <ModalInstance onClose={this.getLocation}/>
@@ -249,23 +233,23 @@ Weather.propTypes = {
   loading: PropTypes.func.isRequired,
   toggleUnit: PropTypes.func.isRequired,
   toggleModal: PropTypes.func.isRequired,
-  toggleFavorite: PropTypes.func.isRequired,
+  addFavorite: PropTypes.func.isRequired,
+  removeFavorite: PropTypes.func.isRequired,
   weather: PropTypes.shape({
-    unit: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     response: PropTypes.object.isRequired,
     hourly: PropTypes.array,
     sunphase: PropTypes.object,
     location: PropTypes.object
   }),
-  favorites: PropTypes.shape({
-    favorites: PropTypes.array.isRequired
-  })
+  unit: PropTypes.string.isRequired,
+  favorites: PropTypes.array.isRequired
 }
 
 Weather.defaultProps = {
+  unit:'metric',
+  favorites: [],
   weather: PropTypes.shape({
-    unit: 'metric',
     isLoading: false,
     response: {},
     hourly: [],
@@ -274,12 +258,8 @@ Weather.defaultProps = {
   })
 }
 
-function mapStateToProps({ weather, favorites }){
-  return { weather, favorites }
+function mapStateToProps({ weather, favorites, unit }){
+  return { weather, favorites, unit }
 }
 
-export default connect(mapStateToProps, { getWeather, loading, toggleUnit, toggleFavorite, toggleModal })(Weather)
-
-// style={{width:svgWidth+'px', height:svgHeight+'px', margin: '-10px auto'}}
-//{/*<p className='icon-overlay'>{validData ? dates[hrIndex].month_name+' '+dates[hrIndex].mday+', '+dates[hrIndex].year : '' }</p>*/}
-//<Col xs={12} style={{height:'200px', paddingTop:'100px'}}>LOADING...</Col>
+export default connect(mapStateToProps, { getWeather, loading, toggleUnit, addFavorite, removeFavorite, toggleModal })(Weather)

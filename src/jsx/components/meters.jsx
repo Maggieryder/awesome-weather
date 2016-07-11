@@ -22,8 +22,9 @@ class Meters extends Component {
     this.onSelect = this.props.onSelect.bind(this)
   }
   componentWillReceiveProps(nextProps){
-    //console.log('METERS componentWillReceiveProps', nextProps.weather)
-    this.setStats(nextProps.chart, nextProps.weather)
+    //console.log('METERS componentWillReceiveProps', nextProps.unit)
+    let { chart, weather, unit } = nextProps
+    this.setStats(chart, weather, unit)
   }
 
   handleMeterClick = (type) => {
@@ -39,12 +40,13 @@ class Meters extends Component {
     this.setStats(e.type, this.props.weather)
   }
 
-  setStats = ( chart, weather ) => {
+  setStats = ( chart, weather, unit ) => {
     let { defaultStat } = this.props
     let { listOrder } = this.state
-    let { response, hourly, isLoading, unit } = weather
+    let { response, hourly, isLoading } = weather
     let validData = !isLoading && !response.error && !response.results
     //console.log('>>>>>>>>>>>>>>>METER validData', validData)
+    //console.log('>>>>>>>>>>>>>>>METER unit', unit)
     let stats = []
     if ( validData ) {
       let data =  [
@@ -55,7 +57,7 @@ class Meters extends Component {
           {type:'skies', label:'Cloud cover', data:hourly.map(hour => hour.sky), suffix:'percentage'},
           {type:'humidities', label:'Humidity', data:hourly.map(hour => hour.humidity), suffix:'percentage'},
           {type:'dewpoints', label:'Dewpoint', data:hourly.map(hour => hour.dewpoint[unit]), suffix:'degrees'},
-          {type:'pressures', label:'Pressure', data:hourly.map(hour => hour.mslp[unit]), suffix:''},
+          {type:'pressures', label:'Pressure', data:hourly.map(hour => hour.mslp[unit]), suffix:'pressure'},
           //{type:'snow', label:'Snow', data:hourly.map(hour => hour.snow[unit]), suffix:'measure'},
           {type:'uvis', label:'UV Index', data:hourly.map(hour => hour.uvi), suffix:''}
         ]
@@ -77,8 +79,8 @@ class Meters extends Component {
   }
   renderStat = (stat, id) => {
     let that = this
-    let { hrIndex } = this.props
-    let { unit, isLoading  } = this.props.weather
+    let { hrIndex, unit } = this.props
+    let { isLoading  } = this.props.weather
     let { hiddenStats, chart } = this.state
     const colStyle = {
       padding:'0 0 0 4px'
@@ -117,6 +119,7 @@ Meters.propTypes = {
   onSelect: PropTypes.func.isRequired,
   hrIndex: PropTypes.number.isRequired,
   weather: PropTypes.object.isRequired,
+  unit: PropTypes.string.isRequired,
   chart: PropTypes.string,
   defaultStat: PropTypes.object
 }
@@ -125,6 +128,7 @@ Meters.defaultProps = {
   hrIndex: 0,
   chart: 'temps',
   weather: {},
+  unit: 'metric',
   defaultStat: {
     type:'',
     label:'',
@@ -133,8 +137,8 @@ Meters.defaultProps = {
   }
 }
 
-function mapStateToProps({weather}){
-  return { weather }
+function mapStateToProps({weather, unit}){
+  return { weather, unit }
 }
 
 export default connect(mapStateToProps)(Meters)

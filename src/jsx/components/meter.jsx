@@ -11,6 +11,8 @@ let suffixes = (type, unit) => {
     return <sup>&#37;</sup>
     case 'measure':
     return unit==='metric' ? <span className="small">mm</span> : <sup>&Prime;</sup>
+    case 'pressure':
+    return unit==='metric' ? <span className="small">mb</span> : <span className="small">in</span>
     default:
     return null
   }

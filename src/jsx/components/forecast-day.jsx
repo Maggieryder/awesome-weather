@@ -13,7 +13,7 @@ const DayCast = (props) => {
   return (
     <Col xs={3} className="day">
      {day ? <div className={dayIndex===id ? 'active' : null}
-              onClick={onClick} >
+              onClick={()=>{onClick(id)}} >
               <div>{day}</div>
               <div className="icon" style={dayIndex===id ? iconStyleActive : null}>
                 <WeatherIcon stroke="7" opacity={1} desc={icon}/>

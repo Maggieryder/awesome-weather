@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Row } from 'react-bootstrap';
-import $ from 'jquery'
 import { getTouchCoords } from '../utils/coords.js'
 
 import Chart from 'chart'
@@ -18,68 +17,44 @@ class Charts extends Component {
     this.onUpdate = this.props.onUpdate
   }
 
-    onTouchStart (evt) {
-      //console.log('TOUCHED DOWN')
-      evt.preventDefault();
-      this.is_touch = (evt.changedTouches);
-      let { transform, numHrs } = this.props
-      let node = evt.currentTarget;
-      this.columnwidth = node.offsetWidth/numHrs
-      //console.log('>>>>>>> CHART width >>>>>> CHART height',node.offsetWidth, node.offsetHeight); //widths
+  onTouchStart (evt) {
+    //console.log('TOUCHED DOWN')
+    evt.preventDefault();
+    this.is_touch = (evt.changedTouches);
+    let { transform, numHrs } = this.props
+    let node = evt.currentTarget;
+    this.columnwidth = node.offsetWidth/numHrs
+    //console.log('>>>>>>> CHART width >>>>>> CHART height',node.offsetWidth, node.offsetHeight); //widths
 
-      //let grid = node.querySelector('.ct-grids');
-      //let bbox = grid.getBBox();
-      //console.log(bbox) //only shows up if axisX:showGrid is set to true in chart.jsx
+    //let grid = node.querySelector('.ct-grids');
+    //let bbox = grid.getBBox();
+    //console.log(bbox) //only shows up if axisX:showGrid is set to true in chart.jsx
 
-      this.offset = {x:transform,y:0}
-      //console.log('this.offset', this.offset )
-      this.touching = true;
-      this.onTouchMove(evt);
+    this.offset = {x:transform,y:0}
+    //console.log('this.offset', this.offset )
+    this.touching = true;
+    this.onTouchMove(evt);
+  }
+
+  onTouchMove (evt) {
+    if(this.touching){
+      let x = getTouchCoords(evt, this.offset).x
+      //console.log('TOUCH MOVING INDEX', Math.floor(x / this.columnwidth))
+      this.onUpdate(Math.floor(x / this.columnwidth))
+    } else {
+      //console.log('TOUCH MOVING', this.state.isTouching)
     }
+  }
 
-    onTouchMove (evt) {
-      if(this.touching){
-        let x = getTouchCoords(evt, this.offset).x
-        //console.log('TOUCH MOVING INDEX', Math.floor(x / this.columnwidth))
-        this.onUpdate(Math.floor(x / this.columnwidth))
-      } else {
-        //console.log('TOUCH MOVING', this.state.isTouching)
-      }
-    }
-
-    onTouchEnd (evt){
-      this.touching = false;
-      //console.log('TOUCH ENDED', this.touching)
-    }
-
-
+  onTouchEnd (evt){
+    this.touching = false;
+    //console.log('TOUCH ENDED', this.touching)
+  }
 
   renderChart (data) {
     return (
-      <Chart data={data} width={this.state.svgWidth} height={this.state.svgHeight}/>
+      <Chart data={data}/>
     )
-  }
-  updateDimensions = () => {
-  /*  let svgHeight, svgWidth = $(window).width()*4
-    if ($(window).width()>=414 && $(window).height()>414){
-      svgHeight = 100
-    } else if ($(window).width()<414 || $(window).height()<=414){
-      svgHeight = $(window).height() >=360 ? 85 : 70;
-    }
-    this.setState({svgWidth: svgWidth, svgHeight: svgHeight});*/
-  }
-  componentWillMount() {
-      this.updateDimensions();
-  }
-  componentDidMount() {
-    let that = this
-    //$( window ).resize(this.updateDimensions}
-    window.addEventListener('resize', that.updateDimensions)
-  }
-  componentWillUnmount() {
-    let that = this
-    //$( window ).off('resize', this.updateDimensions)
-    window.removeEventListener('resize', that.updateDimensions)
   }
 
   renderHour = (hr, id) => {
@@ -97,7 +72,7 @@ class Charts extends Component {
     let {chart, numHrs} = this.props
     let validData = !isLoading && !response.error && !response.results
     //console.log('RENDER CHART', chart)
-    //console.log('CHART response',response)
+
     let defaultHrs = [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}] // hack attack!!
     let rowStyle = {margin:0, overflow:'hidden'}
     let hours, data
@@ -160,7 +135,7 @@ function mapStateToProps({weather}){
 export default connect(mapStateToProps)(Charts)
 
 /*
-
+<Chart data={data} width={this.state.svgWidth} height={this.state.svgHeight}/>
 //let curTransform = new WebKitCSSMatrix(window.getComputedStyle(node).webkitTransform);
 //let curTransform = new MSCSSMatrix(window.getComputedStyle(node).webkitTransform);
 // curTransform.m41 is the transformed x

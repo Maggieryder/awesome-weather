@@ -11,12 +11,57 @@ export function getWeather(location) {
   let encodedLocation = encodeURIComponent(location)
   const requestURL = `${API_URL}${API_KEY}${API_PARAMS}/q/${encodedLocation}.json`
   const request = axios.get(requestURL)
-
   //console.log('request', request)
-
   return {
     type: GET_WEATHER,
     payload: request
+  }
+}
+
+export const TOGGLE_UNIT = 'TOGGLE_UNIT'
+
+export function toggleUnit(unit) {
+  return {
+    type: TOGGLE_UNIT,
+    unit // ES6 syntax - is same as unit: unit
+  }
+}
+
+export const ADD_FAVORITE = 'ADD_FAVORITE'
+
+export function addFavorite(favorite) {
+  return {
+    type: ADD_FAVORITE,
+    favorite // ES6 syntax - is same as favorite: favorite
+  }
+}
+
+export const REMOVE_FAVORITE = 'REMOVE_FAVORITE'
+
+export function removeFavorite(favorite) {
+  return {
+    type: REMOVE_FAVORITE,
+    favorite // ES6 syntax - is same as favorite: favorite
+  }
+}
+
+export const IS_LOADING = 'IS_LOADING'
+
+export function loading(status) {
+  //console.log('loading', status)
+  return {
+    type: IS_LOADING,
+    status // ES6 syntax - is same as status: status
+  }
+}
+
+export const TOGGLE_MODAL_OPEN = 'TOGGLE_MODAL_OPEN'
+
+export function toggleModal(content) {
+  //console.log('toggle content', content)
+  return {
+    type: TOGGLE_MODAL_OPEN,
+    content // ES6 syntax - is same as content: content
   }
 }
 
@@ -32,49 +77,5 @@ export function autoComplete(query){
   return {
     type: AUTO_COMPLETE,
     payload: request
-  }
-}
-
-export const TOGGLE_UNIT = 'TOGGLE_UNIT'
-
-export function toggleUnit(val) {
-  //console.log('toggle UNIT value', val)
-
-  return {
-    type: TOGGLE_UNIT,
-    payload: {unit: val}
-  }
-}
-
-export const TOGGLE_FAVORITE = 'TOGGLE_FAVORITE'
-
-export function toggleFavorite(loc) {
-  //console.log('toggle favorite', loc)
-
-  return {
-    type: TOGGLE_FAVORITE,
-    payload: {favorite: loc}
-  }
-}
-
-export const IS_LOADING = 'IS_LOADING'
-
-export function loading(val) {
-  //console.log('loading', val)
-
-  return {
-    type: IS_LOADING,
-    payload: {isLoading: val}
-  }
-}
-
-export const TOGGLE_MODAL_OPEN = 'TOGGLE_MODAL_OPEN'
-
-export function toggleModal(content) {
-  //console.log('toggle content', content)
-
-  return {
-    type: TOGGLE_MODAL_OPEN,
-    payload: {content:content}
   }
 }

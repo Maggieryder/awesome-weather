@@ -8,11 +8,11 @@ const INITIAL_STATE = {
 export default function(state = INITIAL_STATE, action) {
   switch(action.type){
     case TOGGLE_MODAL_OPEN:
-    //console.log('action recieved for TOGGLE MODAL', action.payload.content)
-    //console.log('state.modalOpen', action.payload.content ? true : false)
+    //console.log('action recieved for TOGGLE MODAL', action.content)
+    //console.log('state.modalOpen', action.content ? true : false)
     return {
-      modalOpen: action.payload.content ? true : false,
-      modalContent: action.payload.content
+      modalOpen: action.content ? true : false,
+      modalContent: action.content
     }
     default:
       return state

@@ -1,7 +1,6 @@
 import { AUTO_COMPLETE } from '../actions/index'
 
 const INITIAL_STATE = {
-  favorites: [],
   locations: []
 }
 

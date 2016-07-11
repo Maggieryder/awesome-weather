@@ -17,7 +17,7 @@ class Header extends Component {
     this.toggleModal = this.props.toggleModal
   }
   toggleLocationList = () => {
-    let { favorites } = this.props.favorites
+    let { favorites } = this.props
     let { location } = this.props.weather
     //console.log('location.l', location.l.replace('/q/',''))
     let body = favorites.length >= 1 ? <MultipleChoices className="favorites" items={favorites} onSelect={this.handleChoiceSelect} /> : <span>You have no favorites!</span>
@@ -31,7 +31,7 @@ class Header extends Component {
   }
 
   getLocation = (query) => {
-    this.props.loading(1)
+    this.props.loading(true)
     this.props.getWeather(query)
   }
 
@@ -78,9 +78,7 @@ Header.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     location: PropTypes.object
   }),
-  favorites: PropTypes.shape({
-    favorites: PropTypes.array.isRequired
-  })
+  favorites: PropTypes.array.isRequired
 }
 
 function mapStateToProps({ weather, favorites}){

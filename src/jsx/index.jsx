@@ -7,9 +7,11 @@ import ReduxPromise from 'redux-promise'
 import Routes from './routes.jsx'
 import reducers from '../reducers'
 
-
+// redux.compose(
+  //window.devToolsExtension ? window.devToolsExtension() : f => f
+//)
 /// remove thses possibly?? See webpack tute
-//import '../vendor/jquery_1.12.0.min.js'
+
 import '../vendor/bootstrap.min.css'
 //import '../vendor/bootstrap-theme.min.css'
 import '../scss/main.scss'

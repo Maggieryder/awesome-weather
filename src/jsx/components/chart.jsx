@@ -33,7 +33,7 @@ class Chart extends Component {
 */
   render(){
     //console.log('RENDER CHART')
-    let { width, height } = this.props;
+    //let { width, height } = this.props;
     //console.log(this.props)
     let datatosort = this.props.data.slice()
     let sorteddata = datatosort.sort(function(a, b){return a - b}) // sorts into numerical min and max values

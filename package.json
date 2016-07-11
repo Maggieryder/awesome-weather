@@ -74,6 +74,7 @@
     "karma-jasmine-html-reporter": "^0.2.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
+    "moment": "^2.14.1",
     "node-sass": "^3.7.0",
     "postcss-loader": "^0.9.1",
     "purifycss-webpack-plugin": "^2.0.3",
