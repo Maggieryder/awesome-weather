@@ -6,19 +6,100 @@ import { getTouchCoords } from '../utils/coords.js'
 import Chart from 'chart'
 import Hour from 'hour'
 
+let APIParams = (hour, type) => {
+  switch (type){
+    case 'temps':
+    return parseInt(hour.temp.english)
+    case 'feels' :
+    return parseInt(hour.feelslike.english)
+    case 'winds':
+    return parseInt(hour.wspd.metric)
+    case 'precips' :
+    return parseInt(hour.pop)
+    case 'skies':
+    return parseInt(hour.sky)
+    case 'humidities' :
+    return parseInt(hour.humidity)
+    case 'pressures':
+    return parseInt(hour.mslp.metric)
+    case 'dewpoints' :
+    return parseInt(parseInt(hour.dewpoint.english))
+    case 'uvis' :
+    return parseInt(parseInt(hour.uvi))
+    default:
+    return null
+  }
+}
+
 
 class Charts extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      svgWidth:0,
-      svgHeight:0
-    }
-    this.onUpdate = this.props.onUpdate
+    this.onUpdate = this.props.onUpdate.bind(this)
+    this.listenersAdded = false
   }
 
-  onTouchStart (evt) {
-    //console.log('TOUCHED DOWN')
+  addListeners(){
+    if (!this.listenersAdded){
+      let chart = document.getElementById('chart')
+      chart.addEventListener('mousedown', this.onTouchStart, false)
+      chart.addEventListener('mousemove', this.onTouchMove, false)
+      chart.addEventListener('mouseup', this.onTouchEnd, false)
+      chart.addEventListener('mouseleave', this.onTouchEnd, false)
+      chart.addEventListener('touchstart', this.onTouchStart, false)
+      chart.addEventListener('touchmove', this.onTouchMove, false)
+      chart.addEventListener('touchend', this.onTouchEnd, false)
+      chart.addEventListener('touchcancel', this.onTouchEnd, false)
+      this.listenersAdded = true
+      //console.log('CHARTS ADD listeners', chart)
+    }
+  }
+
+  removeListeners(){
+    if (this.listenersAdded){
+      let chart = document.getElementById('chart')
+      chart.removeEventListener('mousedown', this.onTouchStart, false)
+      chart.removeEventListener('mousemove', this.onTouchMove, false)
+      chart.removeEventListener('mouseup', this.onTouchEnd, false)
+      chart.removeEventListener('mouseleave', this.onTouchEnd, false)
+      chart.removeEventListener('touchstart', this.onTouchStart, false)
+      chart.removeEventListener('touchmove', this.onTouchMove, false)
+      chart.removeEventListener('touchend', this.onTouchEnd, false)
+      chart.removeEventListener('touchcancel', this.onTouchEnd, false)
+      this.listenersAdded = false
+      console.log('CHARTS REMOVE listeners', chart)
+    }
+  }
+
+  componentDidMount() {
+    // add listeners
+    this.addListeners()
+  }
+  componentWillUnmount() {
+    // remove listeners
+    this.removeListeners()
+  }
+
+  componentWillUpdate(nextProps) {
+    //console.log('CHARTS will update same chart', nextProps.chart === this.props.chart)
+    if (nextProps.chart !== this.props.chart) {
+      //this.removeListeners()
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    //console.log('CHARTS did update same chart', prevProps.chart === this.props.chart )
+    if (prevProps.chart !== this.props.chart) {
+      //this.addListeners()
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    //
+  }
+
+  onTouchStart = (evt) => {
+    //console.log('TOUCHED DOWN',this.props)
     evt.preventDefault();
     this.is_touch = (evt.changedTouches);
     let { transform, numHrs } = this.props
@@ -36,7 +117,8 @@ class Charts extends Component {
     this.onTouchMove(evt);
   }
 
-  onTouchMove (evt) {
+  onTouchMove = (evt) => {
+    evt.preventDefault();
     if(this.touching){
       let x = getTouchCoords(evt, this.offset).x
       //console.log('TOUCH MOVING INDEX', Math.floor(x / this.columnwidth))
@@ -46,7 +128,8 @@ class Charts extends Component {
     }
   }
 
-  onTouchEnd (evt){
+  onTouchEnd = (evt) => {
+    evt.preventDefault();
     this.touching = false;
     //console.log('TOUCH ENDED', this.touching)
   }
@@ -68,7 +151,7 @@ class Charts extends Component {
 
   render() {
 
-    let {hourly, response, isLoading} = this.props.weather //unit,
+    let {hourly, response, isLoading} = this.props.weather
     let {chart, numHrs} = this.props
     let validData = !isLoading && !response.error && !response.results
     //console.log('RENDER CHART', chart)
@@ -78,31 +161,13 @@ class Charts extends Component {
     let hours, data
     if( validData ){
       hours = hourly.map(hour => hour.FCTTIME)
-      data = {
-        temps: hourly.map(hour => parseInt(hour.temp.english)),
-        feels: hourly.map(hour => parseInt(hour.feelslike.english)),
-        winds: hourly.map(hour => parseInt(hour.wspd.metric)),
-        precips: hourly.map(hour => parseInt(hour.pop)),
-        skies: hourly.map(hour => parseInt(hour.sky)),
-        humidities: hourly.map(hour => parseInt(hour.humidity)),
-        pressures: hourly.map(hour => parseInt(hour.mslp.metric)),
-        dewpoints: hourly.map(hour => parseInt(hour.dewpoint.english)),
-        uvis: hourly.map(hour => parseInt(hour.uvi))
-      }
+      data = hourly.map(hour => APIParams(hour,chart))
     }
 
     return (
       <Row style={rowStyle}>
-        <div className="chart"
-            onMouseDown={this.onTouchStart.bind(this)}
-            onTouchStart={this.onTouchStart.bind(this)}
-            onMouseMove={this.onTouchMove.bind(this)}
-            onTouchMove={this.onTouchMove.bind(this)}
-            onMouseLeave={this.onTouchEnd.bind(this)}
-            onTouchCancel={this.onTouchEnd.bind(this)}
-            onMouseUp={this.onTouchEnd.bind(this)}
-            onTouchEnd={this.onTouchEnd.bind(this)}>
-          { validData ? this.renderChart(data[chart].slice(0,numHrs)) : null }
+        <div id='chart' className='chart'>
+          { validData ? this.renderChart(data.slice(0,numHrs)) : null }
           <ul className="hours">
             { validData ? hours.slice(0,numHrs).map(this.renderHour) : defaultHrs.map(this.renderHour)}
           </ul>

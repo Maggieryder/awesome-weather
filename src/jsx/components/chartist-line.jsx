@@ -21,6 +21,7 @@ class ChartistGraph extends Component {
   }
 
   updateChart(config) {
+    //console.log('UPDATE CHARTIST')
     let Chartist = require('chartist');
 
     let { type, data } = config;
@@ -47,6 +48,7 @@ class ChartistGraph extends Component {
   }
 
   render() {
+
     const className = this.props.className ? ' ' + this.props.className : ''
     const style = this.props.style ? this.props.style : {};
     return (<div className={'ct-chart' + className} ref='chart' style={style} />)

@@ -52,7 +52,7 @@ class Meter extends Component {
   }
 
   render(){
-    let { type, data, data2, suffix, unit, active, isLoading, hasError } = this.props
+    let { type, data, data2, suffix, unit, active, isLoading } = this.props //, hasError
     //console.log('rendering METER hiddenStats', hiddenStats[0] )
     //console.log('rendering METER', type)
 
@@ -80,7 +80,7 @@ class Meter extends Component {
         {this.renderDropdown()}
         <div className={readingClass} style={{'opacity':this.state.dropdownOpen ? 0 : 1}}>
           <a href="#" onClick={()=>{this.onClick(type)}}>
-            {!isLoading && !hasError ? <span>{data2 ? arrow : ''}{data}{suffixes(suffix, unit)}</span> : <span>...</span>}
+            {!isLoading ? <span>{data2 ? arrow : ''}{data}{suffixes(suffix, unit)}</span> : <span>...</span>}
           </a>
         </div>
       </li>
@@ -98,10 +98,12 @@ Meter.propTypes = {
   suffix: PropTypes.string.isRequired,
   active: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  hasError: PropTypes.bool.isRequired,
+  //hasError: PropTypes.bool.isRequired,
   hiddenStats: PropTypes.array,
   onClick: PropTypes.func.isRequired,
   onLabelChange: PropTypes.func
 }
 
 export default Meter
+
+// && !hasError

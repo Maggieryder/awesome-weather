@@ -2,10 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import Chartist from 'chartist'
 import ChartistGraph from 'chartist-line'
 
-
 import 'css!sass!chartist/dist/scss/chartist.scss'
-
-//React.initializeTouchEvents(true);
 
 class Chart extends Component {
   constructor(props) {
@@ -32,9 +29,7 @@ class Chart extends Component {
   }
 */
   render(){
-    //console.log('RENDER CHART')
-    //let { width, height } = this.props;
-    //console.log(this.props)
+    //console.log('RENDER CHART', this.props)
     let datatosort = this.props.data.slice()
     let sorteddata = datatosort.sort(function(a, b){return a - b}) // sorts into numerical min and max values
     //console.log(sorteddata[0],sorteddata[sorteddata.length-1])
@@ -92,15 +87,11 @@ class Chart extends Component {
 }
 
 Chart.propTypes = {
-  data: PropTypes.array.isRequired,
-  height: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired
+  data: PropTypes.array.isRequired
 }
 
 Chart.defaultProps = {
-  data: [],
-  height: 100,
-  width: 4096
+  data: []
 }
 
 export default Chart

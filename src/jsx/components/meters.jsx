@@ -10,46 +10,67 @@ class Meters extends Component {
   constructor(props) {
     super(props);
     //console.log('METERS PROPS >>', this.props)
-    let { defaultStat, chart } = this.props
     this.state = {
       hrIndex: 0,
-      hasError:false,
-      chart: chart,
-      listOrder: getLocalDataArray('readingListOrder').length > 1 ? getLocalDataArray('readingListOrder') : ['temps', 'winds', 'precips', 'feels', 'skies', 'humidities', 'dewpoints', 'pressures', 'uvis'],
-      usedStats: [defaultStat,defaultStat,defaultStat,defaultStat,defaultStat,defaultStat],
-      hiddenStats: []
+      listOrder: getLocalDataArray('readingListOrder').length > 1 ? getLocalDataArray('readingListOrder') : ['temps', 'winds', 'precips', 'feels', 'skies', 'humidities', 'dewpoints', 'pressures', 'uvis']
     }
+    this.hiddenStats = []
     this.onSelect = this.props.onSelect.bind(this)
   }
-  componentWillReceiveProps(nextProps){
-    //console.log('METERS componentWillReceiveProps', nextProps.unit)
-    let { chart, weather, unit } = nextProps
-    this.setStats(chart, weather, unit)
+
+  setHiddenStats(arr){
+    this.hiddenStats = arr
   }
 
-  handleMeterClick = (type) => {
-    //console.log('Meter CLICK', type)
-    this.onSelect(type)
-    this.setState({chart:type})
+  getHiddenStats(){
+    return this.hiddenStats
   }
+
+  componentWillReceiveProps(nextProps){
+    //console.log('METERS componentWillReceiveProps', nextProps.chart, nextProps.unit, nextProps.weather.isLoading)
+  }
+
   handleLabelChange = (e, id, id2) => {
     //console.log('LABEL CHANGE', e.type, id, id2)
     let { listOrder } = this.state
     let newListOrder = swapArrayItems(listOrder, parseInt(id), (id2*1+6));
     setLocalDataArray('readingListOrder', newListOrder)
-    this.setStats(e.type, this.props.weather)
+    this.setState({listOrder: newListOrder})
+    this.onSelect(e.type)
   }
 
-  setStats = ( chart, weather, unit ) => {
-    let { defaultStat } = this.props
-    let { listOrder } = this.state
-    let { response, hourly, isLoading } = weather
+  renderStat = (stat, id) => {
+    let that = this
+    let { hrIndex, unit, chart } = this.props
+    let { isLoading  } = this.props.weather
+    //let { hiddenStats } = this.state //, chart
+    const colStyle = {
+      padding:'0 0 0 4px'
+    }
+
+    return  <Col key={id} sm={2} xs={4} style={colStyle}>
+              <Meter id={id}
+                  type={stat.type}
+                  unit={unit}
+                  isLoading={isLoading}
+                  data={stat.data ? stat.data[hrIndex] : '...'}
+                  data2={stat.data2 ? stat.data2[hrIndex] : ''}
+                  label={stat.label ? stat.label : ''}
+                  suffix={stat.suffix ? stat.suffix : ''}
+                  onClick={(type) => {that.onSelect(type)}}
+                  hiddenStats = {id>2 ? this.getHiddenStats() : []}
+                  onLabelChange={that.handleLabelChange}
+                  active={chart===stat.type ? ' active' : ''} />
+    </Col>
+  }
+
+  setStatsArray(){
+    let { defaultStat, unit } = this.props
+    let { response, hourly, isLoading } = this.props.weather
     let validData = !isLoading && !response.error && !response.results
-    //console.log('>>>>>>>>>>>>>>>METER validData', validData)
-    //console.log('>>>>>>>>>>>>>>>METER unit', unit)
-    let stats = []
+    let data = []
     if ( validData ) {
-      let data =  [
+      data = [
           {type:'temps', label:'Temperature', data:hourly.map(hour => hour.temp[unit]), suffix:'degrees'},
           {type:'winds', label:'Winds', data:hourly.map(hour => hour.wspd[unit]), data2:hourly.map(hour => hour.wdir.degrees), suffix:'speed'},
           {type:'precips', label:'Precipitation', data:hourly.map(hour => hour.pop), suffix:'percentage'},
@@ -61,55 +82,32 @@ class Meters extends Component {
           //{type:'snow', label:'Snow', data:hourly.map(hour => hour.snow[unit]), suffix:'measure'},
           {type:'uvis', label:'UV Index', data:hourly.map(hour => hour.uvi), suffix:''}
         ]
-      for (let i = 0; i < listOrder.length; i++){
-        stats.push(_.find(data, { 'type': listOrder[i] }));
-      }
     } else {
       for (let j = 0; j < 6; j++){
-        stats.push(defaultStat);
+        data.push(defaultStat);
       }
     }
-    //console.log('Stats', stats)
-    this.setState({
-      chart: chart,
-      listOrder: listOrder,
-      usedStats: stats.slice(0,6),
-      hiddenStats: stats.slice(6)
-    })
-  }
-  renderStat = (stat, id) => {
-    let that = this
-    let { hrIndex, unit } = this.props
-    let { isLoading  } = this.props.weather
-    let { hiddenStats, chart } = this.state
-    const colStyle = {
-      padding:'0 0 0 4px'
-    }
-
-    return  <Col key={id} sm={2} xs={4} style={colStyle}>
-              <Meter id={id}
-                  type={stat.type}
-                  unit={unit}
-                  isLoading={isLoading}
-                  hasError={this.state.hasError}
-                  data={stat.data ? stat.data[hrIndex] : '...'}
-                  data2={stat.data2 ? stat.data2[hrIndex] : ''}
-                  label={stat.label ? stat.label : ''}
-                  suffix={stat.suffix ? stat.suffix : ''}
-                  onClick={that.handleMeterClick}
-                  hiddenStats = {id>2 ? hiddenStats : []}
-                  onLabelChange={that.handleLabelChange}
-                  active={chart===stat.type ? ' active' : ''} />
-    </Col>
-
+    return data
   }
 
   render(){
-    let { usedStats } = this.state
+    let { listOrder } = this.state
+    let data = this.setStatsArray()
+
+    let stats = []
+    if (data[0].type !== ''){
+      for (let i = 0; i < listOrder.length; i++){
+        stats.push(_.find(data, { 'type': listOrder[i] }));
+      }
+      this.setHiddenStats(stats.slice(6))
+    } else {
+      stats = data.slice()
+    }
+
     //console.log('RENDERING METERS')
     return (
       <Row style={{margin:'0px 4px'}}>
-        {usedStats.map(this.renderStat)}
+        {stats.slice(0,6).map(this.renderStat)}
       </Row>
     );
   }
@@ -120,7 +118,7 @@ Meters.propTypes = {
   hrIndex: PropTypes.number.isRequired,
   weather: PropTypes.object.isRequired,
   unit: PropTypes.string.isRequired,
-  chart: PropTypes.string,
+  chart: PropTypes.string.isRequired,
   defaultStat: PropTypes.object
 }
 
